@@ -1,0 +1,13 @@
+token.json
+credentials.json
+client_secret.json
+__pycache__/
+*.pyc
+.env
+data/orders.json
+data/print_queue.json
+data/a3_log.json
+static/uploads/order_*
+static/uploads/thumb_order_*
+static/print_staging/
+static/outputs/

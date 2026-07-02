@@ -1,0 +1,5 @@
+flask==3.0.3
+Pillow==10.4.0
+opencv-python-headless
+mediapipe
+gunicorn==22.0.0

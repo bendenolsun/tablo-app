@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(run)",
+      "Bash(pip3.11 install *)",
+      "Bash(python3.11 app.py)",
+      "Bash(curl -s http://localhost:5000/admin/login)",
+      "Bash(curl -s http://localhost:5000/)",
+      "Bash(pkill -f \"python3.11 app.py\")",
+      "Bash(curl -s http://localhost:5000/form/771e2316)",
+      "Bash(python3.11 *)",
+      "Bash(open *)",
+      "Bash(screencapture -x /tmp/form_open.png)",
+      "Bash(screencapture -x /tmp/form_safari.png)",
+      "Bash(curl -s \"http://localhost:5000/form/771e2316\")",
+      "Bash(osascript -e 'tell application \"Safari\" *)",
+      "Bash(screencapture -x /tmp/form_view.png)",
+      "Bash(osascript -e 'tell application \"System Events\" *)",
+      "Bash(screencapture -x /tmp/form_view2.png)",
+      "Bash(screencapture -x /tmp/form_test.png)",
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5000/admin/login)",
+      "Bash(curl *)",
+      "Bash(kill %1)"
+    ]
+  }
+}

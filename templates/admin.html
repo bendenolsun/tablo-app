@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% block title %}Panel — Dijital Operasyonlar Yönetimi{% endblock %}
+{% block content %}
+<div class="page">
+  <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <h1>Panel</h1>
+      <p>Şablonlarınızı yönetin ve form linklerini kopyalayın.</p>
+    </div>
+    <a href="/admin/templates/new" class="btn btn-primary">+ Yeni Şablon</a>
+  </div>
+
+  {% set today_orders = orders | selectattr('folder_name','equalto',today) | list %}
+
+  {% if drive_status %}
+  <div class="alert {% if drive_status.ok %}alert-success{% else %}alert-error{% endif %}" style="margin-bottom:20px;">
+    {% if drive_status.ok %}
+    ✅ <strong>Google Drive:</strong> Bağlantı aktif — dosyalar Drive'a yükleniyor.
+    {% else %}
+    ❌ <strong>Google Drive bağlantı hatası:</strong> {{ drive_status.error or 'Bilinmeyen hata' }}
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div class="grid-3" style="margin-bottom:28px;">
+    <div class="stat-card">
+      <div class="stat-val">{{ templates|length }}</div>
+      <div class="stat-label">Toplam Şablon</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">{{ orders|length }}</div>
+      <div class="stat-label">Toplam Sipariş</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">{{ today_orders|length }}</div>
+      <div class="stat-label">Bugünkü Sipariş ({{ today }})</div>
+    </div>
+  </div>
+
+
+  {# ── Baskı Kuyruğu ────────────────────────────────────────────────────── #}
+  {% if print_queue %}
+  <div class="card" style="margin-bottom:20px;border-color:#2a1a3a;">
+    <div style="font-weight:700;font-size:15px;color:#a78bfa;margin-bottom:12px;">
+      🖨 Baskı Kuyruğu — {{ print_queue|length }} sipariş bekliyor
+    </div>
+    <table class="table" style="margin:0;">
+      <thead>
+        <tr>
+          <th>Müşteri</th>
+          <th>Ebat</th>
+          <th>Bekleme</th>
+          <th>Sipariş ID</th>
+          <th>İşlem</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for it in print_queue %}
+        <tr>
+          <td>{{ it.customer_name }}</td>
+          <td>
+            <span style="background:{% if it.size=='A4' %}#1e3a1e{% else %}#1a2a3a{% endif %};
+                         color:{% if it.size=='A4' %}#4ade80{% else %}#60a5fa{% endif %};
+                         padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;">
+              {{ it.size }}
+            </span>
+          </td>
+          <td>
+            {% if it.hours_waiting >= 20 %}
+            <span style="color:#f87171;font-weight:700;">{{ it.hours_waiting }}s ⚠</span>
+            {% else %}
+            <span style="color:var(--text-muted);">{{ it.hours_waiting }}s</span>
+            {% endif %}
+          </td>
+          <td style="color:var(--text-dim);font-size:11px;">{{ it.order_id }}</td>
+          <td>
+            <div style="display:flex;gap:6px;">
+              <a href="/admin/print-queue/{{ it.jpg_file | urlencode }}/view"
+                 target="_blank" class="btn btn-secondary btn-sm">Görüntüle</a>
+              <a href="/admin/print-queue/{{ it.jpg_file | urlencode }}/download"
+                 class="btn btn-secondary btn-sm">İndir</a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div style="margin-top:10px;font-size:12px;color:var(--text-dim);">
+      Kombinasyonlar: 4×A5 → anında · 2×A4 → anında · 1×A4+2×A5 → anında · 24 saat sonra → köşelerden yerleştir
+    </div>
+  </div>
+  {% endif %}
+
+  {% if templates %}
+  <div style="margin-bottom:12px;">
+    <input id="tmpl-search" type="search" placeholder="Şablon adına göre ara…"
+      style="width:100%;max-width:360px;padding:8px 12px;border-radius:7px;
+             border:1px solid var(--border);background:var(--surface2);
+             color:var(--text);font-size:14px;outline:none;">
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Şablon Adı</th>
+          <th>Ebat</th>
+          <th>Alan Sayısı</th>
+          <th>Form Linki</th>
+          <th>İşlemler</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in templates %}
+
+          {# Alan sayısını ve link durumunu ürün tipine göre belirle #}
+          {% if t.product_type == 'MULTIPAGE' and t.pages %}
+            {% set mp_zones = namespace(val=[]) %}
+            {% for pk, pv in t.pages.items() %}
+              {% if pv.zones is defined %}
+                {% for z in pv.zones %}{% set mp_zones.val = mp_zones.val + [z] %}{% endfor %}
+              {% endif %}
+            {% endfor %}
+            {% set ref_zones = mp_zones.val %}
+            {% set has_zones = namespace(val=(ref_zones | length > 0)) %}
+            {% set type_label = '📄 Çoklu Sayfa' %}
+            {% set size_label = (t.pages | length | string) + ' sayfa' %}
+          {% elif t.product_type == 'MDF' and t.mdf_variants %}
+            {% set variant_list = t.mdf_variants.values() | list %}
+            {% set ref_zones = variant_list[0].zones if variant_list[0].zones is defined else [] %}
+            {% set has_zones = namespace(val=false) %}
+            {% for v in variant_list %}
+              {% if v.zones is defined and v.zones | length > 0 %}{% set has_zones.val = true %}{% endif %}
+            {% endfor %}
+            {% set type_label = '🪵 MDF' %}
+            {% set size_label = '3 ebat' %}
+          {% elif t.product_type == 'CUSTOM_MULTI' and t.custom_variants %}
+            {% set variant_list = t.custom_variants.values() | list %}
+            {% set ref_zones = variant_list[0].zones if variant_list[0].zones is defined else [] %}
+            {% set has_zones = namespace(val=false) %}
+            {% for v in variant_list %}
+              {% if v.zones is defined and v.zones | length > 0 %}{% set has_zones.val = true %}{% endif %}
+            {% endfor %}
+            {% set type_label = '✏️ Özel' %}
+            {% set size_label = (t.custom_variants | length | string) + ' ebat' %}
+          {% elif t.product_type == 'CUSTOM' %}
+            {% set ref_zones = t.zones if (t.zones is defined and t.zones) else [] %}
+            {% set has_zones = namespace(val=(ref_zones | length > 0)) %}
+            {% set type_label = '✏️ Özel' %}
+            {% set size_label = t.size_label if t.size_label is defined else '' %}
+          {% else %}
+            {% set ref_zones = t.zones if (t.zones is defined and t.zones) else [] %}
+            {% set has_zones = namespace(val=(ref_zones | length > 0)) %}
+            {% if t.product_type == 'PSTR' %}
+              {% set type_label = '🖼 PSTR' %}
+              {% set size_label = '29.7×40 cm' %}
+            {% elif t.product_type == 'A3' %}
+              {% set type_label = '📄 A3' %}
+              {% set size_label = '29.7×42 cm' %}
+            {% else %}
+              {% set type_label = '' %}
+              {% set size_label = '' %}
+            {% endif %}
+          {% endif %}
+
+          {% set photo_count = ref_zones | selectattr('type','equalto','photo') | list | length %}
+          {% set text_count  = ref_zones | selectattr('type','equalto','text')  | list | length %}
+
+        <tr data-name="{{ t.name | lower }}">
+          <td>
+            <div style="display:flex;align-items:center;gap:12px;">
+              {% if t.preview %}
+              <img src="/static/uploads/preview_thumb_{{ t.id }}.jpg"
+                   style="width:44px;height:56px;object-fit:cover;border-radius:5px;
+                          border:1px solid var(--border);flex-shrink:0;"
+                   alt="önizleme">
+              {% else %}
+              <div style="width:44px;height:56px;background:var(--surface2);border-radius:5px;
+                          border:1px solid var(--border);display:flex;align-items:center;
+                          justify-content:center;font-size:18px;flex-shrink:0;">🖼</div>
+              {% endif %}
+              <div>
+                <div style="font-weight:600;">{{ t.name }}</div>
+                {% if type_label %}<div style="font-size:11px;color:var(--text-dim);margin-top:2px;">{{ type_label }}</div>{% endif %}
+              </div>
+            </div>
+          </td>
+          <td><span style="color:var(--text-muted);font-size:13px;">{{ size_label }}</span></td>
+          <td>
+            <span style="color:var(--accent);">{{ photo_count }} fotoğraf</span>
+            <span style="color:var(--text-dim);margin:0 4px;">·</span>
+            <span style="color:var(--text-muted);">{{ text_count }} metin</span>
+            {% if t.product_type == 'MDF' and has_zones.val %}
+            <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">ilk ebattan</div>
+            {% endif %}
+          </td>
+          <td>
+            {% if has_zones.val %}
+            <div style="display:flex;align-items:center;gap:8px;">
+              <code style="font-size:11px;color:var(--text-muted);background:var(--surface2);padding:3px 7px;border-radius:4px;">/form/{{ t.id }}</code>
+              <button class="copy-btn" onclick="copyText(window.location.origin+'/form/{{ t.id }}', this)">Kopyala</button>
+            </div>
+            {% else %}
+            <span style="color:var(--error);font-size:12px;">⚠ Henüz alan çizilmedi</span>
+            {% endif %}
+          </td>
+          <td>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <a href="/admin/templates/{{ t.id }}/edit" class="btn btn-secondary btn-sm">Düzenle</a>
+              <form action="/admin/templates/{{ t.id }}/copy" method="post" style="display:inline;">
+                <button class="btn btn-secondary btn-sm" title="Şablonu kopyala">📋 Kopyala</button>
+              </form>
+              <form action="/admin/templates/{{ t.id }}/delete" method="post" style="display:inline;"
+                    onsubmit="return confirm('Şablonu silmek istediğinizden emin misiniz?')">
+                <button class="btn btn-danger btn-sm">Sil</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <h3>Henüz şablon eklenmedi</h3>
+    <p style="margin-bottom:16px;">İlk şablonunuzu ekleyerek başlayın.</p>
+    <a href="/admin/templates/new" class="btn btn-primary">+ İlk Şablonu Ekle</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  // Türkçe karakterleri normalize et: ı→i, ğ→g, ş→s, ü→u, ö→o, ç→c
+  function normalize(s) {
+    return s.toLowerCase()
+      .replace(/ı/g,'i').replace(/ğ/g,'g').replace(/ş/g,'s')
+      .replace(/ü/g,'u').replace(/ö/g,'o').replace(/ç/g,'c');
+  }
+
+  var input = document.getElementById('tmpl-search');
+  if (!input) return;
+  input.addEventListener('input', function () {
+    var q = normalize(this.value.trim());
+    document.querySelectorAll('tr[data-name]').forEach(function (row) {
+      row.style.display = (!q || normalize(row.dataset.name).includes(q)) ? '' : 'none';
+    });
+  });
+  input.addEventListener('focus', function () { this.style.borderColor = 'var(--accent)'; });
+  input.addEventListener('blur',  function () { this.style.borderColor = 'var(--border)'; });
+})();
+</script>
+{% endblock %}

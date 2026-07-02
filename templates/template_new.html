@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+{% block title %}Yeni Şablon{% endblock %}
+{% block extra_css %}
+<style>
+.upload-box {
+  border: 2px dashed var(--border); border-radius: 8px; padding: 18px;
+  text-align: center; cursor: pointer; transition: all .15s; position: relative;
+}
+.upload-box:hover { border-color: var(--accent); }
+.upload-box input { position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%; }
+.upload-box .icon { font-size: 22px; margin-bottom: 5px; }
+.upload-box .lbl  { font-size: 13px; font-weight:600; }
+.upload-box .sub  { font-size: 11px; color: var(--text-muted); margin-top:2px; }
+.upload-box.has-file { border-color: var(--success); background: #0a1e0a; }
+.mdf-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 10px; }
+
+/* Özel varyant ekleme */
+.variant-row {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px; margin-bottom: 10px;
+}
+.variant-row .vrow-head {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+}
+.variant-row .vnum { font-size: 12px; font-weight: 700; color: var(--accent); }
+.dim-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.dim-inp {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+  padding: 8px 10px; color: var(--text); font-size: 13px; font-family: inherit;
+  outline: none; width: 100%;
+}
+.dim-inp:focus { border-color: var(--accent); }
+.rm-variant { background: transparent; border: 1px solid #3a1a1a; color: var(--error);
+  border-radius: 5px; padding: 3px 8px; font-size: 11px; cursor: pointer; font-family: inherit; }
+.rm-variant:hover { background: #2a0a0a; }
+.add-variant-btn {
+  width: 100%; padding: 10px; background: transparent; border: 1px dashed var(--border);
+  border-radius: 7px; color: var(--text-muted); font-size: 13px; cursor: pointer;
+  font-family: inherit; transition: all .15s; margin-top: 4px;
+}
+.add-variant-btn:hover { border-color: var(--accent); color: var(--accent); }
+</style>
+{% endblock %}
+{% block content %}
+<div class="page-sm">
+  <div class="page-header">
+    <h1>Yeni Şablon Ekle</h1>
+    <p>Şablon adını yazın — sistem ürün tipini otomatik algılar.</p>
+  </div>
+  <div class="card">
+    {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+    <form method="post" enctype="multipart/form-data" id="tmpl-form">
+
+      <div class="form-group">
+        <label class="form-label">Şablon Adı <span style="color:var(--accent)">*</span></label>
+        <input class="form-input" type="text" name="name" id="tmpl-name"
+               placeholder="Örn: 9 Fotoğraflı Kolaj, MDF" required oninput="detectType()">
+        <div class="form-hint">
+          Sonuna <code>, PSTR</code> / <code>, A3</code> / <code>, MDF</code> yazarsanız
+          ebatlar otomatik belirlenir. Farklı bir ürün için ebatı kendiniz girersiniz.
+        </div>
+      </div>
+
+      <!-- Çoklu Sayfa toggle -->
+      <div class="form-group" style="margin-bottom:12px;">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;
+                      background:var(--surface2);border:1px solid var(--border);
+                      border-radius:8px;padding:10px 14px;">
+          <input type="checkbox" id="mp-toggle" onchange="toggleMultipage()"
+                 style="width:16px;height:16px;accent-color:#a78bfa;cursor:pointer;">
+          <span style="font-size:13px;font-weight:600;color:var(--text);">
+            📄 Çoklu Sayfa
+            <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:6px;">
+              Her sayfa ayrı JPG olarak çıktı alınır
+            </span>
+          </span>
+        </label>
+      </div>
+
+      <!-- Tip rozeti -->
+      <div id="type-badge" style="display:none;margin-bottom:16px;">
+        <span id="type-label" style="display:inline-flex;align-items:center;gap:6px;
+          padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;"></span>
+      </div>
+
+      <!-- ① PSTR / A3: tek arka plan, ebat otomatik -->
+      <div id="single-upload" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Arka Plan Görseli <span style="color:var(--accent)">*</span></label>
+          <div class="upload-box" id="single-box">
+            <div class="icon">🖼</div>
+            <div class="lbl">PNG yüklemek için tıklayın</div>
+            <div class="sub">Fotoğraf ve metin alanları boş olmalı</div>
+            <input type="file" name="background" accept="image/*"
+                   onchange="markUploaded('single-box',this)">
+          </div>
+        </div>
+      </div>
+
+      <!-- ② MDF: 3 sabit ebat -->
+      <div id="mdf-upload" style="display:none;">
+        <label class="form-label" style="margin-bottom:8px;">Ebat Başına Arka Plan Görseli</label>
+        <div class="form-hint" style="margin-bottom:12px;">
+          Kullanmadığınız ebatı boş bırakabilirsiniz.
+        </div>
+        <div class="mdf-grid">
+          {% set mdf_opts = [
+            ('15x21cm','A5','14.8×21 cm'),
+            ('21x30cm','A4','21×29.7 cm'),
+            ('30x40cm','Büyük','29.7×40 cm')
+          ] %}
+          {% for key, label, sub in mdf_opts %}
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--text-muted);
+                        margin-bottom:6px;text-align:center;">{{ key.replace('x',' × ') }}</div>
+            <div class="upload-box" id="mdf-box-{{ key }}">
+              <div class="icon">📄</div>
+              <div class="lbl" style="font-size:12px;">{{ label }}</div>
+              <div class="sub">{{ sub }}</div>
+              <input type="file" name="bg_{{ key }}" accept="image/*"
+                     onchange="markUploaded('mdf-box-{{ key }}',this)">
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- ③ Özel: kullanıcı ebat girer, varyant ekleyebilir -->
+      <div id="custom-upload" style="display:none;">
+        <label class="form-label" style="margin-bottom:8px;">
+          Ebat ve Arka Plan
+          <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:6px;">
+            Birden fazla ebat ekleyebilirsiniz.
+          </span>
+        </label>
+        <div id="custom-variants"></div>
+        <button type="button" class="add-variant-btn" onclick="addVariant()">+ Ebat Ekle</button>
+      </div>
+
+      <!-- ④ Çoklu Sayfa: her sayfa ayrı arka plan -->
+      <div id="multipage-upload" style="display:none;">
+        <div style="font-size:12px;font-weight:700;color:#a78bfa;margin-bottom:10px;">
+          📄 Çoklu Sayfa — Her sayfa ayrı JPG olarak üretilir
+        </div>
+        <div class="dim-row" style="margin-bottom:12px;">
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">Sayfa Genişliği (cm) <span style="color:var(--accent)">*</span></div>
+            <input class="dim-inp" type="number" name="page_w_cm" id="page-w-cm"
+                   placeholder="Örn: 21" step="0.1" min="1">
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">Sayfa Yüksekliği (cm) <span style="color:var(--accent)">*</span></div>
+            <input class="dim-inp" type="number" name="page_h_cm" id="page-h-cm"
+                   placeholder="Örn: 30" step="0.1" min="1">
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;font-weight:700;">Sayfalar</div>
+        <div id="page-list"></div>
+        <button type="button" class="add-variant-btn" onclick="addPage()">+ Sayfa Ekle</button>
+        <input type="hidden" name="is_multipage" value="1" id="is-multipage-field" disabled>
+      </div>
+
+      <!-- Henüz bir şey yazılmadı -->
+      <div id="no-type" style="background:var(--surface2);border:1px solid var(--border);
+           border-radius:8px;padding:20px;text-align:center;color:var(--text-dim);font-size:13px;">
+        Şablon adını yazın, arka plan yükleme alanı burada çıkacak.
+      </div>
+
+      <div class="form-group" style="margin-top:20px;">
+        <label class="form-label">Temsili Görsel <span style="color:var(--text-muted);font-weight:400;">(opsiyonel)</span></label>
+        <div class="upload-box" id="preview-box">
+          <div class="icon">🖼</div>
+          <div class="lbl">Müşteriye gösterilecek örnek fotoğraf</div>
+          <div class="sub">Bu görsel form sayfasında ve şablon listesinde görünür</div>
+          <input type="file" name="preview_image" accept="image/*"
+                 onchange="markUploaded('preview-box',this)">
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:20px;">
+        <label class="form-label">Form Açıklama Metni <span style="font-weight:400;color:var(--text-muted);">(opsiyonel)</span></label>
+        <textarea class="form-input" name="form_description" rows="3"
+                  placeholder="Müşteriye form sayfasında gösterilecek açıklama veya yönlendirme metni..."
+                  style="resize:vertical;font-family:inherit;"></textarea>
+        <div class="form-hint">Temsili görselin altında gösterilir.</div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:12px;">
+        <button type="submit" class="btn btn-primary" style="flex:1">Devam Et →</button>
+        <a href="/admin" class="btn btn-secondary">İptal</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+let variantCount = 0;
+
+function detectType() {
+  const name   = document.getElementById('tmpl-name').value.trim();
+  const badge  = document.getElementById('type-badge');
+  const lbl    = document.getElementById('type-label');
+  const single = document.getElementById('single-upload');
+  const mdf    = document.getElementById('mdf-upload');
+  const custom = document.getElementById('custom-upload');
+  const none   = document.getElementById('no-type');
+
+  const suffix = name.includes(',') ? name.split(',').pop().trim().toUpperCase() : '';
+
+  const multipage = document.getElementById('multipage-upload');
+  const known = {
+    'PSTR': { text:'🖼 Poster — 29.7×40 cm (otomatik)', bg:'#1e1400', color:'#d4a843' },
+    'A3':   { text:'📄 A3 Baskı — 29.7×42 cm (otomatik)', bg:'#001528', color:'#60a5fa' },
+    'MDF':  { text:'🪵 MDF Tablo — 3 sabit ebat', bg:'#0f1e0a', color:'#4ade80' },
+  };
+
+  // Çoklu sayfa modu aktifse diğer alanları gösterme
+  if (document.getElementById('mp-toggle')?.checked) return;
+
+  // Henüz isim girilmedi
+  if (!name) {
+    badge.style.display = single.style.display = mdf.style.display =
+    custom.style.display = multipage.style.display = 'none';
+    none.style.display = 'block';
+    setSectionDisabled(custom, true);
+    return;
+  }
+
+  if (known[suffix]) {
+    const c = known[suffix];
+    badge.style.display = 'block';
+    lbl.textContent = c.text;
+    lbl.style.background = c.bg;
+    lbl.style.color = c.color;
+    single.style.display = (suffix !== 'MDF') ? 'block' : 'none';
+    mdf.style.display    = (suffix === 'MDF') ? 'block' : 'none';
+    custom.style.display = 'none';
+    multipage.style.display = 'none';
+    none.style.display   = 'none';
+    setSectionDisabled(custom, true);
+    setSectionDisabled(suffix === 'MDF' ? single : mdf, true);
+    setSectionDisabled(suffix === 'MDF' ? mdf : single, false);
+  } else {
+    // Özel ürün
+    badge.style.display = 'block';
+    lbl.textContent = '✏️ Özel ürün — ebatı siz belirleyin';
+    lbl.style.background = '#1a1a2e';
+    lbl.style.color = '#a78bfa';
+    single.style.display = 'none';
+    mdf.style.display    = 'none';
+    custom.style.display = 'block';
+    multipage.style.display = 'none';
+    none.style.display   = 'none';
+    setSectionDisabled(custom, false);
+    setSectionDisabled(single, true);
+    setSectionDisabled(mdf, true);
+    if (variantCount === 0) addVariant();
+  }
+}
+
+let pageCount = 0;
+
+function setSectionDisabled(sectionEl, disabled) {
+  sectionEl.querySelectorAll('input:not([type=hidden]), select, textarea').forEach(function(el) {
+    el.disabled = disabled;
+  });
+}
+
+function toggleMultipage() {
+  const cb = document.getElementById('mp-toggle');
+  const multipage = document.getElementById('multipage-upload');
+  const single = document.getElementById('single-upload');
+  const mdf    = document.getElementById('mdf-upload');
+  const custom = document.getElementById('custom-upload');
+  const none   = document.getElementById('no-type');
+  const badge  = document.getElementById('type-badge');
+  const lbl    = document.getElementById('type-label');
+  if (cb.checked) {
+    single.style.display = mdf.style.display = custom.style.display = none.style.display = 'none';
+    // Gizlenen bölümlerdeki required inputları devre dışı bırak;
+    // aksi hâlde tarayıcı bunları sessizce doğrulayıp formu engeller.
+    [single, mdf, custom].forEach(function(sec) { setSectionDisabled(sec, true); });
+    multipage.style.display = 'block';
+    setSectionDisabled(multipage, false);
+    document.getElementById('is-multipage-field').disabled = false;
+    badge.style.display = 'block';
+    lbl.textContent = '📄 Çoklu Sayfa — her sayfa ayrı JPG';
+    lbl.style.background = '#1a1a2e';
+    lbl.style.color = '#a78bfa';
+    if (pageCount === 0) addPage();
+  } else {
+    multipage.style.display = 'none';
+    setSectionDisabled(multipage, true);
+    document.getElementById('is-multipage-field').disabled = true;
+    [single, mdf, custom].forEach(function(sec) { setSectionDisabled(sec, false); });
+    detectType();
+  }
+}
+
+function addPage() {
+  pageCount++;
+  const idx = pageCount;
+  const container = document.getElementById('page-list');
+  const div = document.createElement('div');
+  div.className = 'variant-row';
+  div.id = 'page-row-' + idx;
+  div.innerHTML = `
+    <div class="vrow-head">
+      <span class="vnum">Sayfa ${idx}</span>
+      ${idx > 1 ? `<button type="button" class="rm-variant" onclick="removePage(${idx})">× Kaldır</button>` : ''}
+    </div>
+    <div class="upload-box" id="page-box-${idx}" style="border-style:dashed;">
+      <div class="icon">🖼</div>
+      <div class="lbl">Sayfa ${idx} arka planı (PNG)</div>
+      <div class="sub">Fotoğraf ve metin alanları boş olmalı</div>
+      <input type="file" name="page_bg_${idx}" accept="image/*"
+             onchange="markUploaded('page-box-${idx}',this)">
+    </div>`;
+  container.appendChild(div);
+}
+
+function removePage(idx) {
+  const el = document.getElementById('page-row-' + idx);
+  if (el) el.remove();
+}
+
+function addVariant() {
+  variantCount++;
+  const idx = variantCount;
+  const container = document.getElementById('custom-variants');
+  const div = document.createElement('div');
+  div.className = 'variant-row';
+  div.id = 'variant-' + idx;
+  div.innerHTML = `
+    <div class="vrow-head">
+      <span class="vnum">Varyant ${idx}</span>
+      ${idx > 1 ? `<button type="button" class="rm-variant" onclick="removeVariant(${idx})">× Kaldır</button>` : ''}
+    </div>
+    <div class="dim-row">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">Genişlik (cm)</div>
+        <input class="dim-inp" type="number" name="custom_w_${idx}"
+               placeholder="Örn: 21" step="0.1" min="1" required>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">Yükseklik (cm)</div>
+        <input class="dim-inp" type="number" name="custom_h_${idx}"
+               placeholder="Örn: 30" step="0.1" min="1" required>
+      </div>
+    </div>
+    <div class="upload-box has-file" id="custom-box-${idx}" style="border-style:dashed;">
+      <div class="icon">🖼</div>
+      <div class="lbl">Bu ebat için arka plan PNG</div>
+      <div class="sub">Fotoğraf ve metin alanları boş olmalı</div>
+      <input type="file" name="custom_bg_${idx}" accept="image/*"
+             onchange="markUploaded('custom-box-${idx}',this)" required>
+    </div>
+  `;
+  // İlk varyant için has-file class'ı kaldır (henüz yüklenmedi)
+  container.appendChild(div);
+  const box = div.querySelector('.upload-box');
+  box.classList.remove('has-file');
+}
+
+function removeVariant(idx) {
+  const el = document.getElementById('variant-' + idx);
+  if (el) el.remove();
+}
+
+function markUploaded(boxId, input) {
+  const box = document.getElementById(boxId);
+  if (input.files && input.files[0]) {
+    box.classList.add('has-file');
+    box.querySelector('.lbl').textContent = '✓ ' + input.files[0].name;
+  }
+}
+
+document.getElementById('tmpl-form').addEventListener('submit', function(e) {
+  // Çoklu sayfa modu doğrulaması
+  if (document.getElementById('mp-toggle').checked) {
+    const w = document.getElementById('page-w-cm').value.trim();
+    const h = document.getElementById('page-h-cm').value.trim();
+    if (!w || !h) {
+      e.preventDefault();
+      alert('Lütfen sayfa genişliği ve yüksekliğini girin.');
+      document.getElementById('page-w-cm').focus();
+      return;
+    }
+    if (pageCount === 0) {
+      e.preventDefault();
+      alert('En az bir sayfa arka planı ekleyin.');
+      return;
+    }
+  }
+  // Özel varyant sayısı
+  let inp = document.getElementById('custom-variant-count');
+  if (!inp) { inp = document.createElement('input'); inp.type='hidden';
+    inp.id='custom-variant-count'; inp.name='custom_variant_count'; this.appendChild(inp); }
+  inp.value = variantCount;
+  // Çoklu sayfa sayısı
+  let pinp = document.getElementById('page-count-inp');
+  if (!pinp) { pinp = document.createElement('input'); pinp.type='hidden';
+    pinp.id='page-count-inp'; pinp.name='page_count'; this.appendChild(pinp); }
+  pinp.value = pageCount;
+});
+</script>
+{% endblock %}

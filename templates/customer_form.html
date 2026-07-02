@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>{% if edit_mode %}Düzenle: {% endif %}{{ tmpl.name }} — Sipariş Formu</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#faf9f7;--surface:#fff;--border:#e5e2dc;
+  --accent:#c9973a;--accent2:#a07428;
+  --text:#1a1a1a;--muted:#6b6b6b;--light:#9a9a9a;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:90px;}
+.hdr{background:#1a1a1a;color:#fff;padding:20px 20px 18px;text-align:center;}
+.hdr .logo{font-size:18px;font-weight:800;color:var(--accent);}
+.hdr h1{font-size:16px;font-weight:600;margin-top:6px;}
+.hdr p{font-size:12px;color:#aaa;margin-top:3px;}
+.hdr .prev-img img{max-width:140px;max-height:180px;border-radius:8px;border:2px solid rgba(255,255,255,.15);object-fit:cover;margin-top:12px;}
+.hdr .prev-img small{display:block;font-size:10px;color:#888;margin-top:4px;}
+.body{max-width:600px;margin:0 auto;padding:20px 16px;}
+.sec{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px;}
+.stitle{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:14px;}
+.fg{margin-bottom:14px;}
+.fg:last-child{margin-bottom:0;}
+.lbl{display:block;font-size:13px;font-weight:600;margin-bottom:5px;}
+.req{color:var(--accent);}
+.hint{font-size:11px;color:var(--light);margin-top:4px;}
+input[type=text],input[type=tel],select{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;transition:border .15s;}
+input:focus,select:focus{border-color:var(--accent);}
+
+/* ── Metin editörü + kompakt önizleme ── */
+.txt-layout{display:grid;grid-template-columns:1fr 120px;gap:12px;align-items:start;}
+.txt-mini-wrap{position:sticky;top:10px;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#eee;}
+.txt-mini-wrap canvas{display:block;width:100%;height:auto;}
+.txt-mini-lbl{font-size:9px;color:var(--light);text-align:center;padding:3px 0;background:var(--surface);border-top:1px solid var(--border);}
+.tz-editor{background:#f5f3f0;border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;}
+.tz-editor:last-child{margin-bottom:0;}
+.tz-name{font-size:12px;font-weight:700;margin-bottom:7px;color:var(--text);}
+.tz-row{display:flex;align-items:center;gap:7px;margin-top:5px;}
+.tz-row label{font-size:10px;color:var(--muted);min-width:44px;}
+.tz-row input[type=range]{flex:1;accent-color:var(--accent);}
+.tz-row input[type=color]{width:32px;height:26px;border:1px solid var(--border);border-radius:5px;cursor:pointer;padding:2px;}
+.tz-val{font-size:10px;color:var(--accent);font-weight:700;min-width:30px;text-align:right;}
+@media(max-width:400px){.txt-layout{grid-template-columns:1fr 90px;}}
+
+/* ── Fotoğraf grubu ── */
+.photo-group{background:#f5f3f0;border:1px dashed #ccc;border-radius:10px;padding:14px;margin-bottom:10px;}
+.photo-group:last-child{margin-bottom:0;}
+.pg-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.pg-title{font-size:13px;font-weight:700;}
+.pg-count{font-size:12px;color:var(--accent);font-weight:600;}
+.pg-slots{display:flex;flex-wrap:wrap;gap:8px;}
+
+/* ── Seçilebilir Görsel ── */
+.sel-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
+.sel-item{position:relative;border:3px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color .15s,box-shadow .15s;flex-shrink:0;}
+.sel-item img{display:block;width:100%;height:100%;object-fit:cover;}
+.sel-item.selected{border-color:#fb923c;box-shadow:0 0 0 3px rgba(251,146,60,.35);}
+.sel-item-name{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.55);color:#fff;font-size:10px;font-weight:600;text-align:center;padding:3px 4px;line-height:1.2;}
+
+/* ── Slot ── */
+.pslot{position:relative;border-radius:8px;overflow:hidden;border:2px dashed #bbb;background:#ddd;cursor:pointer;flex-shrink:0;}
+.pslot.filled{border-style:solid;border-color:var(--accent);}
+.pslot canvas{display:block;width:100%;height:100%;}
+.pslot-ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:rgba(255,255,255,.8);pointer-events:none;}
+.pslot-ov.hidden{display:none;}
+.pslot-icon{font-size:20px;}
+.pslot-num{font-size:10px;font-weight:700;color:var(--muted);}
+.pslot-btns{position:absolute;bottom:3px;right:3px;display:none;gap:3px;}
+.pslot.filled .pslot-btns{display:flex;}
+.sbtn{background:rgba(0,0,0,.65);color:#fff;border:none;border-radius:4px;padding:3px 7px;font-size:10px;cursor:pointer;font-family:inherit;}
+
+/* ── Çoklu Ürün ── */
+.unit-tabs{display:none;gap:6px;flex-wrap:wrap;}
+.unit-tab{padding:8px 18px;border:2px solid var(--border);border-radius:8px;background:var(--bg);color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;}
+.unit-tab.active{border-color:var(--accent);background:var(--accent);color:#fff;}
+.qty-ctrl{display:flex;align-items:center;gap:10px;}
+.qty-btn{width:36px;height:36px;border:2px solid var(--border);border-radius:8px;background:var(--bg);font-size:20px;line-height:1;cursor:pointer;font-family:inherit;color:var(--text);flex-shrink:0;}
+.qty-inp{width:72px;text-align:center;font-size:20px;font-weight:700;padding:6px;border:2px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);}
+.unit-prev-tabs{display:none;gap:6px;flex-wrap:wrap;padding:10px 16px 0;}
+.unit-prev-btn{padding:6px 14px;border-radius:6px;border:1px solid #ccc;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;background:#eee;color:#333;}
+.unit-prev-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+/* ── Modallar ── */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:1000;align-items:center;justify-content:center;padding:12px;}
+.modal.open{display:flex;}
+.mbox{background:#1a1a1a;border-radius:14px;width:100%;max-width:460px;overflow:hidden;}
+.mhead{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333;}
+.mhead span{font-size:14px;font-weight:700;color:#fff;}
+.mx{background:none;border:none;color:#999;font-size:22px;cursor:pointer;padding:0 2px;}
+.cwrap{position:relative;background:#111;touch-action:none;overflow:hidden;}
+.cwrap canvas{display:block;width:100%;height:auto;}
+.mtools{padding:10px 16px;border-top:1px solid #333;background:#222;}
+.mrow{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.mrow:last-child{margin-bottom:0;}
+.mlbl{font-size:11px;color:#888;min-width:56px;}
+.mslider{flex:1;accent-color:var(--accent);}
+.mfooter{display:flex;gap:8px;padding:12px 16px;border-top:1px solid #333;}
+.mcancel{flex:1;padding:10px;background:#333;color:#999;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+.mok{flex:1;padding:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+.rotbtns{display:flex;gap:5px;}
+.rbt{background:#333;color:#fff;border:none;border-radius:6px;padding:6px 11px;font-size:14px;cursor:pointer;}
+.rbt:hover{background:#444;}
+
+/* ── Önizleme modalı ── */
+.prev-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:2000;align-items:center;justify-content:center;padding:14px;overflow-y:auto;}
+.prev-modal.open{display:flex;}
+.prev-box{background:#fff;border-radius:14px;width:100%;max-width:480px;overflow:hidden;}
+.prev-head{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e5e2dc;}
+.prev-head span{font-size:15px;font-weight:700;}
+.prev-head button{background:none;border:none;font-size:22px;cursor:pointer;color:#888;}
+.prev-cw{padding:12px;text-align:center;}
+.prev-cw canvas{max-width:100%;border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+.prev-acts{display:flex;gap:10px;padding:14px 16px;border-top:1px solid #e5e2dc;}
+.prev-edit{flex:1;padding:12px;background:#f0ede8;color:var(--text);border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+.prev-send{flex:1;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+.prev-send:hover{background:var(--accent2);}
+.prev-send:disabled{opacity:.5;cursor:not-allowed;}
+
+/* ── Alt bar ── */
+.bot{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:12px 16px;z-index:100;}
+.prevbtn{width:100%;padding:13px;background:var(--accent);color:#fff;font-size:14px;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:inherit;}
+.prevbtn:hover{background:var(--accent2);}
+
+/* ── Loading ── */
+.loading{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;flex-direction:column;align-items:center;justify-content:center;color:#fff;gap:14px;}
+.loading.show{display:flex;}
+.spin{width:40px;height:40px;border:4px solid rgba(255,255,255,.2);border-top-color:var(--accent);border-radius:50%;animation:sp .8s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg);}}
+.okb{display:inline-flex;align-items:center;background:#dcfce7;color:#166534;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;margin-left:5px;}
+
+/* ── Mobil uyum ── */
+@media(max-width:600px){
+  .unit-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;}
+  .unit-tab{white-space:nowrap;flex-shrink:0;min-height:44px;display:flex;align-items:center;}
+  .qty-btn{width:44px;height:44px;}
+  .sbtn{min-height:36px;padding:5px 10px;font-size:11px;}
+  .rbt{min-height:44px;padding:8px 14px;font-size:15px;}
+  .mcancel,.mok{padding:13px;min-height:44px;font-size:14px;}
+  .mbox{display:flex;flex-direction:column;max-height:92vh;}
+  .mtools{overflow-y:auto;flex-shrink:1;}
+  .prev-box{display:flex;flex-direction:column;max-height:92vh;}
+  .prev-cw{overflow-y:auto;flex:1;}
+  .prev-edit,.prev-send{padding:13px;min-height:44px;font-size:14px;}
+  .prevbtn{min-height:48px;font-size:15px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">🖼 Tablo Sipariş</div>
+  <h1>{{ tmpl.name }}</h1>
+  {% if edit_mode %}
+  <p style="color:#f9a825;font-weight:600;margin-top:4px;">✏ Düzenleme Modu — Sipariş #{{ edit_order.order_number }}</p>
+  {% else %}
+  <p>Fotoğraflarınızı yükleyin ve düzenleyin.</p>
+  {% endif %}
+  {% if tmpl.preview %}
+  <div class="prev-img">
+    <img src="/static/uploads/preview_thumb_{{ tmpl.id }}.jpg" alt="Örnek">
+    <small>Örnek Tasarım</small>
+  </div>
+  {% endif %}
+  {% if tmpl.form_description %}
+  <div style="margin:12px auto 0;max-width:400px;font-size:12px;color:#ccc;line-height:1.55;white-space:normal;word-wrap:break-word;text-align:center;background:rgba(255,255,255,.07);border-radius:8px;padding:10px 14px;">{{ tmpl.form_description }}</div>
+  {% endif %}
+</div>
+
+<div class="body">
+
+  {% if edit_mode and not edit_has_originals %}
+  <div style="background:#3a2000;border:1px solid #f9a825;border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:#f9a825;line-height:1.5;">
+    <strong>Eski sipariş</strong> — orijinal fotoğraflar kaydedilmemiş. Fotoğraf slotları kırpılmış versiyon ile görünüyor. Yeniden düzenlemek için fotoğrafı tekrar yükleyin.
+  </div>
+  {% endif %}
+
+  <!-- Sipariş bilgileri — her zaman en başta, tek kez sorulur -->
+  <div class="sec">
+    <div class="stitle">📋 Sipariş Bilgileri</div>
+    <div class="fg">
+      <label class="lbl">Sipariş kimin adına? <span class="req">*</span></label>
+      <input type="text" id="f-name" placeholder="Örn: Emre Parsan" required
+             value="{{ edit_order.customer_name if edit_mode else '' }}">
+    </div>
+    <div class="fg">
+      <label class="lbl">Sipariş Numarası <span class="req">*</span></label>
+      <input type="text" id="f-order" placeholder="Trendyol sipariş numarası" required
+             value="{{ edit_order.order_number if edit_mode else '' }}">
+    </div>
+    <div class="fg">
+      <label class="lbl">Telefon <span class="req">*</span></label>
+      <input type="tel" id="f-phone" placeholder="05__ ___ __ __" required
+             value="{{ edit_order.phone if edit_mode else '' }}">
+    </div>
+    {% if is_mdf or is_custom_multi %}
+    <div class="fg">
+      <label class="lbl">Tablo Ebatı <span class="req">*</span></label>
+      <select id="f-size" required>
+        <option value="">Seçin...</option>
+        {% for sk, sv in variant_sizes.items() %}
+        <option value="{{ sk }}"
+          {% if edit_mode and (edit_order.mdf_size_key == sk or edit_order.custom_size_key == sk) %}selected{% endif %}>
+          {{ sk }} — {{ sv.label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Kaç ürün? (edit modunda gizli) -->
+  {% if not edit_mode %}
+  <div class="sec" id="qty-sec">
+    <div class="stitle">📦 Kaç Adet Ürün Sipariş Ettiniz?</div>
+    <div class="qty-ctrl">
+      <button class="qty-btn" onclick="changeQty(-1)">−</button>
+      <input type="number" id="qty-inp" class="qty-inp" min="1" max="20" value="1"
+             oninput="setUnitCount(parseInt(this.value)||1)"
+             onchange="setUnitCount(parseInt(this.value)||1)">
+      <button class="qty-btn" onclick="changeQty(1)">+</button>
+    </div>
+  </div>
+  <!-- Aynı/Farklı Tasarım sorusu (2+ ürün seçince görünür) -->
+  <div class="sec" id="design-mode-sec" style="display:none;">
+    <div class="stitle">🎨 Tasarım Seçeneği <span style="color:#f44336;font-weight:700;">*</span></div>
+    <p class="hint" style="margin-bottom:14px;">Ürünlerinizin tasarımları aynı mı olsun, farklı mı?</p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px;font-weight:600;color:var(--text);padding:10px 18px;border:2px solid var(--border);border-radius:8px;transition:all .15s;" id="dm-lbl-same">
+        <input type="radio" name="design_mode" id="dm-same" value="same"
+               style="width:17px;height:17px;accent-color:var(--primary);"
+               onchange="setDesignMode('same')">
+        ✨ Aynı Tasarım
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px;font-weight:600;color:var(--text);padding:10px 18px;border:2px solid var(--border);border-radius:8px;transition:all .15s;" id="dm-lbl-diff">
+        <input type="radio" name="design_mode" id="dm-diff" value="different"
+               style="width:17px;height:17px;accent-color:var(--primary);"
+               onchange="setDesignMode('different')">
+        🎨 Farklı Tasarım
+      </label>
+    </div>
+    <p id="dm-hint" class="hint" style="margin:10px 0 0;min-height:18px;"></p>
+  </div>
+  <!-- Ürün sekmeleri (Farklı Tasarım + 2+ ürün seçince görünür) -->
+  <div class="sec unit-tabs" id="unit-tabs" style="padding:12px 16px;"></div>
+  {% endif %}
+
+  {% if is_multipage_tmpl %}
+  <!-- ── ÇOKLU SAYFA: her sayfa ayrı bölüm ─────────────────────────────────── -->
+  {% for pg_num in multipage_pages %}
+  <div class="sec" style="border-color:#c9973a44;">
+    <div class="stitle" style="color:var(--accent);">📄 Sayfa {{ pg_num }}</div>
+
+    <!-- Bu sayfanın metin alanları -->
+    {% if page_text_map.get(pg_num) %}
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px;">✏️ Metinler</div>
+      {% for zi, zone in page_text_map[pg_num] %}
+      <div class="tz-editor">
+        <div class="tz-name">{{ zone.label }}{% if zone.required is defined and zone.required %} <span style="color:#f44336;font-weight:700;">*</span>{% endif %}</div>
+        {% if zone.description is defined and zone.description %}<div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:2px;margin-bottom:5px;">{{ zone.description }}</div>{% endif %}
+        <input type="text" id="tz-text-{{ zi }}"
+               placeholder="{{ zone.label }} metnini girin"
+               data-default="{{ zone.default_text or '' }}"
+               value="{{ edit_order.text_values.get(zone.label, zone.default_text or '') if edit_mode else (zone.default_text or '') }}"
+               onfocus="if(this.dataset.default&&this.value===this.dataset.default)this.value=''"
+               onblur="if(!this.value.trim()&&this.dataset.default)this.value=this.dataset.default;refreshMini({{ pg_num }})"
+               oninput="refreshMini({{ pg_num }})">
+        {% set _sz = edit_order.text_size_values.get(zone.label,'100') if edit_mode else '100' %}
+        <div class="tz-row">
+          <label>Boyut</label>
+          <input type="range" id="tz-size-{{ zi }}" min="40" max="200" value="{{ _sz }}"
+                 oninput="document.getElementById('tz-sv-{{ zi }}').textContent=this.value+'%';refreshMini({{ pg_num }})">
+          <span class="tz-val" id="tz-sv-{{ zi }}">{{ _sz }}%</span>
+        </div>
+        {% set _cl = edit_order.text_color_values.get(zone.label, zone.color or '#ffffff') if edit_mode else (zone.color or '#ffffff') %}
+        <div class="tz-row">
+          <label>Renk</label>
+          <input type="color" id="tz-color-{{ zi }}"
+                 value="{{ _cl }}"
+                 oninput="refreshMini({{ pg_num }})">
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Bu sayfanın fotoğraf alanları -->
+    {% if page_photo_map.get(pg_num) %}
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;">📷 Fotoğraflar</div>
+      {% set seen_groups = namespace(val=[]) %}
+      {% for zi, zone in page_photo_map[pg_num] %}
+        {% set gname = zone.group_name if zone.group_name is defined and zone.group_name else '' %}
+        {% set flabel = zone.form_label if zone.form_label is defined and zone.form_label else zone.label %}
+        {% if gname == '' %}
+        <div class="photo-group" id="pg-{{ zi }}">
+          <div class="pg-header">
+            <span class="pg-title">{{ flabel }}{% if zone.required is defined and zone.required %} <span style="color:#f44336;font-weight:700;">*</span>{% endif %}</span>
+            <span class="pg-count" id="pgc-{{ zi }}">0/1</span>
+          </div>
+          {% if zone.description is defined and zone.description %}<p style="font-size:11px;color:var(--muted);font-style:italic;margin:-4px 0 8px;">{{ zone.description }}</p>{% endif %}
+          <div class="pg-slots" id="pgs-{{ zi }}"></div>
+        </div>
+        {% elif gname not in seen_groups.val %}
+          {% set seen_groups.val = seen_groups.val + [gname] %}
+          {% set gc = namespace(val=0) %}
+          {% for z2 in photo_zones %}
+            {% if (z2.group_name if z2.group_name is defined else '') == gname %}{% set gc.val = gc.val+1 %}{% endif %}
+          {% endfor %}
+        <div class="photo-group" id="pg-grp-{{ gname }}">
+          <div class="pg-header">
+            <span class="pg-title">{{ flabel }}{% if zone.required is defined and zone.required %} <span style="color:#f44336;font-weight:700;">*</span>{% endif %}</span>
+            <span class="pg-count" id="pgc-grp-{{ gname }}">0/{{ gc.val }}</span>
+          </div>
+          {% if zone.description is defined and zone.description %}<p style="font-size:11px;color:var(--muted);font-style:italic;margin:-4px 0 8px;">{{ zone.description }}</p>{% endif %}
+          <p class="hint" style="margin-bottom:10px;">{{ gc.val }} fotoğraf yükleyin.</p>
+          <div class="pg-slots" id="pgs-grp-{{ gname }}"></div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+
+  {% else %}
+  <!-- ── TEK SAYFA: mevcut yapı ─────────────────────────────────────────────── -->
+
+  <!-- Metinler: sol editör + sağda kompakt anlık önizleme -->
+  {% if text_zones %}
+  <div class="sec">
+    <div class="stitle">✏️ Metinler</div>
+    <div class="txt-layout">
+      <div id="tz-editors">
+        {% for zone in text_zones %}
+        {% set zi = loop.index0 %}
+        <div class="tz-editor">
+          <div class="tz-name">{{ zone.label }}{% if zone.required is defined and zone.required %} <span style="color:#f44336;font-weight:700;">*</span>{% endif %}</div>
+          {% if zone.description is defined and zone.description %}<div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:2px;margin-bottom:5px;">{{ zone.description }}</div>{% endif %}
+          <input type="text" id="tz-text-{{ zi }}"
+                 placeholder="{{ zone.label }} metnini girin"
+                 data-default="{{ zone.default_text or '' }}"
+                 value="{{ edit_order.text_values.get(zone.label, zone.default_text or '') if edit_mode else (zone.default_text or '') }}"
+                 onfocus="if(this.dataset.default&&this.value===this.dataset.default)this.value=''"
+                 onblur="if(!this.value.trim()&&this.dataset.default)this.value=this.dataset.default;refreshMini()"
+                 oninput="refreshMini()">
+          {% set _sz = edit_order.text_size_values.get(zone.label,'100') if edit_mode else '100' %}
+          <div class="tz-row">
+            <label>Boyut</label>
+            <input type="range" id="tz-size-{{ zi }}" min="40" max="200" value="{{ _sz }}"
+                   oninput="document.getElementById('tz-sv-{{ zi }}').textContent=this.value+'%';refreshMini()">
+            <span class="tz-val" id="tz-sv-{{ zi }}">{{ _sz }}%</span>
+          </div>
+          {% set _cl = edit_order.text_color_values.get(zone.label, zone.color or '#ffffff') if edit_mode else (zone.color or '#ffffff') %}
+          <div class="tz-row">
+            <label>Renk</label>
+            <input type="color" id="tz-color-{{ zi }}"
+                   value="{{ _cl }}"
+                   oninput="refreshMini()">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div>
+        <div class="txt-mini-wrap" id="miniWrap">
+          <canvas id="miniC"></canvas>
+        </div>
+        <div class="txt-mini-lbl">Anlık Önizleme</div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Seçilebilir Görseller -->
+  {% if selectable_image_zones %}
+  {% set szi = namespace(val=0) %}
+  {% for zone in selectable_image_zones %}
+  <div class="sec" id="sel-sec-{{ szi.val }}" data-sel-label="{{ zone.label }}">
+    <div class="stitle">🖼️ {{ zone.label }}{% if zone.required %} <span style="color:#f44336;font-weight:700;">*</span>{% endif %}</div>
+    {% if zone.description %}<p class="hint" style="margin-bottom:10px;">{{ zone.description }}</p>{% endif %}
+    <p class="hint" style="margin-bottom:4px;">Aşağıdaki görsellerden birini seçin.</p>
+    <div class="sel-grid" id="sel-grid-{{ szi.val }}">
+      {% for opt in zone.options %}
+      <div class="sel-item"
+           style="width:100px;height:100px;"
+           onclick="selectSelImage(this)"
+           data-sel-zi="{{ szi.val }}"
+           data-sel-file="{{ opt.file }}">
+        <img src="/static/uploads/{{ opt.thumbnail or opt.file }}" alt="{{ opt.name or '' }}">
+        {% if opt.name %}<div class="sel-item-name">{{ opt.name }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% set szi.val = szi.val + 1 %}
+  {% endfor %}
+  {% endif %}
+
+  <!-- Fotoğraflar -->
+  {% if photo_zones %}
+  <div class="sec">
+    <div class="stitle">📷 Fotoğraflar</div>
+    <p class="hint" style="margin-bottom:14px;">Kutucuğa tıklayın → fotoğraf seçin → alanda konumlandırın.</p>
+    {% set seen_groups = namespace(val=[]) %}
+    {% for zone in photo_zones %}
+      {% set i = loop.index0 %}
+      {% set gname = zone.group_name if zone.group_name is defined and zone.group_name else '' %}
+      {% set flabel = zone.form_label if zone.form_label is defined and zone.form_label else zone.label %}
+      {% if gname == '' %}
+      <div class="photo-group" id="pg-{{ i }}">
+        <div class="pg-header">
+          <span class="pg-title">{{ flabel }}{% if zone.required is defined and zone.required %} <span style="color:#f44336;font-weight:700;">*</span>{% endif %}</span>
+          <span class="pg-count" id="pgc-{{ i }}">0/1</span>
+        </div>
+        {% if zone.description is defined and zone.description %}<p style="font-size:11px;color:var(--muted);font-style:italic;margin:-4px 0 8px;">{{ zone.description }}</p>{% endif %}
+        <div class="pg-slots" id="pgs-{{ i }}"></div>
+      </div>
+      {% elif gname not in seen_groups.val %}
+        {% set seen_groups.val = seen_groups.val + [gname] %}
+        {% set gc = namespace(val=0) %}
+        {% for z2 in photo_zones %}
+          {% if (z2.group_name if z2.group_name is defined else '') == gname %}{% set gc.val = gc.val+1 %}{% endif %}
+        {% endfor %}
+      <div class="photo-group" id="pg-grp-{{ gname }}">
+        <div class="pg-header">
+          <span class="pg-title">{{ flabel }}{% if zone.required is defined and zone.required %} <span style="color:#f44336;font-weight:700;">*</span>{% endif %}</span>
+          <span class="pg-count" id="pgc-grp-{{ gname }}">0/{{ gc.val }}</span>
+        </div>
+        {% if zone.description is defined and zone.description %}<p style="font-size:11px;color:var(--muted);font-style:italic;margin:-4px 0 8px;">{{ zone.description }}</p>{% endif %}
+        <p class="hint" style="margin-bottom:10px;">{{ gc.val }} fotoğraf yükleyin.</p>
+        <div class="pg-slots" id="pgs-grp-{{ gname }}"></div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endif %}
+
+  <!-- Siyah-Beyaz Seçeneği — tüm şablon tipleri için -->
+  {% if enable_bw_option and photo_zones %}
+  <div class="sec" id="bw-option-sec">
+    <div class="stitle">🎨 Fotoğraf Renk Tercihi <span style="color:#f44336;font-weight:700;">*</span></div>
+    <p class="hint" style="margin-bottom:14px;">Bu seçim tüm fotoğraflarınıza uygulanır.</p>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px;font-weight:600;color:var(--text);padding:10px 18px;border:2px solid {% if not edit_mode or edit_order.bw_option == 'color' or not edit_order.bw_option %}var(--primary){% else %}var(--border){% endif %};border-radius:8px;transition:all .15s;" id="bw-lbl-color">
+        <input type="radio" name="bw_option" id="bw-color" value="color"
+               style="width:17px;height:17px;accent-color:var(--primary);"
+               {% if not edit_mode or edit_order.bw_option == 'color' or not edit_order.bw_option %}checked{% endif %}
+               onchange="document.getElementById('bw-lbl-color').style.borderColor='var(--primary)';document.getElementById('bw-lbl-bw').style.borderColor='var(--border)';">
+        🎨 Renkli
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px;font-weight:600;color:var(--text);padding:10px 18px;border:2px solid {% if edit_mode and edit_order.bw_option == 'bw' %}var(--primary){% else %}var(--border){% endif %};border-radius:8px;transition:all .15s;" id="bw-lbl-bw">
+        <input type="radio" name="bw_option" id="bw-bw" value="bw"
+               style="width:17px;height:17px;accent-color:var(--primary);"
+               {% if edit_mode and edit_order.bw_option == 'bw' %}checked{% endif %}
+               onchange="document.getElementById('bw-lbl-bw').style.borderColor='var(--primary)';document.getElementById('bw-lbl-color').style.borderColor='var(--border)';">
+        ⬛ Siyah-Beyaz
+      </label>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Takvim Zone tarihi — tüm şablon tipleri için -->
+  {% if calendar_zones %}
+  <div class="sec" id="cal-date-sec">
+    <div class="stitle">📅 Özel Tarihinizi Girin</div>
+    <p class="hint" style="margin-bottom:14px;">Seçtiğiniz tarih takviminizde kırmızı ile işaretlenecektir.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <label style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.5px;">GÜN</label>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" id="cal-day" maxlength="2" placeholder="GG"
+               value="{{ edit_order.calendar_date.day if edit_mode and edit_order.calendar_date else '' }}"
+               style="width:64px;text-align:center;padding:10px;font-size:18px;font-weight:700;border:2px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-family:inherit;"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'');refreshMini()">
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <label style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.5px;">AY</label>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" id="cal-month" maxlength="2" placeholder="AA"
+               value="{{ edit_order.calendar_date.month if edit_mode and edit_order.calendar_date else '' }}"
+               style="width:64px;text-align:center;padding:10px;font-size:18px;font-weight:700;border:2px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-family:inherit;"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'');refreshMini()">
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <label style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.5px;">YIL</label>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" id="cal-year" maxlength="4" placeholder="YYYY"
+               value="{{ edit_order.calendar_date.year if edit_mode and edit_order.calendar_date else '' }}"
+               style="width:88px;text-align:center;padding:10px;font-size:18px;font-weight:700;border:2px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-family:inherit;"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'');refreshMini()">
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+<!-- Fotoğraf editörü -->
+<div class="modal" id="pemModal">
+  <div class="mbox">
+    <div class="mhead"><span id="pemTitle">Fotoğrafı Düzenle</span><button class="mx" onclick="closePem()">×</button></div>
+    <div class="cwrap" id="pemWrap"><canvas id="pemC"></canvas></div>
+    <div class="mtools">
+      <div class="mrow">
+        <span class="mlbl">Büyüklük</span>
+        <input type="range" class="mslider" id="pemScale" min="1" max="300" value="100" oninput="pemDraw()">
+      </div>
+      <div class="mrow">
+        <span class="mlbl">Döndür</span>
+        <div class="rotbtns">
+          <button class="rbt" onclick="pemRotate(-90)">↺</button>
+          <button class="rbt" onclick="pemRotate(90)">↻</button>
+          <button class="rbt" onclick="pemRotate(180)">↕</button>
+          <button class="rbt" onclick="pemFlip()">↔</button>
+        </div>
+      </div>
+    </div>
+    <div class="mfooter">
+      <button class="mcancel" onclick="closePem()">İptal</button>
+      <button class="mok" onclick="confirmPem()">✓ Onayla</button>
+    </div>
+  </div>
+</div>
+
+<!-- Önizleme modalı -->
+<div class="prev-modal" id="prevModal">
+  <div class="prev-box">
+    <div class="prev-head"><span id="prevTitle">Tasarım Önizleme</span><button onclick="closePrev()">×</button></div>
+    <!-- Çoklu ürün sekme butonları (JS ile doldurulur) -->
+    <div class="unit-prev-tabs" id="unit-prev-tabs"></div>
+    <!-- Çoklu sayfa sekme butonları -->
+    {% if is_multipage_tmpl %}
+    <div id="mp-page-tabs" style="display:flex;gap:6px;padding:10px 16px 0;flex-wrap:wrap;">
+      {% for pg_num in multipage_pages %}
+      <button class="mp-pg-btn" data-pg="{{ pg_num }}"
+              onclick="renderPrevPage({{ pg_num }})"
+              style="padding:6px 14px;border-radius:6px;border:1px solid #ccc;
+                     font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;
+                     background:{% if loop.first %}#c9973a{% else %}#eee{% endif %};
+                     color:{% if loop.first %}#fff{% else %}#333{% endif %};">
+        Sayfa {{ pg_num }}
+      </button>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="prev-cw"><canvas id="prevC"></canvas></div>
+    <div style="padding:10px 16px 0;border-top:1px solid #e5e2dc;">
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:12px;color:#555;line-height:1.4;">
+        <input type="checkbox" id="confirmCheck" onchange="document.getElementById('sendBtn').disabled=!this.checked;"
+               style="width:16px;height:16px;flex-shrink:0;margin-top:1px;accent-color:var(--accent);cursor:pointer;">
+        <span>Tasarım bilgilerimi doğru doldurduğumu ve tasarımı onayladığımı kabul ediyorum.</span>
+      </label>
+    </div>
+    <div class="prev-acts" style="border-top:none;padding-top:10px;">
+      <button class="prev-edit" onclick="closePrev()">← Düzenle</button>
+      <button class="prev-send" id="sendBtn" onclick="submitOrder()" disabled>{% if edit_mode %}✓ Tasarımı Güncelle{% else %}✓ Siparişi Gönder{% endif %}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading -->
+<div class="loading" id="loading">
+  <div class="spin"></div>
+  <div style="font-size:15px;font-weight:600;">Tasarım hazırlanıyor...</div>
+  <div style="font-size:12px;color:#aaa;">Sayfayı kapatmayın.</div>
+</div>
+
+<!-- Alt bar -->
+<div class="bot">
+  <button class="prevbtn" onclick="openPrev()">{% if edit_mode %}👁 Önizle ve Güncelle{% else %}👁 Önizle ve Gönder{% endif %}</button>
+</div>
+
+<script>
+// ── Edit modu ─────────────────────────────────────────────────────────────────
+const EDIT_MODE       = {{ 'true' if edit_mode else 'false' }};
+const EDIT_ORDER_ID   = "{{ edit_order.id if edit_mode else '' }}";
+const EDIT_PHOTO_URLS      = {{ edit_photo_urls      | tojson }};  // {zi_str: url}
+const EDIT_GROUP_URLS      = {{ edit_group_urls      | tojson }};  // {gname: [url,...]}
+const EDIT_PHOTO_POSITIONS = {{ edit_photo_positions | tojson }};  // {zi_str: {offsetX,offsetY,scale,rotation,flipH}}
+const EDIT_HAS_ORIGINALS   = {{ 'true' if edit_has_originals else 'false' }};
+
+// ── Şablon verileri ───────────────────────────────────────────────────────────
+const TMPL_ID       = "{{ tmpl.id }}";
+const TMPL_W        = {{ tmpl.width  if tmpl.width  else 1000 }};
+const TMPL_H        = {{ tmpl.height if tmpl.height else 1400 }};
+const OUT_RATIO     = {{ out_ratio if out_ratio is defined else (tmpl.width / tmpl.height if tmpl.width and tmpl.height else 0.7143) }};
+const BG_URL        = "{{ bg_url }}";
+const PHOTO_ZONES        = {{ photo_zones        | tojson }};
+const TEXT_ZONES         = {{ text_zones         | tojson }};
+const STATIC_IMAGE_ZONES = {{ static_image_zones | tojson }};
+const STATIC_TEXT_ZONES  = {{ static_text_zones  | tojson }};
+const IS_MULTIPAGE     = {{ 'true' if is_multipage_tmpl else 'false' }};
+const ENABLE_BW_OPTION = {{ enable_bw_option | tojson }};
+const CALENDAR_ZONES          = {{ calendar_zones | default([]) | tojson }};
+const SELECTABLE_IMAGE_ZONES  = {{ selectable_image_zones | default([]) | tojson }};
+const MP_PAGES      = {{ multipage_pages | tojson }};
+const BG_URLS       = {{ bg_urls | tojson }};
+
+// ── Font yükleme yardımcıları ─────────────────────────────────────────────────
+const _CF_FONT_FAMILY = {
+  'Montserrat-Bold.ttf':          'CF_Mont_B',
+  'Montserrat-Regular.ttf':       'CF_Mont_R',
+  'PlayfairDisplay-Bold.ttf':     'CF_Plf_B',
+  'PlayfairDisplay-Regular.ttf':  'CF_Plf_R',
+  'Roboto-Bold.ttf':              'CF_Rob_B',
+  'Roboto-Regular.ttf':           'CF_Rob_R',
+  'OpenSans-Bold.ttf':            'CF_OS_B',
+  'Lato-Bold.ttf':                'CF_Lato_B',
+  'GreatVibes-Regular.ttf':       'CF_GV',
+  'Sacramento-Regular.ttf':       'CF_Sac',
+  'Lora-Regular.ttf':             'CF_Lora',
+  'LibreBaskerville-Regular.ttf': 'CF_LBask',
+  'AbrilFatface-Regular.ttf':     'CF_Abril',
+  'DejaVuSerif-Regular.ttf':      'CF_DVS',
+  'ArchivoBlack-Regular.ttf':     'CF_ArchB',
+  'Anton-Regular.ttf':            'CF_Anton',
+  'DancingScript-Regular.ttf':    'CF_Dance',
+  'KaushanScript-Regular.ttf':    'CF_Kau',
+  'Pacifico-Regular.ttf':         'CF_Pac',
+  'Charmonman-Regular.ttf':       'CF_Charm',
+};
+const _cfLoadedFonts = new Set();
+
+async function _cfEnsureFont(filename) {
+  if (!filename || _cfLoadedFonts.has(filename)) return;
+  const family = _CF_FONT_FAMILY[filename];
+  if (!family) return;
+  try {
+    const ff = new FontFace(family, `url(/static/fonts/${filename})`);
+    await ff.load();
+    document.fonts.add(ff);
+  } catch(e) {}
+  _cfLoadedFonts.add(filename);
+}
+
+function _cfFontCss(filename, bold, italic, sizePx) {
+  const family = _CF_FONT_FAMILY[filename];
+  const fam = family ? `'${family}',sans-serif` : 'sans-serif';
+  return `${italic ? 'italic ' : ''}${bold ? '700' : '400'} ${sizePx}px ${fam}`;
+}
+
+// ── Takvim çizimi ─────────────────────────────────────────────────────────────
+function _drawCalendar(ctx, day, month, year, zx, zy, zw, zh) {
+  const MONTHS = ['OCAK','ŞUBAT','MART','NİSAN','MAYIS','HAZİRAN','TEMMUZ','AĞUSTOS','EYLÜL','EKİM','KASIM','ARALIK'];
+  const DAYS   = ['P','S','Ç','P','C','C','P'];
+  const textColor = '#000000';
+  month = month || (new Date().getMonth() + 1);
+  year  = year  || new Date().getFullYear();
+  const headerH = zh * 0.16;
+  const cellW   = zw / 7;
+  // Pre-compute grid layout so nfs is known before drawing headers
+  const firstDay  = new Date(year, month-1, 1).getDay();
+  const startOff  = firstDay === 0 ? 6 : firstDay - 1;
+  const daysInMth = new Date(year, month, 0).getDate();
+  const numRows   = Math.ceil((startOff + daysInMth) / 7);
+  const dayRowH   = zh * 0.14;
+  const gridH     = zh - headerH - dayRowH;
+  const cellH     = gridH / numRows;
+  // Number font first; day-header font is 30% larger
+  const nfs = Math.max(6, Math.round(Math.min(cellH * 0.55, cellW * 0.6)));
+  const dfs = Math.max(7, Math.round(Math.min(nfs * 1.3, dayRowH * 0.72)));
+  // ── Header: month left, year right ─────────────────────────────────────────
+  const hfs = Math.max(8, Math.round(Math.min(headerH * 0.6, cellW * 0.8)));
+  ctx.fillStyle = textColor;
+  ctx.font = `bold ${hfs}px sans-serif`;
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'left';
+  ctx.fillText(MONTHS[month-1], zx + 4, zy + headerH/2);
+  ctx.textAlign = 'right';
+  ctx.fillText(String(year), zx + zw - 4, zy + headerH/2);
+  // Separator
+  ctx.save(); ctx.globalAlpha = 0.25; ctx.strokeStyle = textColor; ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(zx+2, zy+headerH); ctx.lineTo(zx+zw-2, zy+headerH); ctx.stroke();
+  ctx.restore();
+  // ── Day headers (bold, 30% bigger than number font) ────────────────────────
+  ctx.fillStyle = textColor; ctx.font = `bold ${dfs}px sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  DAYS.forEach((d, i) => ctx.fillText(d, zx + cellW*i + cellW/2, zy + headerH + dayRowH/2));
+  // ── Calendar grid ───────────────────────────────────────────────────────────
+  for (let d = 1; d <= daysInMth; d++) {
+    const pos = startOff + d - 1;
+    const col = pos % 7, row = Math.floor(pos / 7);
+    const cx = zx + cellW*col + cellW/2;
+    const cy = zy + headerH + dayRowH + row*cellH + cellH/2;
+    if (day && d === day) {
+      const heartSize  = Math.round(Math.min(cellW, cellH) * 1.26);
+      const numFs      = Math.max(6, Math.round(heartSize * 0.40));
+      const heartDrawY = cy + heartSize * 0.05;
+      // Scale ♥ glyph: 1.6x wide, 1.4x tall via canvas transform
+      ctx.save();
+      ctx.translate(cx, heartDrawY);
+      ctx.scale(1.6, 1.4);
+      ctx.fillStyle = '#CC0000';
+      ctx.font = `${heartSize}px Arial,sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('♥', 0, 0);
+      ctx.restore();
+      // 35% from top of scaled heart: top≈heartDrawY-hs*0.63, h≈hs*1.33 → cy-hs*0.11
+      const numY = cy - heartSize * 0.11;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${numFs}px sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(String(d), cx, numY);
+    } else {
+      ctx.fillStyle = textColor; ctx.font = `${nfs}px sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(String(d), cx, cy);
+    }
+  }
+}
+
+// ── Central text-fit helpers ──────────────────────────────────────────────────
+// NOTE: Algorithm must stay in sync with _editorFitFontSize (template_edit.html)
+//       and _fit_font_size (app.py).
+const _CF_MIN_FS = 6;
+
+function _wrapLines(ctx, text, maxW) {
+  // Handles explicit \n line breaks.
+  const result = [];
+  for (const para of (text || '').split('\n')) {
+    let cur = '';
+    for (const w of para.split(' ')) {
+      if (!w) continue;
+      const test = cur ? cur + ' ' + w : w;
+      if (ctx.measureText(test).width > maxW && cur) { result.push(cur); cur = w; }
+      else cur = test;
+    }
+    if (cur) result.push(cur);
+  }
+  return result.length ? result : [text || ''];
+}
+
+function _cfFitFontSizePx(ctx, val, zone, zw, zh, ch, sizeMult) {
+  // Priority: (1) word-wrap at current font size, (2) check total HEIGHT of all
+  // wrapped lines against zone height, (3) only if height overflows → shrink font
+  // and repeat. Matches _editorFitFontSize (template_edit.html) and _fit_font_size (app.py).
+  const ff   = zone.font_file || 'Roboto-Regular.ttf';
+  const bold = zone.bold  || false;
+  const ital = zone.italic || false;
+  let fs = Math.max(_CF_MIN_FS, (zone.font_size / 100) * ch * (sizeMult || 1));
+  while (true) {
+    ctx.font = _cfFontCss(ff, bold, ital, fs);
+    const lines      = _wrapLines(ctx, val, zw);
+    const lineHeight = fs * 1.2;
+    const totalHeight = lines.length * lineHeight;
+    const fits = totalHeight <= zh;
+    console.log(`[cfFit] fs=${fs} lines=${lines.length} lineH=${lineHeight.toFixed(1)} totalH=${totalHeight.toFixed(1)} zh=${zh.toFixed(1)} fits=${fits}`);
+    if (fits || fs <= _CF_MIN_FS) break;
+    fs -= 1;
+    if (fs < _CF_MIN_FS) { fs = _CF_MIN_FS; break; }
+  }
+  return fs;
+}
+
+function _renderTextCanvas(ctx, val, zone, zx, zy, zw, zh, ch, sizeMult) {
+  if (!val) return;
+  const bold  = zone.bold   || false;
+  const ital  = zone.italic || false;
+  const color = zone.color  || '#000000';
+  const sc    = zone.stroke_color || null;
+  const sw    = zone.stroke_width || 0;
+  const skew  = zone.skew_angle   || 0;
+  const align = zone.text_align   || 'center';
+  const ff    = zone.font_file    || 'Roboto-Regular.ttf';
+
+  const fs = _cfFitFontSizePx(ctx, val, zone, zw, zh, ch, sizeMult);
+  ctx.font = _cfFontCss(ff, bold, ital, fs);
+  const lines = _wrapLines(ctx, val, zw);
+
+  const lh     = fs * 1.2;
+  const totalH = lines.length * lh;
+  const y0     = zy + (zh - totalH) / 2 + fs * 0.82;
+
+  // x anchor per alignment
+  const tx = align === 'left' ? zx : align === 'right' ? zx + zw : zx + zw / 2;
+
+  ctx.save();
+  if (skew) {
+    ctx.translate(zx + zw / 2, zy + zh / 2);
+    ctx.transform(1, 0, Math.tan(-skew * Math.PI / 180), 1, 0, 0);
+    ctx.translate(-(zx + zw / 2), -(zy + zh / 2));
+  }
+  ctx.beginPath(); ctx.rect(zx, zy, zw, zh); ctx.clip();
+  ctx.textAlign    = align === 'left' ? 'left' : align === 'right' ? 'right' : 'center';
+  ctx.textBaseline = 'alphabetic';
+  lines.forEach((line, i) => {
+    const ty = y0 + i * lh;
+    if (sc && sw > 0) {
+      ctx.strokeStyle = sc; ctx.lineWidth = sw * 2;
+      ctx.lineJoin = 'round'; ctx.strokeText(line, tx, ty);
+    }
+    ctx.fillStyle = color;
+    ctx.fillText(line, tx, ty);
+  });
+  ctx.restore();
+}
+
+// Sabit görsel dosyalarını önceden yükle
+const staticImgCache = {};
+STATIC_IMAGE_ZONES.forEach((zone, i) => {
+  if (zone.image_file) {
+    const img = new Image();
+    img.src = '/static/uploads/' + zone.image_file;
+    staticImgCache[i] = img;
+  }
+});
+
+// Fotoğraf zone kırpma maskeleri — Promise tabanlı önbellek
+const _maskImgCache   = {};  // zi → yüklenmiş Image
+const _maskLoadPromise = {}; // zi → Promise (çift yüklemeyi önler)
+
+function _loadMask(zi) {
+  const zone = PHOTO_ZONES[zi];
+  if (!zone?.clip_mask_file) return Promise.resolve(null);
+  if (_maskImgCache[zi])      return Promise.resolve(_maskImgCache[zi]);
+  if (_maskLoadPromise[zi])   return _maskLoadPromise[zi];
+  _maskLoadPromise[zi] = new Promise(resolve => {
+    const img = new Image();
+    img.onload  = () => { _maskImgCache[zi] = img; resolve(img); };
+    img.onerror = () => resolve(null);
+    img.src = '/static/uploads/' + zone.clip_mask_file;
+  });
+  return _maskLoadPromise[zi];
+}
+
+// Tüm maskeleri sayfa açılırken paralel yükle
+const _masksReadyPromise = Promise.all(PHOTO_ZONES.map((_, i) => _loadMask(i)));
+
+// Tüm metin zone'larının fontlarını önceden yükle (renderFull'dan önce)
+(async () => {
+  const allFonts = new Set();
+  [...TEXT_ZONES, ...STATIC_TEXT_ZONES].forEach(z => { if (z.font_file) allFonts.add(z.font_file); });
+  await Promise.all([...allFonts].map(f => _cfEnsureFont(f)));
+})();
+
+// Seçilebilir görsel önbellek: {file: HTMLImageElement}
+const _seliCache = {};
+function _loadSeliImg(file) {
+  if (!file) return null;
+  if (_seliCache[file]) return _seliCache[file];
+  const img = new Image();
+  img.src = '/static/uploads/' + file;
+  img.onload = () => refreshMini();
+  _seliCache[file] = img;
+  return img;
+}
+
+// Seçili görsel state: {zi: file}
+const _seliSelected = {};
+
+function selectSelImage(el) {
+  const zi   = el.dataset.selZi;
+  const file = el.dataset.selFile;
+  // Aynı zone'daki tüm öğelerin seçimini kaldır
+  document.querySelectorAll(`.sel-item[data-sel-zi="${zi}"]`).forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  _seliSelected[zi] = file;
+  // Görsel önbelleğe al
+  _loadSeliImg(file);
+  refreshMini();
+  // Hata çerçevesini kaldır
+  const sec = document.getElementById('sel-sec-' + zi);
+  if (sec) { sec.style.outline = ''; sec.style.borderRadius = ''; }
+}
+
+// ── State ─────────────────────────────────────────────────────────────────────
+const slotData = {};
+let bgImage    = null;   // tek sayfa için
+
+// ── Çoklu Ürün State ──────────────────────────────────────────────────────────
+let unitCount  = 1;
+let activeUnit = 0;
+let designMode = '';   // '' | 'same' | 'different'
+const unitSlotData = [{}];                         // unitSlotData[u] = {zi: d}
+const unitTextData = [{}];                         // unitTextData[u] = {zi: {value,size,color}}
+const unitCalData  = [{day:'',month:'',year:''}];  // unitCalData[u]
+const unitSeliData = [{}];                         // unitSeliData[u] = {zi: file}
+const unitBwData   = ['color'];                    // unitBwData[u] = 'color'|'bw'
+const unitSizeData = [''];                         // unitSizeData[u] = size key string
+let bgLoading  = false;
+const bgImages = {};     // çoklu sayfa için: {pageNum: Image}
+const bgLoadingMap = {};
+
+// ── BG yükle ─────────────────────────────────────────────────────────────────
+function loadBg(pageNum) {
+  if (IS_MULTIPAGE && pageNum !== undefined) {
+    return new Promise(r => {
+      if (bgImages[pageNum]) { r(bgImages[pageNum]); return; }
+      if (bgLoadingMap[pageNum]) {
+        const t=setInterval(()=>{if(bgImages[pageNum]||!bgLoadingMap[pageNum]){clearInterval(t);r(bgImages[pageNum]);}},100);
+        return;
+      }
+      bgLoadingMap[pageNum]=true;
+      const img=new Image(); img.crossOrigin='anonymous';
+      img.onload =()=>{ bgImages[pageNum]=img; bgLoadingMap[pageNum]=false; r(img); };
+      img.onerror=()=>{ bgLoadingMap[pageNum]=false; r(null); };
+      img.src = BG_URLS[pageNum] || BG_URL;
+    });
+  }
+  return new Promise(r => {
+    if (bgImage) { r(bgImage); return; }
+    if (bgLoading) { const t=setInterval(()=>{if(bgImage||!bgLoading){clearInterval(t);r(bgImage);}},100); return; }
+    bgLoading = true;
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload  = () => { bgImage=img; bgLoading=false; r(img); };
+    img.onerror = () => { bgLoading=false; r(null); };
+    img.src = BG_URL;
+  });
+}
+
+// ── Slot boyutu ───────────────────────────────────────────────────────────────
+function slotSize(zone) {
+  const maxW = Math.min(110, (window.innerWidth - 60) / 2);
+  const zoneRatio = (zone.w / zone.h) * OUT_RATIO;
+  return { w: Math.round(maxW), h: Math.round(maxW / zoneRatio) };
+}
+
+// ── Min scale: alan hiç boş kalmasın ─────────────────────────────────────────
+function calcMinScale(img, cw, ch, rotation) {
+  const rot90 = (rotation===90||rotation===270);
+  const iw    = rot90 ? img.height : img.width;
+  const ih    = rot90 ? img.width  : img.height;
+  const ir    = iw / ih;
+  const zr    = cw / ch;
+  let bw, bh;
+  if (ir>zr){bh=ch;bw=ch*ir;} else {bw=cw;bh=cw/ir;}
+  return Math.max(100, Math.ceil(Math.max(cw/bw, ch/bh)*100));
+}
+
+// ── Offset sınırlama: fotoğraf alan dışına boşluk bırakamaz ──────────────────
+// offsetX/Y YÜZDE cinsinden, cw/ch gerçek canvas pikseli
+function clampOffsetPct(d, cw, ch) {
+  const ir    = d.img.width / d.img.height;
+  const zr    = cw / ch;
+  let bw, bh;
+  if (ir>zr){bh=ch;bw=ch*ir;} else {bw=cw;bh=cw/ir;}
+  const sc    = d.scale / 100;
+  const dw    = bw * sc;
+  const dh    = bh * sc;
+  // maksimum offset: (dw-cw)/2 piksel → yüzdeye çevir
+  const maxOXpx = Math.max(0, (dw - cw) / 2);
+  const maxOYpx = Math.max(0, (dh - ch) / 2);
+  const maxOXpct = (maxOXpx / cw) * 100;
+  const maxOYpct = (maxOYpx / ch) * 100;
+  d.offsetX = Math.max(-maxOXpct, Math.min(maxOXpct, d.offsetX));
+  d.offsetY = Math.max(-maxOYpct, Math.min(maxOYpct, d.offsetY));
+}
+
+// ── Fotoğraf çiz (offsetX/Y YÜZDE olarak) ────────────────────────────────────
+function drawPhoto(ctx, d, cw, ch) {
+  const ir = d.img.width / d.img.height;
+  const zr = cw / ch;
+  let bw, bh;
+  if (ir>zr){bh=ch;bw=ch*ir;} else {bw=cw;bh=cw/ir;}
+  const sc = d.scale/100;
+  const dw = bw*sc, dh = bh*sc;
+  // offsetX/Y yüzde → piksel
+  const ox = (d.offsetX/100)*cw;
+  const oy = (d.offsetY/100)*ch;
+  ctx.save();
+  ctx.translate(cw/2+ox, ch/2+oy);
+  ctx.rotate(d.rotation*Math.PI/180);
+  if (d.flipH) ctx.scale(-1,1);
+  ctx.drawImage(d.img,-dw/2,-dh/2,dw,dh);
+  ctx.restore();
+}
+
+// ── Slot oluştur ──────────────────────────────────────────────────────────────
+function buildSlots() {
+  const seenGrp = {};
+  PHOTO_ZONES.forEach((zone,zi) => {
+    const gname = zone.group_name||'';
+    const {w,h} = slotSize(zone);
+    const el    = makeSlot(zi,w,h);
+    if (gname==='') {
+      document.getElementById(`pgs-${zi}`)?.appendChild(el);
+    } else {
+      if (!seenGrp[gname]) seenGrp[gname]=0;
+      seenGrp[gname]++;
+      document.getElementById(`pgs-grp-${gname}`)?.appendChild(el);
+    }
+  });
+}
+
+// ── Çoklu Ürün Yönetimi ───────────────────────────────────────────────────────
+function changeQty(delta) {
+  const inp = document.getElementById('qty-inp');
+  const n = Math.max(1, Math.min(20, (parseInt(inp?.value) || 1) + delta));
+  if (inp) inp.value = n;
+  setUnitCount(n);
+}
+
+function setUnitCount(n) {
+  n = Math.max(1, Math.min(20, n || 1));
+  while (unitSlotData.length < n) {
+    unitSlotData.push({}); unitTextData.push({});
+    unitCalData.push({day:'',month:'',year:''}); unitSeliData.push({});
+    unitBwData.push('color'); unitSizeData.push('');
+  }
+  unitCount = n;
+  const tabs   = document.getElementById('unit-tabs');
+  const dmSec  = document.getElementById('design-mode-sec');
+  if (!tabs) return;
+  if (n > 1) {
+    if (dmSec) dmSec.style.display = '';
+    // Unit tabs only visible when 'different' design chosen
+    if (designMode === 'different') {
+      tabs.style.display = 'flex';
+      _renderUnitTabs();
+      if (activeUnit >= n) switchUnit(n - 1);
+    } else {
+      tabs.style.display = 'none';
+    }
+  } else {
+    if (dmSec) dmSec.style.display = 'none';
+    tabs.style.display = 'none';
+    if (activeUnit !== 0) switchUnit(0);
+    // Reset design mode when qty drops to 1
+    designMode = '';
+    const r = document.querySelector('input[name="design_mode"]:checked');
+    if (r) r.checked = false;
+    const lS = document.getElementById('dm-lbl-same');
+    const lD = document.getElementById('dm-lbl-diff');
+    if (lS) lS.style.borderColor = 'var(--border)';
+    if (lD) lD.style.borderColor = 'var(--border)';
+    const hint = document.getElementById('dm-hint');
+    if (hint) hint.textContent = '';
+  }
+}
+
+function setDesignMode(val) {
+  designMode = val;
+  const tabs = document.getElementById('unit-tabs');
+  const lS   = document.getElementById('dm-lbl-same');
+  const lD   = document.getElementById('dm-lbl-diff');
+  const hint = document.getElementById('dm-hint');
+  if (lS) lS.style.borderColor = val === 'same'      ? 'var(--primary)' : 'var(--border)';
+  if (lD) lD.style.borderColor = val === 'different' ? 'var(--primary)' : 'var(--border)';
+  if (hint) hint.textContent = val === 'same'
+    ? 'Tek tasarım doldurmanız yeterli, tüm ürünlere aynı tasarım uygulanır.'
+    : 'Her ürün için ayrı fotoğraf/metin girebilirsiniz.';
+  if (!tabs) return;
+  if (val === 'different' && unitCount > 1) {
+    tabs.style.display = 'flex';
+    _renderUnitTabs();
+    if (activeUnit >= unitCount) switchUnit(unitCount - 1);
+  } else {
+    tabs.style.display = 'none';
+    if (activeUnit !== 0) switchUnit(0);
+  }
+}
+
+function _renderUnitTabs() {
+  const tabs = document.getElementById('unit-tabs');
+  if (!tabs) return;
+  tabs.innerHTML = '';
+  for (let u = 0; u < unitCount; u++) {
+    const btn = document.createElement('button');
+    btn.className = 'unit-tab' + (u === activeUnit ? ' active' : '');
+    btn.textContent = `${u+1}. Ürün`;
+    btn.onclick = () => switchUnit(u);
+    tabs.appendChild(btn);
+  }
+}
+
+function saveUnitState() {
+  const u = activeUnit;
+  unitSlotData[u] = Object.assign({}, slotData);
+  const td = {};
+  TEXT_ZONES.forEach((zone, zi) => {
+    td[zi] = {
+      value: document.getElementById(`tz-text-${zi}`)?.value ?? '',
+      size:  document.getElementById(`tz-size-${zi}`)?.value ?? '100',
+      color: document.getElementById(`tz-color-${zi}`)?.value ?? (zone.color || '#000000'),
+    };
+  });
+  unitTextData[u] = td;
+  unitCalData[u] = {
+    day:   document.getElementById('cal-day')?.value   ?? '',
+    month: document.getElementById('cal-month')?.value ?? '',
+    year:  document.getElementById('cal-year')?.value  ?? '',
+  };
+  unitSeliData[u] = Object.assign({}, _seliSelected);
+  if (ENABLE_BW_OPTION) {
+    unitBwData[u] = document.querySelector('input[name="bw_option"]:checked')?.value || unitBwData[u] || 'color';
+  }
+  const sEl = document.getElementById('f-size');
+  if (sEl) unitSizeData[u] = sEl.value || '';
+}
+
+function restoreUnitState(u) {
+  Object.keys(slotData).forEach(k => delete slotData[k]);
+  Object.assign(slotData, unitSlotData[u] || {});
+  PHOTO_ZONES.forEach((_, zi) => { drawSlot(zi); updateCount(zi); });
+
+  const td = unitTextData[u] || {};
+  TEXT_ZONES.forEach((zone, zi) => {
+    const s = td[zi];
+    const inp = document.getElementById(`tz-text-${zi}`);
+    if (inp) inp.value = s?.value ?? (zone.default_text || '');
+    const szInp = document.getElementById(`tz-size-${zi}`);
+    if (szInp) {
+      szInp.value = s?.size ?? '100';
+      const sv = document.getElementById(`tz-sv-${zi}`);
+      if (sv) sv.textContent = (s?.size ?? '100') + '%';
+    }
+    const clInp = document.getElementById(`tz-color-${zi}`);
+    if (clInp) clInp.value = s?.color ?? (zone.color || '#000000');
+  });
+
+  const cal = unitCalData[u] || {};
+  const dayEl = document.getElementById('cal-day');   if (dayEl) dayEl.value   = cal.day   || '';
+  const monEl = document.getElementById('cal-month'); if (monEl) monEl.value   = cal.month || '';
+  const yrEl  = document.getElementById('cal-year');  if (yrEl)  yrEl.value    = cal.year  || '';
+
+  Object.keys(_seliSelected).forEach(k => delete _seliSelected[k]);
+  Object.assign(_seliSelected, unitSeliData[u] || {});
+  document.querySelectorAll('.sel-item').forEach(el => el.classList.remove('selected'));
+  Object.entries(_seliSelected).forEach(([zi, file]) => {
+    document.querySelector(`.sel-item[data-sel-zi="${zi}"][data-sel-file="${file}"]`)?.classList.add('selected');
+  });
+
+  if (ENABLE_BW_OPTION) {
+    const bwVal = unitBwData[u] || '';
+    document.querySelectorAll('input[name="bw_option"]').forEach(r => { r.checked = (r.value === bwVal); });
+    const lc = document.getElementById('bw-lbl-color');
+    const lb = document.getElementById('bw-lbl-bw');
+    if (lc) lc.style.borderColor = (bwVal === 'color') ? 'var(--accent)' : 'var(--border)';
+    if (lb) lb.style.borderColor = (bwVal === 'bw')    ? 'var(--accent)' : 'var(--border)';
+  }
+  const sEl = document.getElementById('f-size');
+  if (sEl) sEl.value = unitSizeData[u] || '';
+  refreshMini();
+}
+
+function switchUnit(u) {
+  if (u === activeUnit && unitCount === 1) return;
+  saveUnitState();
+  activeUnit = u;
+  _renderUnitTabs();
+  restoreUnitState(u);
+}
+
+// Birim u'yu geçici olarak render ederek önizleme üretir, sonra geri döner
+async function _renderPrevForUnit(u) {
+  // Mevcut DOM durumunu sakla
+  const savedSlot = Object.assign({}, slotData);
+  const savedSeli = Object.assign({}, _seliSelected);
+  const savedTexts = {}, savedCal = {};
+  let savedBwVal = null;
+
+  // Unit u'nun verilerini geçici olarak yükle
+  Object.keys(slotData).forEach(k => delete slotData[k]);
+  Object.assign(slotData, unitSlotData[u] || {});
+  Object.keys(_seliSelected).forEach(k => delete _seliSelected[k]);
+  Object.assign(_seliSelected, unitSeliData[u] || {});
+  if (ENABLE_BW_OPTION) {
+    savedBwVal = document.querySelector('input[name="bw_option"]:checked')?.value || '';
+    const targetBw = unitBwData[u] || '';
+    document.querySelectorAll('input[name="bw_option"]').forEach(r => { r.checked = (r.value === targetBw); });
+  }
+
+  const uText = unitTextData[u] || {};
+  TEXT_ZONES.forEach((zone, zi) => {
+    const inp = document.getElementById(`tz-text-${zi}`);
+    if (inp) { savedTexts[zi] = inp.value; inp.value = uText[zi]?.value ?? (zone.default_text || ''); }
+    const sz = document.getElementById(`tz-size-${zi}`);
+    if (sz) sz.value = uText[zi]?.size ?? '100';
+    const cl = document.getElementById(`tz-color-${zi}`);
+    if (cl) cl.value = uText[zi]?.color ?? (zone.color || '#000000');
+  });
+  const uCal = unitCalData[u] || {};
+  const dayEl = document.getElementById('cal-day');   if (dayEl) { savedCal.day   = dayEl.value; dayEl.value   = uCal.day   || ''; }
+  const monEl = document.getElementById('cal-month'); if (monEl) { savedCal.month = monEl.value; monEl.value   = uCal.month || ''; }
+  const yrEl  = document.getElementById('cal-year');  if (yrEl)  { savedCal.year  = yrEl.value;  yrEl.value    = uCal.year  || ''; }
+
+  // Render
+  const c = document.getElementById('prevC');
+  const maxW = Math.min(window.innerWidth - 40, 480);
+  c.width = maxW * 2; c.height = Math.round(maxW * 2 / OUT_RATIO);
+  c.style.width = maxW + 'px'; c.style.height = Math.round(maxW / OUT_RATIO) + 'px';
+  if (IS_MULTIPAGE) {
+    await Promise.all([...MP_PAGES.map(p => loadBg(p)), _masksReadyPromise]);
+    prevActivePage = MP_PAGES[0] || 1;
+    renderPrevPage(prevActivePage);
+  } else {
+    const [bg] = await Promise.all([loadBg(), _masksReadyPromise]);
+    renderFull(c, bg);
+  }
+
+  // Geri yükle
+  Object.keys(slotData).forEach(k => delete slotData[k]);
+  Object.assign(slotData, savedSlot);
+  Object.keys(_seliSelected).forEach(k => delete _seliSelected[k]);
+  Object.assign(_seliSelected, savedSeli);
+  TEXT_ZONES.forEach((_, zi) => {
+    const inp = document.getElementById(`tz-text-${zi}`);
+    if (inp && savedTexts[zi] !== undefined) inp.value = savedTexts[zi];
+  });
+  if (dayEl && savedCal.day   !== undefined) dayEl.value   = savedCal.day;
+  if (monEl && savedCal.month !== undefined) monEl.value   = savedCal.month;
+  if (yrEl  && savedCal.year  !== undefined) yrEl.value    = savedCal.year;
+  if (ENABLE_BW_OPTION && savedBwVal !== null) {
+    document.querySelectorAll('input[name="bw_option"]').forEach(r => { r.checked = (r.value === savedBwVal); });
+  }
+}
+
+function makeSlot(zi,w,h) {
+  const div=document.createElement('div');
+  div.className='pslot'; div.id=`pslot-${zi}`;
+  div.style.width=w+'px'; div.style.height=h+'px';
+
+  const c=document.createElement('canvas');
+  c.id=`psc-${zi}`; c.width=w*2; c.height=h*2;
+  c.style.width=w+'px'; c.style.height=h+'px';
+
+  const ov=document.createElement('div');
+  ov.className='pslot-ov'; ov.id=`psov-${zi}`;
+  ov.innerHTML=`<div class="pslot-icon">📷</div><div class="pslot-num">${zi+1}</div>`;
+
+  const btns=document.createElement('div');
+  btns.className='pslot-btns';
+  btns.innerHTML=`
+    <button class="sbtn" onclick="event.stopPropagation();openPem(${zi})">Düzenle</button>
+    <button class="sbtn" onclick="event.stopPropagation();clearSlot(${zi})">Sil</button>`;
+
+  const inp=document.createElement('input');
+  inp.type='file'; inp.accept='image/*'; inp.style.display='none'; inp.id=`psi-${zi}`;
+  inp.onchange=e=>loadToSlot(zi,e.target.files[0]);
+
+  div.appendChild(c); div.appendChild(ov); div.appendChild(btns); div.appendChild(inp);
+  div.onclick=()=>{ if(slotData[zi]){openPem(zi);}else{inp.value='';inp.click();} };
+  return div;
+}
+
+function loadToSlot(zi, file) {
+  if (!file) return;
+  // Aynı dosya daha sonra tekrar seçilebilsin
+  const _inp = document.getElementById(`psi-${zi}`);
+  if (_inp) _inp.value = '';
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const zone=PHOTO_ZONES[zi];
+      const {w,h}=slotSize(zone);
+      const ms=calcMinScale(img,w*2,h*2,0);
+      slotData[zi]={img,file,offsetX:0,offsetY:0,scale:ms,rotation:0,flipH:false};
+      drawSlot(zi); updateCount(zi); openPem(zi);
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function drawSlot(zi) {
+  const c=document.getElementById(`psc-${zi}`);
+  const ov=document.getElementById(`psov-${zi}`);
+  const slot=document.getElementById(`pslot-${zi}`);
+  if (!c) return;
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  const d=slotData[zi];
+  if (!d){ov.classList.remove('hidden');slot.classList.remove('filled');return;}
+  ov.classList.add('hidden'); slot.classList.add('filled');
+  const mImg=_maskImgCache[zi];
+  if (mImg) {
+    // Maske var ve yüklendi — offscreen canvas ile uygula
+    const off=document.createElement('canvas');
+    off.width=c.width; off.height=c.height;
+    const offCtx=off.getContext('2d');
+    drawPhoto(offCtx,d,c.width,c.height);
+    offCtx.globalCompositeOperation='destination-in';
+    offCtx.drawImage(mImg,0,0,c.width,c.height);
+    ctx.drawImage(off,0,0);
+  } else if (PHOTO_ZONES[zi]?.clip_mask_file) {
+    // Maske henüz yüklenmedi — geçici maskesiz göster, yüklenince yeniden çiz
+    drawPhoto(ctx,d,c.width,c.height);
+    _loadMask(zi).then(img => { if (img && slotData[zi]) drawSlot(zi); });
+  } else {
+    drawPhoto(ctx,d,c.width,c.height);
+  }
+}
+
+function updateCount(zi) {
+  const zone=PHOTO_ZONES[zi];
+  const gname=zone.group_name||'';
+  if (gname==='') {
+    const el=document.getElementById(`pgc-${zi}`);
+    if (el) el.innerHTML=slotData[zi]?`1/1 <span class="okb">✓</span>`:'0/1';
+  } else {
+    const gzones=PHOTO_ZONES.map((z,i)=>({z,i})).filter(({z})=>(z.group_name||'')===gname);
+    const filled=gzones.filter(({i})=>!!slotData[i]).length;
+    const total=gzones.length;
+    const el=document.getElementById(`pgc-grp-${gname}`);
+    if (el) el.innerHTML=filled===total?`${filled}/${total} <span class="okb">✓</span>`:`${filled}/${total}`;
+  }
+}
+
+function clearSlot(zi) {
+  delete slotData[zi];
+  drawSlot(zi); updateCount(zi);
+  document.getElementById(`psi-${zi}`).value='';
+}
+
+// ── Fotoğraf editörü ──────────────────────────────────────────────────────────
+let pemZi=null, pemTemp=null, pemDrag=false, pemLX=0, pemLY=0;
+let pemCW=0, pemCH=0;  // editör canvas pikseli (retina x2)
+
+function openPem(zi) {
+  pemZi=zi;
+  const d=slotData[zi];
+  const zone=PHOTO_ZONES[zi];
+  document.getElementById('pemTitle').textContent=zone.label;
+
+  const maxW=Math.min(window.innerWidth-28,460);
+  const ratio=(zone.w/zone.h)*OUT_RATIO;
+  pemCW=maxW*2; pemCH=Math.round(maxW*2/ratio);
+  const c=document.getElementById('pemC');
+  c.width=pemCW; c.height=pemCH;
+  c.style.width=maxW+'px'; c.style.height=Math.round(maxW/ratio)+'px';
+
+  pemTemp=d?{...d}:{img:null,offsetX:0,offsetY:0,scale:100,rotation:0,flipH:false};
+  if (!pemTemp.img&&d?.img) pemTemp.img=d.img;
+
+  const ms=pemTemp.img?calcMinScale(pemTemp.img,pemCW,pemCH,pemTemp.rotation):100;
+  const sl=document.getElementById('pemScale');
+  sl.min=ms; sl.value=Math.max(pemTemp.scale,ms);
+  pemTemp.scale=parseFloat(sl.value);
+  clampOffsetPct(pemTemp,pemCW,pemCH);
+
+  document.getElementById('pemModal').classList.add('open');
+  pemDraw(); setupPemDrag();
+}
+
+function closePem() {
+  document.getElementById('pemModal').classList.remove('open');
+  pemZi=null; pemTemp=null;
+}
+
+function pemDraw() {
+  if (!pemTemp?.img) return;
+  pemTemp.scale=parseFloat(document.getElementById('pemScale').value);
+  clampOffsetPct(pemTemp,pemCW,pemCH);
+  const c=document.getElementById('pemC');
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,pemCW,pemCH);
+  ctx.fillStyle='#222'; ctx.fillRect(0,0,pemCW,pemCH);
+  const mImg = (pemZi !== null) ? _maskImgCache[pemZi] : null;
+  if (mImg) {
+    const off=document.createElement('canvas');
+    off.width=pemCW; off.height=pemCH;
+    const offCtx=off.getContext('2d');
+    drawPhoto(offCtx,pemTemp,pemCW,pemCH);
+    offCtx.globalCompositeOperation='destination-in';
+    offCtx.drawImage(mImg,0,0,pemCW,pemCH);
+    ctx.drawImage(off,0,0);
+  } else {
+    drawPhoto(ctx,pemTemp,pemCW,pemCH);
+  }
+  ctx.strokeStyle='rgba(201,151,58,.5)'; ctx.lineWidth=2;
+  ctx.strokeRect(1,1,pemCW-2,pemCH-2);
+}
+
+function setupPemDrag() {
+  const wrap=document.getElementById('pemWrap');
+  let pinchDist0=null, pinchScale0=null;
+  const getDist=ts=>Math.hypot(ts[1].clientX-ts[0].clientX,ts[1].clientY-ts[0].clientY);
+
+  wrap.onmousedown=e=>{ pemDrag=true; pemLX=e.clientX; pemLY=e.clientY; };
+  wrap.ontouchstart=e=>{
+    e.preventDefault();
+    const ts=Array.from(e.touches);
+    if (ts.length===2) {
+      pemDrag=false;
+      pinchDist0=getDist(ts);
+      pinchScale0=parseFloat(document.getElementById('pemScale').value);
+    } else {
+      pemDrag=true; pemLX=ts[0].clientX; pemLY=ts[0].clientY; pinchDist0=null;
+    }
+  };
+
+  document.onmousemove=e=>{
+    if (!pemDrag||!pemTemp) return;
+    pemTemp.offsetX+=((e.clientX-pemLX)/pemCW)*2*100;
+    pemTemp.offsetY+=((e.clientY-pemLY)/pemCH)*2*100;
+    pemLX=e.clientX; pemLY=e.clientY;
+    clampOffsetPct(pemTemp,pemCW,pemCH); pemDraw();
+  };
+
+  document.ontouchmove=e=>{
+    if (!pemTemp) return;
+    const ts=Array.from(e.touches);
+    if (ts.length===2&&pinchDist0!==null) {
+      e.preventDefault();
+      const sl=document.getElementById('pemScale');
+      const newVal=Math.min(parseFloat(sl.max),Math.max(parseFloat(sl.min),pinchScale0*(getDist(ts)/pinchDist0)));
+      sl.value=newVal; pemTemp.scale=newVal;
+      clampOffsetPct(pemTemp,pemCW,pemCH); pemDraw();
+    } else if (pemDrag&&ts.length>=1) {
+      e.preventDefault();
+      pemTemp.offsetX+=((ts[0].clientX-pemLX)/pemCW)*2*100;
+      pemTemp.offsetY+=((ts[0].clientY-pemLY)/pemCH)*2*100;
+      pemLX=ts[0].clientX; pemLY=ts[0].clientY;
+      clampOffsetPct(pemTemp,pemCW,pemCH); pemDraw();
+    }
+  };
+
+  document.onmouseup=document.ontouchend=()=>{
+    pemDrag=false; pinchDist0=null; pinchScale0=null;
+  };
+}
+
+function pemRotate(deg) {
+  if (!pemTemp) return;
+  pemTemp.rotation=(pemTemp.rotation+deg+360)%360;
+  const ms=calcMinScale(pemTemp.img,pemCW,pemCH,pemTemp.rotation);
+  const sl=document.getElementById('pemScale');
+  sl.min=ms;
+  if (parseFloat(sl.value)<ms){sl.value=ms;pemTemp.scale=ms;}
+  clampOffsetPct(pemTemp,pemCW,pemCH);
+  pemDraw();
+}
+
+function pemFlip(){if(!pemTemp)return;pemTemp.flipH=!pemTemp.flipH;pemDraw();}
+
+function confirmPem() {
+  if (!pemTemp||pemZi===null) return;
+  slotData[pemZi]={...pemTemp};
+  drawSlot(pemZi); updateCount(pemZi); closePem();
+}
+
+// ── Kompakt metin önizleme ────────────────────────────────────────────────────
+const miniReadyMap={};
+
+async function initMini() {
+  if (IS_MULTIPAGE) {
+    // Çoklu sayfada mini önizleme yok (her sayfanın kendi alanı var)
+    return;
+  }
+  if (!TEXT_ZONES.length) return;
+  await loadBg();
+  const wrap=document.getElementById('miniWrap');
+  if (!wrap) return;
+  const w=wrap.clientWidth||120;
+  const c=document.getElementById('miniC');
+  if (!c) return;
+  const ratio=OUT_RATIO;
+  c.width=w*2; c.height=Math.round(w*2/ratio);
+  c.style.width=w+'px'; c.style.height=Math.round(w/ratio)+'px';
+  miniReadyMap['__single']=true;
+  refreshMini();
+}
+
+function refreshMini(pageNum) {
+  if (IS_MULTIPAGE) return; // çoklu sayfada mini önizleme devre dışı
+  if (!miniReadyMap['__single']) return;
+  const c=document.getElementById('miniC');
+  if (!c) return;
+  const ctx=c.getContext('2d');
+  const cw=c.width, ch=c.height;
+  ctx.clearRect(0,0,cw,ch);
+  ctx.fillStyle='#f5f0e8'; ctx.fillRect(0,0,cw,ch);
+  if (bgImage) ctx.drawImage(bgImage,0,0,cw,ch);
+  // Sabit görseller (mini önizlemede arka planda)
+  STATIC_IMAGE_ZONES.filter(z=>!z.page_num).forEach((zone,i)=>{
+    const img=staticImgCache[i]; if(!img||!img.complete||!img.naturalWidth) return;
+    const zx=zone.x/100*cw, zy=zone.y/100*ch;
+    const zw=zone.w/100*cw, zh=zone.h/100*ch;
+    ctx.save(); ctx.beginPath(); ctx.rect(zx,zy,zw,zh); ctx.clip();
+    ctx.drawImage(img,zx,zy,zw,zh); ctx.restore();
+  });
+  TEXT_ZONES.forEach((zone,zi)=>{
+    const inp = document.getElementById(`tz-text-${zi}`);
+    const val = (inp?.value?.trim() || zone.default_text || '');
+    if (!val) return;
+    const zx=zone.x/100*cw, zy=zone.y/100*ch;
+    const zw=zone.w/100*cw, zh=zone.h/100*ch;
+    const mult=(parseInt(document.getElementById(`tz-size-${zi}`)?.value)||100)/100;
+    const colorOv=document.getElementById(`tz-color-${zi}`)?.value;
+    const z2 = colorOv ? {...zone, color: colorOv} : zone;
+    _renderTextCanvas(ctx, val, z2, zx, zy, zw, zh, ch, mult);
+  });
+  STATIC_TEXT_ZONES.filter(z=>!z.page_num).forEach(zone=>{
+    const val=zone.text; if(!val) return;
+    const zx=zone.x/100*cw, zy=zone.y/100*ch;
+    const zw=zone.w/100*cw, zh=zone.h/100*ch;
+    _renderTextCanvas(ctx, val, zone, zx, zy, zw, zh, ch, 1);
+  });
+  if (CALENDAR_ZONES.length) {
+    const calDay   = parseInt(document.getElementById('cal-day')?.value   || '0') || null;
+    const calMonth = parseInt(document.getElementById('cal-month')?.value || '0') || new Date().getMonth()+1;
+    const calYear  = parseInt(document.getElementById('cal-year')?.value  || '0') || new Date().getFullYear();
+    CALENDAR_ZONES.filter(z=>!z.page_num).forEach(zone=>{
+      const zx=zone.x/100*cw, zy=zone.y/100*ch;
+      const zw=zone.w/100*cw, zh=zone.h/100*ch;
+      _drawCalendar(ctx, calDay, calMonth, calYear, zx, zy, zw, zh);
+    });
+  }
+  SELECTABLE_IMAGE_ZONES.filter(z=>!z.page_num).forEach((zone,zi)=>{
+    const file = _seliSelected[zi];
+    if (!file) return;
+    const img = _seliCache[file];
+    if (!img || !img.complete || !img.naturalWidth) return;
+    const zx=zone.x/100*cw, zy=zone.y/100*ch;
+    const zw=zone.w/100*cw, zh=zone.h/100*ch;
+    ctx.save(); ctx.beginPath(); ctx.rect(zx,zy,zw,zh); ctx.clip();
+    ctx.drawImage(img,zx,zy,zw,zh); ctx.restore();
+  });
+}
+
+// ── Tam önizleme ──────────────────────────────────────────────────────────────
+let prevActivePage = 1;
+
+function _isBW() {
+  return ENABLE_BW_OPTION && document.querySelector('input[name="bw_option"]:checked')?.value === 'bw';
+}
+
+function _isImgGrayscale(img) {
+  const n = 12;
+  const tmp = document.createElement('canvas');
+  tmp.width = n; tmp.height = n;
+  const c = tmp.getContext('2d');
+  c.drawImage(img, 0, 0, n, n);
+  const data = c.getImageData(0, 0, n, n).data;
+  let total = 0, count = 0;
+  for (let i = 0; i < data.length; i += 4) {
+    total += Math.abs(data[i] - data[i+1]) + Math.abs(data[i] - data[i+2]);
+    count++;
+  }
+  return count > 0 && (total / count) < 10;
+}
+
+function _validateUnitState(u) {
+  // Belirli bir ünite için verilerle validation yapar.
+  // Aktif üniteyse DOM'dan, değilse kaydedilmiş arraylerden okur.
+  const sd   = (u === activeUnit) ? slotData       : (unitSlotData[u] || {});
+  const td   = (u === activeUnit) ? null            : (unitTextData[u] || {});
+  const sei  = (u === activeUnit) ? _seliSelected   : (unitSeliData[u] || {});
+
+  const missing = [];
+
+  PHOTO_ZONES.forEach((zone, zi) => {
+    if (!zone.required) return;
+    const gname = zone.group_name || '';
+    if (!sd[zi]) missing.push((zone.form_label || zone.label) + (unitCount > 1 ? ` (${u+1}. ürün)` : ''));
+  });
+  SELECTABLE_IMAGE_ZONES.forEach((zone, zi) => {
+    if (!zone.required) return;
+    if (!sei[zi]) missing.push(zone.label + (unitCount > 1 ? ` (${u+1}. ürün)` : ''));
+  });
+  TEXT_ZONES.forEach((zone, zi) => {
+    if (!zone.required) return;
+    let val;
+    if (u === activeUnit) {
+      val = document.getElementById(`tz-text-${zi}`)?.value?.trim();
+    } else {
+      val = (td[zi]?.value || '').trim();
+    }
+    if (!val) missing.push(zone.label + (unitCount > 1 ? ` (${u+1}. ürün)` : ''));
+  });
+  // Takvim: kısmi tarih (bazı alanlar dolu bazıları boş) hata sayılır
+  if (CALENDAR_ZONES.length) {
+    let cDay, cMonth, cYear;
+    if (u === activeUnit) {
+      cDay   = parseInt(document.getElementById('cal-day')?.value   || '0') || 0;
+      cMonth = parseInt(document.getElementById('cal-month')?.value || '0') || 0;
+      cYear  = parseInt(document.getElementById('cal-year')?.value  || '0') || 0;
+    } else {
+      const uc = unitCalData[u] || {};
+      cDay   = parseInt(uc.day   || '0') || 0;
+      cMonth = parseInt(uc.month || '0') || 0;
+      cYear  = parseInt(uc.year  || '0') || 0;
+    }
+    const hasAny = cDay || cMonth || cYear;
+    if (hasAny && (!cDay || !cMonth || !cYear || cMonth > 12 || cDay > 31 || cYear < 1900 || cYear > 2099)) {
+      missing.push('Geçerli tarih' + (unitCount > 1 ? ` (${u+1}. ürün)` : ''));
+    }
+  }
+  return missing;
+}
+
+async function openPrev() {
+  const name=document.getElementById('f-name').value.trim();
+  const order=document.getElementById('f-order').value.trim();
+  const phone=document.getElementById('f-phone').value.trim();
+  if (!name||!order||!phone){alert('Lütfen sipariş bilgilerini doldurun.');return;}
+  if (unitCount > 1 && !designMode) {
+    alert('Lütfen tasarım seçeneğini belirtin (Aynı Tasarım veya Farklı Tasarım).');
+    document.getElementById('design-mode-sec')?.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  if (CALENDAR_ZONES.length) {
+    const cDay   = parseInt(document.getElementById('cal-day')?.value   || '0') || 0;
+    const cMonth = parseInt(document.getElementById('cal-month')?.value || '0') || 0;
+    const cYear  = parseInt(document.getElementById('cal-year')?.value  || '0') || 0;
+    const hasAny = cDay || cMonth || cYear;
+    // Completely empty is OK (no custom date). Only fail on partial or out-of-range entry.
+    if (hasAny && (!cDay || !cMonth || !cYear || cMonth > 12 || cDay > 31 || cYear < 1900 || cYear > 2099)) {
+      const sec = document.getElementById('cal-date-sec');
+      if (sec) { sec.style.outline='2px solid #f44336'; sec.style.borderRadius='8px'; sec.scrollIntoView({behavior:'smooth',block:'center'}); }
+      alert('Lütfen geçerli bir tarih girin (Gün / Ay / Yıl).');
+      return;
+    }
+  }
+
+  // Önce aktif ünitenin DOM durumunu kaydet
+  saveUnitState();
+
+  // Önceki hata işaretlerini temizle
+  document.querySelectorAll('.photo-group[data-req-err]').forEach(el => {
+    el.removeAttribute('data-req-err'); el.style.borderColor=''; el.style.boxShadow='';
+  });
+  document.querySelectorAll('input[data-req-err]').forEach(el => {
+    el.removeAttribute('data-req-err'); el.style.borderColor=''; el.style.outline='';
+  });
+  document.querySelectorAll('[data-req-err]').forEach(el => {
+    el.removeAttribute('data-req-err'); el.style.outline='';
+  });
+
+  // Zorunlu alan kontrolü
+  if (unitCount > 1 && designMode === 'different') {
+    // Farklı tasarım: her unit ayrı ayrı kontrol edilir, hata varsa birim numarasıyla bildir
+    const failedUnits = [];
+    for (let u = 0; u < unitCount; u++) {
+      if (_validateUnitState(u).length) failedUnits.push(u + 1);
+    }
+    if (failedUnits.length) {
+      const unitList = failedUnits.map(n => `${n}. tasarım`).join(', ');
+      alert(`${unitList} formu eksik doldurulmuş, lütfen tüm tasarımları doldurun.`);
+      return;
+    }
+  } else {
+    // Tek ürün veya aynı tasarım: standart alan listesiyle bildir
+    const allMissing = [];
+    const validateCount = (designMode === 'same') ? 1 : unitCount;
+    for (let u = 0; u < validateCount; u++) {
+      allMissing.push(..._validateUnitState(u));
+    }
+    if (allMissing.length) {
+      alert('Lütfen şu alanları doldurun:\n' + allMissing.join('\n'));
+      return;
+    }
+  }
+
+  document.getElementById('loading').classList.add('show');
+
+  // Ön izleme setup
+  const prevTabs = document.getElementById('unit-prev-tabs');
+  if (prevTabs) {
+    if (unitCount > 1 && designMode === 'different') {
+      prevTabs.style.display = 'flex';
+      prevTabs.innerHTML = '';
+      for (let u = 0; u < unitCount; u++) {
+        const b = document.createElement('button');
+        b.className = 'unit-prev-btn' + (u === 0 ? ' active' : '');
+        b.textContent = `${u+1}. Ürün`;
+        b.onclick = async () => {
+          document.querySelectorAll('.unit-prev-btn').forEach(x => x.classList.remove('active'));
+          b.classList.add('active');
+          document.getElementById('loading').classList.add('show');
+          await _renderPrevForUnit(u);
+          document.getElementById('loading').classList.remove('show');
+        };
+        prevTabs.appendChild(b);
+      }
+    } else {
+      prevTabs.style.display = 'none';
+    }
+  }
+
+  // İlk ürünü render et
+  await _renderPrevForUnit(activeUnit);
+
+  document.getElementById('loading').classList.remove('show');
+
+  const chk=document.getElementById('confirmCheck');
+  if (chk) chk.checked=false;
+  const btn=document.getElementById('sendBtn');
+  btn.disabled=true;
+  btn.textContent='{% if edit_mode %}✓ Tasarımı Güncelle{% else %}✓ Siparişi Gönder{% endif %}';
+  document.getElementById('prevModal').classList.add('open');
+}
+
+async function renderPrevPage(pgNum) {
+  prevActivePage = pgNum;
+  // Sayfa sekme butonlarını güncelle
+  document.querySelectorAll('.mp-pg-btn').forEach(b => {
+    b.style.background = parseInt(b.dataset.pg)===pgNum ? '#c9973a' : '#eee';
+    b.style.color      = parseInt(b.dataset.pg)===pgNum ? '#fff'     : '#333';
+  });
+  const bg = bgImages[pgNum] || null;
+  const c  = document.getElementById('prevC');
+  const maxW = Math.min(window.innerWidth-40,480);
+  c.width=maxW*2; c.height=Math.round(maxW*2/OUT_RATIO);
+  c.style.width=maxW+'px'; c.style.height=Math.round(maxW/OUT_RATIO)+'px';
+  // Sadece bu sayfanın zone'larını çiz
+  renderFull(c, bg, pgNum);
+}
+
+function renderFull(canvas, bg, filterPage) {
+  const ctx=canvas.getContext('2d');
+  const cw=canvas.width, ch=canvas.height;
+  ctx.clearRect(0,0,cw,ch);
+  ctx.fillStyle='#f5f0e8'; ctx.fillRect(0,0,cw,ch);
+  if (bg) ctx.drawImage(bg,0,0,cw,ch);
+
+  // Tüm zone'ları z_index sırasında tek döngüde çiz
+  const allZ = [
+    ...PHOTO_ZONES.map((z,i)=>({...z,_t:'photo',_i:i})),
+    ...TEXT_ZONES.map((z,i)=>({...z,_t:'text',_i:i})),
+    ...STATIC_IMAGE_ZONES.map((z,i)=>({...z,_t:'simg',_i:i})),
+    ...STATIC_TEXT_ZONES.map((z,i)=>({...z,_t:'stxt',_i:i})),
+    ...CALENDAR_ZONES.map((z,i)=>({...z,_t:'cal',_i:i})),
+    ...SELECTABLE_IMAGE_ZONES.map((z,i)=>({...z,_t:'seli',_i:i})),
+  ].sort((a,b)=>(a.z_index||0)-(b.z_index||0));
+
+  for (const zone of allZ) {
+    if (IS_MULTIPAGE && filterPage !== undefined && zone.page_num !== filterPage) continue;
+    const zx=zone.x/100*cw, zy=zone.y/100*ch;
+    const zw=zone.w/100*cw, zh=zone.h/100*ch;
+
+    if (zone._t==='photo') {
+      const d=slotData[zone._i]; if(!d?.img) continue;
+      const ir=d.img.width/d.img.height, zr=zw/zh;
+      let bw,bh;
+      if(ir>zr){bh=zh;bw=zh*ir;}else{bw=zw;bh=zw/ir;}
+      const sc=d.scale/100, dw=bw*sc, dh=bh*sc;
+      const ox=(d.offsetX/100)*zw, oy=(d.offsetY/100)*zh;
+      const mImg=_maskImgCache[zone._i];
+      if (mImg && mImg.complete && mImg.naturalWidth) {
+        const ow=Math.max(1,Math.round(zw)), oh=Math.max(1,Math.round(zh));
+        const off=document.createElement('canvas');
+        off.width=ow; off.height=oh;
+        const offCtx=off.getContext('2d');
+        if (_isBW() && !_isImgGrayscale(d.img)) offCtx.filter='grayscale(100%)';
+        offCtx.translate(ow/2+ox, oh/2+oy);
+        offCtx.rotate(d.rotation*Math.PI/180);
+        if(d.flipH) offCtx.scale(-1,1);
+        offCtx.drawImage(d.img,-dw/2,-dh/2,dw,dh);
+        offCtx.filter='none';
+        offCtx.setTransform(1,0,0,1,0,0);
+        offCtx.globalCompositeOperation='destination-in';
+        offCtx.drawImage(mImg,0,0,ow,oh);
+        ctx.drawImage(off,zx,zy);
+      } else {
+        ctx.save();
+        if (_isBW() && !_isImgGrayscale(d.img)) ctx.filter='grayscale(100%)';
+        ctx.beginPath(); ctx.rect(zx,zy,zw,zh); ctx.clip();
+        ctx.translate(zx+zw/2+ox, zy+zh/2+oy);
+        ctx.rotate(d.rotation*Math.PI/180);
+        if(d.flipH) ctx.scale(-1,1);
+        ctx.drawImage(d.img,-dw/2,-dh/2,dw,dh);
+        ctx.restore();
+      }
+
+    } else if (zone._t==='text') {
+      const zi=zone._i;
+      const _inp=document.getElementById(`tz-text-${zi}`);
+      const val=(_inp?.value?.trim()||zone.default_text||''); if(!val) continue;
+      const mult=(parseInt(document.getElementById(`tz-size-${zi}`)?.value)||100)/100;
+      const colorOv=document.getElementById(`tz-color-${zi}`)?.value;
+      const z2 = colorOv ? {...zone, color: colorOv} : zone;
+      _renderTextCanvas(ctx, val, z2, zx, zy, zw, zh, ch, mult);
+
+    } else if (zone._t==='simg') {
+      const img=staticImgCache[zone._i];
+      if(!img || !img.complete || !img.naturalWidth) continue;
+      ctx.save();
+      ctx.beginPath(); ctx.rect(zx,zy,zw,zh); ctx.clip();
+      ctx.drawImage(img,zx,zy,zw,zh);
+      ctx.restore();
+
+    } else if (zone._t==='stxt') {
+      const val=zone.text; if(!val) continue;
+      _renderTextCanvas(ctx, val, zone, zx, zy, zw, zh, ch, 1);
+
+    } else if (zone._t==='cal') {
+      const calDay   = parseInt(document.getElementById('cal-day')?.value   || '0') || null;
+      const calMonth = parseInt(document.getElementById('cal-month')?.value || '0') || new Date().getMonth()+1;
+      const calYear  = parseInt(document.getElementById('cal-year')?.value  || '0') || new Date().getFullYear();
+      _drawCalendar(ctx, calDay, calMonth, calYear, zx, zy, zw, zh);
+
+    } else if (zone._t==='seli') {
+      const file = _seliSelected[zone._i];
+      if (!file) continue;
+      const img = _seliCache[file];
+      if (!img || !img.complete || !img.naturalWidth) continue;
+      ctx.save(); ctx.beginPath(); ctx.rect(zx,zy,zw,zh); ctx.clip();
+      ctx.drawImage(img,zx,zy,zw,zh); ctx.restore();
+    }
+  }
+}
+
+function closePrev(){document.getElementById('prevModal').classList.remove('open');}
+
+// ── Sipariş gönder ────────────────────────────────────────────────────────────
+async function _buildUnitFormData(u, fd, prefix) {
+  // Belirli bir ünitenin verilerini FormData'ya ekler.
+  // prefix: 'u0_', 'u1_', ... (tek ürün durumunda boş string)
+  const sd  = (u === activeUnit) ? slotData       : (unitSlotData[u] || {});
+  const td  = (u === activeUnit) ? null            : (unitTextData[u] || {});
+  const sei = (u === activeUnit) ? _seliSelected   : (unitSeliData[u] || {});
+  const cal = (u === activeUnit)
+    ? { day: document.getElementById('cal-day')?.value||'', month: document.getElementById('cal-month')?.value||'', year: document.getElementById('cal-year')?.value||'' }
+    : (unitCalData[u] || {day:'',month:'',year:''});
+  // saveUnitState() çağrısından sonra tüm unitler için güncel BW/size değerleri var
+  const unitBw   = ENABLE_BW_OPTION ? (unitBwData[u]   || 'color') : 'color';
+  const unitSize = unitSizeData[u] || (document.getElementById('f-size')?.value || '');
+
+  const seenGrp = {};
+  for (const [ziStr, d] of Object.entries(sd)) {
+    const zi   = parseInt(ziStr);
+    const zone = PHOTO_ZONES[zi];
+    const gname = zone.group_name || '';
+    const outW = 1200, outH = Math.round(outW / ((zone.w / zone.h) * OUT_RATIO));
+    const tmp  = document.createElement('canvas');
+    tmp.width  = outW; tmp.height = outH;
+    const tctx = tmp.getContext('2d');
+    const ir = d.img.width / d.img.height, zr = outW / outH;
+    let bw, bh;
+    if (ir > zr) { bh = outH; bw = outH * ir; } else { bw = outW; bh = outW / ir; }
+    const sc = d.scale / 100, dw = bw * sc, dh = bh * sc;
+    const ox = (d.offsetX / 100) * outW;
+    const oy = (d.offsetY / 100) * outH;
+    tctx.save();
+    if (unitBw === 'bw' && !_isImgGrayscale(d.img)) tctx.filter = 'grayscale(100%)';
+    tctx.translate(outW / 2 + ox, outH / 2 + oy);
+    tctx.rotate(d.rotation * Math.PI / 180);
+    if (d.flipH) tctx.scale(-1, 1);
+    tctx.drawImage(d.img, -dw / 2, -dh / 2, dw, dh);
+    tctx.restore();
+    const blob = await new Promise(r => tmp.toBlob(r, 'image/jpeg', 0.92));
+    if (gname === '') {
+      fd.append(`${prefix}photo_${zi}`, blob, `photo_${zi}.jpg`);
+    } else {
+      if (!seenGrp[gname]) seenGrp[gname] = 0;
+      fd.append(`${prefix}group_${gname}`, blob, `grp_${gname}_${seenGrp[gname]}.jpg`);
+      seenGrp[gname]++;
+    }
+    if (d.file) fd.append(`${prefix}photo_${zi}_orig`, d.file, d.file.name || `photo_${zi}_orig`);
+    fd.append(`${prefix}photo_pos_${zi}`, JSON.stringify({
+      offsetX: d.offsetX, offsetY: d.offsetY,
+      scale: d.scale, rotation: d.rotation || 0, flipH: d.flipH || false
+    }));
+  }
+
+  TEXT_ZONES.forEach((zone, zi) => {
+    let val, size, color;
+    if (u === activeUnit) {
+      val   = document.getElementById(`tz-text-${zi}`)?.value?.trim() || '';
+      size  = document.getElementById(`tz-size-${zi}`)?.value || '100';
+      color = document.getElementById(`tz-color-${zi}`)?.value || zone.color || '#000';
+    } else {
+      val   = (td[zi]?.value || '').trim();
+      size  = td[zi]?.size  || '100';
+      color = td[zi]?.color || zone.color || '#000';
+    }
+    fd.append(`${prefix}text_${zone.label}`,       val);
+    fd.append(`${prefix}text_size_${zone.label}`,  size);
+    fd.append(`${prefix}text_color_${zone.label}`, color);
+  });
+
+  if (CALENDAR_ZONES.length) {
+    fd.append(`${prefix}cal_day`,   cal.day   || '');
+    fd.append(`${prefix}cal_month`, cal.month || '');
+    fd.append(`${prefix}cal_year`,  cal.year  || '');
+  }
+
+  SELECTABLE_IMAGE_ZONES.forEach((zone, zi) => {
+    const file = sei[zi] || '';
+    if (file) fd.append(`${prefix}selectable_${zone.label}`, file);
+  });
+
+  if (ENABLE_BW_OPTION) fd.append(`${prefix}bw_option`, unitBw);
+  {% if is_mdf %}
+  if (unitSize) fd.append(`${prefix}mdf_size`, unitSize);
+  {% elif is_custom_multi %}
+  if (unitSize) fd.append(`${prefix}custom_size`, unitSize);
+  {% endif %}
+}
+
+async function submitOrder() {
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true; btn.textContent = 'Gönderiliyor...';
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('prevModal').classList.remove('open');
+
+  try {
+    const fd = new FormData();
+    fd.append('customer_name', document.getElementById('f-name').value.trim().toUpperCase());
+    fd.append('order_number',  document.getElementById('f-order').value.trim());
+    fd.append('phone',         document.getElementById('f-phone').value.trim());
+    fd.append('unit_count',    String(unitCount));
+    fd.append('same_design',   designMode === 'same' ? '1' : '0');
+    fd.append('client_rendered', '1');
+
+    if (designMode === 'same') {
+      // Tek form — prefix yok, unit 0 verisini gönder
+      await _buildUnitFormData(0, fd, '');
+    } else {
+      // Her ürün için ayrı veri — tek ürün ise prefix yok, çoklu ise u{n}_ prefix
+      for (let u = 0; u < unitCount; u++) {
+        const prefix = unitCount > 1 ? `u${u}_` : '';
+        await _buildUnitFormData(u, fd, prefix);
+      }
+    }
+
+    const url = EDIT_MODE
+      ? `/admin/orders/${EDIT_ORDER_ID}/edit`
+      : `/form/${TMPL_ID}/submit`;
+    const res = await fetch(url, {method: 'POST', body: fd});
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (EDIT_MODE) {
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      document.getElementById('loading').classList.remove('show');
+      document.getElementById('prevModal').classList.remove('open');
+      alert('✓ Tasarım güncellendi!');
+      window.location.href = '/admin/orders';
+    } else {
+      const html = await res.text();
+      document.open(); document.write(html); document.close();
+    }
+  } catch(err) {
+    document.getElementById('loading').classList.remove('show');
+    document.getElementById('prevModal').classList.add('open');
+    btn.disabled = false; btn.textContent = '✓ Siparişi Gönder';
+    alert('Hata: ' + err.message + '\n\nLütfen tekrar deneyin.');
+  }
+}
+
+// ── Edit modu: mevcut fotoğrafları slot'lara yükle ───────────────────────────
+function _loadImgIntoSlot(zi, url, pos) {
+  if (!url) return;
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    const zone = PHOTO_ZONES[zi];
+    const {w, h} = slotSize(zone);
+    const ms = calcMinScale(img, w*2, h*2, 0);
+    if (pos && pos.scale !== undefined) {
+      slotData[zi] = {
+        img, file: null,
+        offsetX:  pos.offsetX  || 0,
+        offsetY:  pos.offsetY  || 0,
+        scale:    pos.scale,
+        rotation: pos.rotation || 0,
+        flipH:    pos.flipH    || false
+      };
+    } else {
+      slotData[zi] = {img, file: null, offsetX:0, offsetY:0, scale:ms, rotation:0, flipH:false};
+    }
+    drawSlot(zi); updateCount(zi);
+  };
+  img.src = url;
+}
+
+function preloadEditPhotos() {
+  console.log('[EditPhotos] has_originals:', EDIT_HAS_ORIGINALS,
+              '| photo_urls:', EDIT_PHOTO_URLS,
+              '| group_urls:', EDIT_GROUP_URLS,
+              '| positions:', EDIT_PHOTO_POSITIONS);
+  // Bireysel fotoğraflar — orijinal dosya + kaydedilmiş pozisyon
+  Object.entries(EDIT_PHOTO_URLS).forEach(([ziStr, url]) => {
+    const pos = EDIT_PHOTO_POSITIONS[ziStr];
+    console.log(`[EditPhotos] slot zi=${ziStr} url=${url} pos=`, pos);
+    _loadImgIntoSlot(parseInt(ziStr), url, pos);
+  });
+  // Grup fotoğrafları
+  if (Object.keys(EDIT_GROUP_URLS).length) {
+    const groupZiMap = {};
+    PHOTO_ZONES.forEach((zone, zi) => {
+      const gname = zone.group_name || '';
+      if (gname) {
+        if (!groupZiMap[gname]) groupZiMap[gname] = [];
+        groupZiMap[gname].push(zi);
+      }
+    });
+    Object.entries(EDIT_GROUP_URLS).forEach(([gname, urls]) => {
+      const ziList = groupZiMap[gname] || [];
+      console.log(`[EditPhotos] group="${gname}" zi_list=${JSON.stringify(ziList)} urls=`, urls);
+      ziList.forEach((zi, slotIdx) => {
+        if (urls[slotIdx]) {
+          const pos = EDIT_PHOTO_POSITIONS[String(zi)];
+          _loadImgIntoSlot(zi, urls[slotIdx], pos);
+        }
+      });
+    });
+  }
+}
+
+// BW seçimi değişince önizlemeyi güncelle
+if (ENABLE_BW_OPTION) {
+  document.querySelectorAll('input[name="bw_option"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const sec = document.getElementById('bw-option-sec');
+      if (sec) sec.style.outline = '';
+      refreshMini();
+    });
+  });
+}
+// Takvim inputları değişince hata çerçevesini kaldır
+if (CALENDAR_ZONES.length) {
+  ['cal-day','cal-month','cal-year'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => {
+      const sec = document.getElementById('cal-date-sec');
+      if (sec) sec.style.outline = '';
+    });
+  });
+}
+
+// Edit modu: seçilebilir görsel seçimlerini önceden yükle
+{% if edit_mode and selectable_image_zones %}
+(()=>{
+  const choices = {{ edit_order.selectable_choices | default({}) | tojson }};
+  SELECTABLE_IMAGE_ZONES.forEach((zone, zi) => {
+    const chosen = choices[zone.label];
+    if (!chosen) return;
+    _seliSelected[zi] = chosen;
+    _loadSeliImg(chosen);
+    const el = document.querySelector(`.sel-item[data-sel-zi="${zi}"][data-sel-file="${chosen}"]`);
+    if (el) el.classList.add('selected');
+  });
+})();
+{% endif %}
+
+// ── Başlat ────────────────────────────────────────────────────────────────────
+buildSlots();
+saveUnitState(); // ünite 0'ın başlangıç durumunu kaydet
+if (EDIT_MODE) preloadEditPhotos();
+if (IS_MULTIPAGE) {
+  MP_PAGES.forEach(p => loadBg(p));
+} else {
+  loadBg().then(()=>initMini());
+}
+</script>
+</body>
+</html>
