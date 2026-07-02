@@ -1,6 +1,9 @@
 token.json
 credentials.json
 client_secret.json
+.DS_Store
+.claude/
+generate_token.py
 __pycache__/
 *.pyc
 .env
