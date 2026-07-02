@@ -1,6 +1,7 @@
 flask==3.0.3
 Pillow==10.4.0
 opencv-python-headless==4.9.0.80
+mediapipe
 gunicorn==22.0.0
 google-auth==2.29.0
 google-auth-oauthlib==1.2.0
