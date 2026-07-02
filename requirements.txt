@@ -1,8 +1,8 @@
 flask==3.0.3
 Pillow==10.4.0
-opencv-python-headless
-mediapipe
+opencv-python-headless==4.9.0.80
 gunicorn==22.0.0
 google-auth==2.29.0
 google-auth-oauthlib==1.2.0
 google-api-python-client==2.126.0
+numpy
