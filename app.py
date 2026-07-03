@@ -213,12 +213,13 @@ def upload_to_drive(file_path, filename, folder_id, max_retries=3):
                 raise
     raise RuntimeError(f"Drive upload başarısız: {filename}")
 
-def _create_zip_tmp(paths, zip_name):
+def _create_zip_tmp(paths, zip_name, arcnames=None):
     """Birden fazla dosyadan geçici ZIP oluşturur. ZIP dosyasının yolunu döndürür."""
     tmp_zip = os.path.join(tempfile.gettempdir(), zip_name)
     with zipfile.ZipFile(tmp_zip, 'w', zipfile.ZIP_DEFLATED) as zf:
-        for path in paths:
-            zf.write(path, os.path.basename(path))
+        for i, path in enumerate(paths):
+            arc = arcnames[i] if arcnames else os.path.basename(path)
+            zf.write(path, arc)
     return tmp_zip
 
 def download_from_drive(file_id):
@@ -953,8 +954,10 @@ def submit_form(tid):
                 name_part  = customer_name.replace('/', '-')
                 _adet      = unit_order.get('adet_count')
                 zip_name   = f"{name_part}, {_adet} ADET.zip" if (_adet and _adet > 1) else f"{name_part}.zip"
+                _is_imp    = any(', IMP ' in os.path.basename(p) for p in result)
+                _arcnames  = [f"{i+1}.jpg" for i in range(len(result))] if _is_imp else None
                 print(f"[ZIP] {len(result)} sayfa → {zip_name}")
-                zip_path   = _create_zip_tmp(result, zip_name)
+                zip_path   = _create_zip_tmp(result, zip_name, _arcnames)
                 for p in result:
                     try: os.remove(p)
                     except Exception: pass
@@ -1017,9 +1020,11 @@ def submit_form(tid):
                     fid, fname2 = upload_to_drive(collected_paths[0], os.path.basename(collected_paths[0]), folder_id)
                     print(f"[Drive] Yükleme OK: {fid} — {fname2}")
                 else:
-                    zip_name = f"{name_part}, {unit_count} ADET.zip"
+                    zip_name  = f"{name_part}, {unit_count} ADET.zip"
+                    _is_imp   = any(', IMP ' in os.path.basename(p) for p in collected_paths)
+                    _arcnames = [f"{i+1}.jpg" for i in range(len(collected_paths))] if _is_imp else None
                     print(f"[ZIP] {len(collected_paths)} dosya → {zip_name}")
-                    zip_path = _create_zip_tmp(collected_paths, zip_name)
+                    zip_path = _create_zip_tmp(collected_paths, zip_name, _arcnames)
                     for p in collected_paths:
                         try: os.remove(p)
                         except Exception: pass
