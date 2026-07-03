@@ -183,7 +183,40 @@
 
   @media (max-width: 640px) {
     .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    .page { padding: 20px 16px; }
+    .page { padding: 16px 12px; }
+    .page-sm { padding: 24px 12px; }
+    .page-header { flex-direction:column; align-items:flex-start !important; gap:12px; }
+    .stat-card .stat-val { font-size:22px; }
+  }
+
+  /* ── Mobile Nav ── */
+  .nav-hamburger { display:none; background:none; border:none; color:var(--text); font-size:24px; cursor:pointer; padding:4px 6px; line-height:1; }
+  @media(max-width:640px) {
+    .nav-hamburger { display:block; }
+    .nav-links {
+      display:none; flex-direction:column; gap:0;
+      position:fixed; top:56px; left:0; right:0;
+      background:var(--surface); border-bottom:1px solid var(--border);
+      padding:6px 0; z-index:200;
+      box-shadow:0 6px 16px rgba(0,0,0,.4);
+    }
+    .nav-links.open { display:flex; }
+    .nav-link { padding:13px 20px; border-radius:0; font-size:14px; }
+    .nav-brand { font-size:13px; max-width:calc(100% - 48px); }
+  }
+
+  /* ── Responsive Table (mobilde kart görünümü) ── */
+  @media(max-width:640px) {
+    .resp-table thead { display:none; }
+    .resp-table, .resp-table tbody, .resp-table tr, .resp-table td { display:block; width:100%; box-sizing:border-box; }
+    .resp-table tr { margin-bottom:10px; border:1px solid var(--border); border-radius:8px; overflow:hidden; background:var(--surface); }
+    .resp-table tr:hover td { background:transparent; }
+    .resp-table td { display:flex; align-items:flex-start; gap:10px; padding:10px 14px; border-bottom:1px solid var(--border); font-size:13px; }
+    .resp-table td:last-child { border-bottom:none; }
+    .resp-table td::before { content:attr(data-label); font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.4px; min-width:76px; flex-shrink:0; padding-top:2px; }
+    .resp-table td[data-label=""]::before { display:none; min-width:0; }
+    .resp-table td[data-label=""] { justify-content:flex-start; flex-wrap:wrap; }
+    .resp-card-outer { border-radius:0 !important; overflow:visible !important; }
   }
 </style>
 {% block extra_css %}{% endblock %}
@@ -192,7 +225,8 @@
 {% block nav %}
 <nav class="nav">
   <span class="nav-brand">📦 Dijital Operasyonlar Yönetimi</span>
-  <div class="nav-links">
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menü">☰</button>
+  <div class="nav-links" id="navLinks">
     <a href="/admin" class="nav-link {% if active=='panel' %}active{% endif %}">Panel</a>
     <a href="/admin/orders" class="nav-link {% if active=='orders' %}active{% endif %}">Siparişler</a>
     <a href="/admin/templates/new" class="nav-link {% if active=='new_tmpl' %}active{% endif %}">+ Şablon</a>
@@ -212,6 +246,14 @@ function copyText(text, btn) {
     }, 2000);
   });
 }
+(function() {
+  var btn = document.getElementById('navHamburger');
+  var menu = document.getElementById('navLinks');
+  if (!btn || !menu) return;
+  btn.addEventListener('click', function(e) { e.stopPropagation(); menu.classList.toggle('open'); });
+  document.addEventListener('click', function(e) { if (!menu.contains(e.target)) menu.classList.remove('open'); });
+  menu.querySelectorAll('.nav-link').forEach(function(a) { a.addEventListener('click', function() { menu.classList.remove('open'); }); });
+})();
 </script>
 {% block extra_js %}{% endblock %}
 </body>

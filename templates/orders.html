@@ -17,8 +17,8 @@
              border:1px solid var(--border);background:var(--surface2);
              color:var(--text);font-size:14px;outline:none;">
   </div>
-  <div class="card" style="padding:0;overflow:hidden;">
-    <table class="table">
+  <div class="card resp-card-outer" style="padding:0;overflow:hidden;">
+    <table class="table resp-table">
       <thead>
         <tr>
           <th>Tarih</th>
@@ -36,11 +36,11 @@
             data-order="{{ o.order_number | lower }}"
             data-phone="{{ o.phone | lower }}"
             data-id="{{ o.id }}">
-          <td style="color:var(--text-muted);font-size:12px;">{{ o.created_at[:16].replace('T',' ') }}</td>
-          <td style="font-weight:600;">{{ o.customer_name }}</td>
-          <td><code style="font-size:12px;color:var(--accent);">{{ o.order_number }}</code></td>
-          <td style="color:var(--text-muted);">{{ o.phone }}</td>
-          <td style="font-size:12px;">
+          <td data-label="Tarih" style="color:var(--text-muted);font-size:12px;">{{ o.created_at[:16].replace('T',' ') }}</td>
+          <td data-label="Müşteri" style="font-weight:600;">{{ o.customer_name }}</td>
+          <td data-label="Sipariş No"><code style="font-size:12px;color:var(--accent);">{{ o.order_number }}</code></td>
+          <td data-label="Telefon" style="color:var(--text-muted);">{{ o.phone }}</td>
+          <td data-label="Şablon" style="font-size:12px;">
             {{ o.template_name }}
             {% if o.unit_count and o.unit_count > 1 %}
             <span style="color:#f59e0b;font-weight:700;">×{{ o.unit_count }}</span>
@@ -53,7 +53,7 @@
             <br>
             <span style="color:var(--text-dim);">{{ o.size_label or '' }}</span>
           </td>
-          <td>
+          <td data-label="Durum">
             {% if o.status == 'ready' and o.a3_file is defined and o.a3_file %}
             <span class="badge badge-success">✓ A3'te Hazır</span>
             {% elif o.status == 'ready' %}
@@ -66,7 +66,7 @@
             <span class="badge badge-error">Hata</span>
             {% endif %}
           </td>
-          <td>
+          <td data-label="">
             <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
               {% set has_drive = o.drive_file_id or o.drive_files %}
               {% set has_local = o.output_file or o.output_files %}

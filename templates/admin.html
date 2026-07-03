@@ -44,7 +44,7 @@
     <div style="font-weight:700;font-size:15px;color:#a78bfa;margin-bottom:12px;">
       🖨 Baskı Kuyruğu — {{ print_queue|length }} sipariş bekliyor
     </div>
-    <table class="table" style="margin:0;">
+    <table class="table resp-table" style="margin:0;">
       <thead>
         <tr>
           <th>Müşteri</th>
@@ -57,23 +57,23 @@
       <tbody>
         {% for it in print_queue %}
         <tr>
-          <td>{{ it.customer_name }}</td>
-          <td>
+          <td data-label="Müşteri">{{ it.customer_name }}</td>
+          <td data-label="Ebat">
             <span style="background:{% if it.size=='A4' %}#1e3a1e{% else %}#1a2a3a{% endif %};
                          color:{% if it.size=='A4' %}#4ade80{% else %}#60a5fa{% endif %};
                          padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;">
               {{ it.size }}
             </span>
           </td>
-          <td>
+          <td data-label="Bekleme">
             {% if it.hours_waiting >= 20 %}
             <span style="color:#f87171;font-weight:700;">{{ it.hours_waiting }}s ⚠</span>
             {% else %}
             <span style="color:var(--text-muted);">{{ it.hours_waiting }}s</span>
             {% endif %}
           </td>
-          <td style="color:var(--text-dim);font-size:11px;">{{ it.order_id }}</td>
-          <td>
+          <td data-label="Sipariş ID" style="color:var(--text-dim);font-size:11px;">{{ it.order_id }}</td>
+          <td data-label="">
             <div style="display:flex;gap:6px;">
               <a href="/admin/print-queue/{{ it.jpg_file | urlencode }}/view"
                  target="_blank" class="btn btn-secondary btn-sm">Görüntüle</a>
@@ -98,8 +98,8 @@
              border:1px solid var(--border);background:var(--surface2);
              color:var(--text);font-size:14px;outline:none;">
   </div>
-  <div class="card" style="padding:0;overflow:hidden;">
-    <table class="table">
+  <div class="card resp-card-outer" style="padding:0;overflow:hidden;">
+    <table class="table resp-table">
       <thead>
         <tr>
           <th>Şablon Adı</th>
@@ -166,7 +166,7 @@
           {% set text_count  = ref_zones | selectattr('type','equalto','text')  | list | length %}
 
         <tr data-name="{{ t.name | lower }}">
-          <td>
+          <td data-label="Şablon">
             <div style="display:flex;align-items:center;gap:12px;">
               {% if t.preview %}
               <img src="/static/uploads/preview_thumb_{{ t.id }}.jpg"
@@ -184,8 +184,8 @@
               </div>
             </div>
           </td>
-          <td><span style="color:var(--text-muted);font-size:13px;">{{ size_label }}</span></td>
-          <td>
+          <td data-label="Ebat"><span style="color:var(--text-muted);font-size:13px;">{{ size_label }}</span></td>
+          <td data-label="Alanlar">
             <span style="color:var(--accent);">{{ photo_count }} fotoğraf</span>
             <span style="color:var(--text-dim);margin:0 4px;">·</span>
             <span style="color:var(--text-muted);">{{ text_count }} metin</span>
@@ -193,9 +193,9 @@
             <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">ilk ebattan</div>
             {% endif %}
           </td>
-          <td>
+          <td data-label="Form Linki">
             {% if has_zones.val %}
-            <div style="display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
               <code style="font-size:11px;color:var(--text-muted);background:var(--surface2);padding:3px 7px;border-radius:4px;">/form/{{ t.id }}</code>
               <button class="copy-btn" onclick="copyText(window.location.origin+'/form/{{ t.id }}', this)">Kopyala</button>
             </div>
@@ -203,7 +203,7 @@
             <span style="color:var(--error);font-size:12px;">⚠ Henüz alan çizilmedi</span>
             {% endif %}
           </td>
-          <td>
+          <td data-label="">
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
               <a href="/admin/templates/{{ t.id }}/edit" class="btn btn-secondary btn-sm">Düzenle</a>
               <form action="/admin/templates/{{ t.id }}/copy" method="post" style="display:inline;">
