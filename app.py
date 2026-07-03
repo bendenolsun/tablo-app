@@ -2520,16 +2520,14 @@ def _midnight_worker():
         except Exception as e:
             print(f"[Drive] Gece yarısı klasör hatası: {e}")
 
-if __name__ == '__main__':
-    # Print queue worker
-    _t = threading.Thread(target=_print_queue_worker, daemon=True)
-    _t.start()
+# Worker'lar ve Drive kontrolü — gunicorn ve doğrudan çalıştırma için
+_t = threading.Thread(target=_print_queue_worker, daemon=True)
+_t.start()
 
-    # Gece yarısı Drive klasör worker
-    _tm = threading.Thread(target=_midnight_worker, daemon=True)
-    _tm.start()
+_tm = threading.Thread(target=_midnight_worker, daemon=True)
+_tm.start()
 
-    # Drive bağlantısını test et, bugünün klasörünü oluştur
+def _init_drive():
     drive_cred_exists = (os.path.exists(SERVICE_ACCOUNT_FILE) or
                          os.path.exists(TOKEN_FILE) or
                          os.path.exists(CLIENT_SECRET_FILE))
@@ -2550,4 +2548,7 @@ if __name__ == '__main__':
         _drive_status['error'] = "Drive kimlik dosyası bulunamadı"
         print("[Drive] Drive kimlik dosyası yok, Drive devre dışı")
 
+threading.Thread(target=_init_drive, daemon=True).start()
+
+if __name__ == '__main__':
     app.run(debug=True, port=5001)
