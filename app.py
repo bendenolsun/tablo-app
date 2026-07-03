@@ -59,7 +59,7 @@ _IMP_CH = 3508   # yatay A3 canvas yüksekliği (A3_W = A4_H)
 
 _pq_lock = threading.Lock()   # print_queue.json thread güvenliği
 
-ADMIN_PASSWORD = 'tablo2024'
+ADMIN_PASSWORD = 'ifep.2024'
 
 # ── Ürün tipi tespiti ──────────────────────────────────────────────────────────
 def get_product_type(tmpl_name):
