@@ -42,14 +42,14 @@ html, body { height:100%; overflow:hidden; }
 .zone-rect { position:absolute; border:2px solid; display:flex; align-items:center;
   justify-content:center; font-size:10px; font-weight:700;
   transform-origin:center center; box-sizing:border-box; }
-.zone-rect.photo { border-color:#d4a843; background:rgba(212,168,67,.15); color:#d4a843; }
+.zone-rect.photo { border-color:#706abc; background:rgba(112,106,188,.15); color:#706abc; }
 .zone-rect.text  { border-color:#60a5fa; background:rgba(96,165,250,.15); color:#60a5fa; }
 #canvas-container.tool-active .zone-rect { cursor:crosshair; }
 #canvas-container:not(.tool-active) .zone-rect { cursor:move; }
 #canvas-container.tool-active { cursor:crosshair; }
 #canvas-container:not(.tool-active) { cursor:default; }
 
-#sel-box { position:absolute; border:2px dashed var(--accent); background:rgba(212,168,67,.08);
+#sel-box { position:absolute; border:2px dashed var(--accent); background:rgba(112,106,188,.08);
   pointer-events:none; display:none; }
 
 /* Delete button */
@@ -60,15 +60,15 @@ html, body { height:100%; overflow:hidden; }
 
 /* Rotation handle — sadece .selected zone'da gösterilir, hover'a bağlı değil */
 .rot-handle { position:absolute; top:-22px; left:50%; transform:translateX(-50%);
-  width:16px; height:16px; background:rgba(212,168,67,.92); border-radius:50%;
+  width:16px; height:16px; background:rgba(112,106,188,.92); border-radius:50%;
   cursor:grab; z-index:20; display:none;
   border:1.5px solid rgba(0,0,0,.3);
   font-size:10px; line-height:16px; text-align:center; color:#000;
   pointer-events:auto; }
 .rot-handle::after { content:'↻'; }
 .zone-rect.selected .rot-handle { display:block; }
-.zone-rect.selected { outline:2px solid #d4a843; outline-offset:3px;
-  box-shadow:0 0 0 5px rgba(212,168,67,.18); }
+.zone-rect.selected { outline:2px solid #706abc; outline-offset:3px;
+  box-shadow:0 0 0 5px rgba(112,106,188,.18); }
 /* Çoklu seçimde döndürme tutacağını gizle */
 .multi-sel .zone-rect.selected .rot-handle { display:none; }
 
@@ -82,7 +82,7 @@ html, body { height:100%; overflow:hidden; }
 .sel-handle { position:absolute; width:10px; height:10px; background:#fff;
   border:1.5px solid #60a5fa; border-radius:2px; pointer-events:auto;
   box-sizing:border-box; transform:translate(-50%,-50%); z-index:19; }
-.sel-rot { border-radius:50%; background:rgba(212,168,67,.92); border-color:#d4a843;
+.sel-rot { border-radius:50%; background:rgba(112,106,188,.92); border-color:#706abc;
   cursor:grab; width:16px; height:16px; top:0; left:50%;
   transform:translate(-50%,-170%); font-size:10px; line-height:14px;
   text-align:center; color:#000; }
@@ -92,7 +92,7 @@ html, body { height:100%; overflow:hidden; }
 
 /* Seçili zone düzenleme paneli */
 #zone-edit-panel { border:1px solid var(--accent); border-radius:8px;
-  padding:12px; margin-bottom:0; background:rgba(212,168,67,.05); }
+  padding:12px; margin-bottom:0; background:rgba(112,106,188,.05); }
 #zone-edit-panel .ep-title { font-size:11px; font-weight:700; color:var(--accent);
   text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px;
   display:flex; align-items:center; justify-content:space-between; }
@@ -155,7 +155,7 @@ html, body { height:100%; overflow:hidden; }
   background:var(--surface2); color:var(--text-muted); font-size:12px; font-weight:600;
   cursor:pointer; text-align:center; transition:all .15s; }
 .tool-btn:hover { border-color:var(--accent); color:var(--accent); }
-.tool-btn.ap { border-color:#d4a843; background:#1e1500; color:#d4a843; }
+.tool-btn.ap { border-color:#706abc; background:#1a1830; color:#706abc; }
 .tool-btn.at { border-color:#60a5fa; background:#001020; color:#60a5fa; }
 
 .inline-inp { width:100%; background:var(--bg); border:1px solid var(--border);
@@ -168,7 +168,7 @@ html, body { height:100%; overflow:hidden; }
   padding:7px 10px; background:var(--surface2); border:1px solid var(--border);
   border-radius:6px; margin-bottom:5px; font-size:12px; }
 .zitem .zbadge { font-size:10px; padding:2px 6px; border-radius:10px; font-weight:700; }
-.zp  { background:#2a1e00; color:#d4a843; }
+.zp  { background:#221e3a; color:#706abc; }
 .zt  { background:#0a1e3a; color:#60a5fa; }
 .zsi { background:#0a1e0a; color:#4ade80; }
 .zst { background:#1a0a2a; color:#a78bfa; }
@@ -190,8 +190,8 @@ html, body { height:100%; overflow:hidden; }
 .layer-item { display:flex; align-items:center; gap:6px; padding:5px 6px 5px 3px; border-radius:6px;
   border:1px solid transparent; margin-bottom:3px; transition:background .12s; }
 .layer-item:hover { background:var(--surface2); }
-.layer-item.layer-selected { border-color:var(--accent); background:rgba(212,168,67,.12); }
-.layer-item.drag-over { border-color:var(--accent); background:rgba(212,168,67,.22); border-style:dashed; }
+.layer-item.layer-selected { border-color:var(--accent); background:rgba(112,106,188,.12); }
+.layer-item.drag-over { border-color:var(--accent); background:rgba(112,106,188,.22); border-style:dashed; }
 .layer-drag-handle { color:var(--text-dim); font-size:11px; cursor:grab; padding:0 2px;
   user-select:none; letter-spacing:-.5px; }
 .layer-drag-handle:active { cursor:grabbing; }
@@ -2431,7 +2431,7 @@ function showZoneEditPanel(idx) {
       renderEditSelOptionsList(z.options || []);
     }
   } else {
-    if (badge) { badge.textContent = 'fotoğraf'; badge.style.color = '#d4a843'; }
+    if (badge) { badge.textContent = 'fotoğraf'; badge.style.color = '#706abc'; }
     photoOpts.style.display = 'block';
     document.getElementById('edit-group-name').value = z.group_name || '';
     document.getElementById('edit-form-label').value = z.form_label || '';
@@ -2863,11 +2863,11 @@ function _showAngleOverlay(degTotal, bbox, snapping) {
   if (snapping) {
     _angleOverlay.style.background = 'rgba(255,220,0,.95)';
     _angleOverlay.style.color      = '#000';
-    _angleOverlay.style.border     = '1px solid rgba(212,168,67,.8)';
+    _angleOverlay.style.border     = '1px solid rgba(112,106,188,.8)';
   } else {
     _angleOverlay.style.background = 'rgba(0,0,0,.82)';
     _angleOverlay.style.color      = '#fff';
-    _angleOverlay.style.border     = '1px solid rgba(212,168,67,.4)';
+    _angleOverlay.style.border     = '1px solid rgba(112,106,188,.4)';
   }
   _angleOverlay.style.left = (bbox.cx - 3).toFixed(2) + '%';
   _angleOverlay.style.top  = Math.max(0.5, bbox.y - 7).toFixed(2) + '%';
