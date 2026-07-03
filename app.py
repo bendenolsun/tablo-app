@@ -253,6 +253,10 @@ def _get_drive_folder_id_by_name(folder_name):
 def require_admin():
     return session.get('admin') != True
 
+@app.route('/')
+def index():
+    return redirect(url_for('admin_login'))
+
 @app.route('/admin/login', methods=['GET','POST'])
 def admin_login():
     if request.method == 'POST':
