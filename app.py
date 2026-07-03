@@ -845,9 +845,9 @@ def submit_form(tid):
         zones = tmpl.get('zones', [])
 
     if ptype == 'PSTR':
-        size_label = 'PSTR'
+        size_label = '29.7x40cm'
     elif ptype == 'A3':
-        size_label = 'A3'
+        size_label = '29.7x42cm'
     elif ptype == 'MDF' and mdf_size_key:
         size_label = MDF_SIZES[mdf_size_key]['label']
     elif ptype == 'CUSTOM_MULTI' and custom_size_key:
@@ -1486,12 +1486,13 @@ def generate_design(order, tmpl):
     unit_num   = order.get('unit_num')
     unit_sfx   = f'.{unit_num + 1}' if unit_num is not None else ''
     adet_count = order.get('adet_count')
+    name_part = order['customer_name'].replace('/', '-')
     if adet_count:
-        name_part = order['customer_name'].replace('/', '_')
-        fname     = f"{order['id']}_{name_part}, {adet_count} ADET, {label}.jpg"
+        fname = f"{name_part}, {adet_count} ADET, {label}.jpg"
+    elif unit_num is not None:
+        fname = f"{name_part} ({unit_num + 1}), {label}.jpg"
     else:
-        safe_name = order['customer_name'].replace(' ', '_').replace('/', '_')
-        fname     = f"{order['id']}_{safe_name}{unit_sfx}, {label}.jpg"
+        fname = f"{name_part}, {label}.jpg"
     tmp_path = os.path.join(tempfile.gettempdir(), fname)
     output.save(tmp_path, 'JPEG', quality=95, dpi=(300, 300))
     print(f"[GEN] /tmp kaydedildi: {tmp_path} ({os.path.getsize(tmp_path)} bytes)")
@@ -1637,9 +1638,9 @@ def generate_design_multipage(order, tmpl):
                 img = _load_img(fname)
                 if img: zone_images[zi] = img
 
-    safe_name  = order['customer_name'].replace(' ','_').replace('/','_')
+    name_part  = order['customer_name'].replace('/', '-')
     unit_num   = order.get('unit_num')
-    unit_sfx   = f'.{unit_num + 1}' if unit_num is not None else ''
+    unit_sfx   = f' ({unit_num + 1})' if unit_num is not None else ''
     adet_count = int(order.get('adet_count') or 1)
     output_files = []
 
@@ -1665,19 +1666,19 @@ def generate_design_multipage(order, tmpl):
                 if right_pg in pg_rendered: canvas.paste(pg_rendered[right_pg], (_A4_W, 0))
                 # 90° saat yönünde döndür → dikey A3: 3508×4961
                 canvas = canvas.rotate(-90, expand=True)
-                fname    = f"{order['id']}_{safe_name}{unit_sfx}, IMP {sheet_num}.jpg"
+                fname    = f"{name_part}{unit_sfx}, IMP {sheet_num}.jpg"
                 tmp_path = os.path.join(tempfile.gettempdir(), fname)
                 canvas.save(tmp_path, 'JPEG', quality=95, dpi=(DPI, DPI))
                 output_files.append(tmp_path)
                 sheet_num += 1
-        print(f"[IMP] {safe_name}: {n} sayfa → {len(output_files)} A3 sayfası")
+        print(f"[IMP] {name_part}: {n} sayfa → {len(output_files)} A3 sayfası")
         return output_files
 
     # ── Normal MULTIPAGE: her sayfa ayrı JPG ─────────────────────────────────
     for pg_str in sorted(pages.keys(), key=int):
         pg_num  = int(pg_str)
         output  = _render_one_page(pg_num, pages[pg_str], out_w, out_h, zone_images, photo_counter, order)
-        fname    = f"{order['id']}_{safe_name}{unit_sfx}, SAYFA {pg_num}.jpg"
+        fname    = f"{name_part}{unit_sfx}, SAYFA {pg_num}.jpg"
         tmp_path = os.path.join(tempfile.gettempdir(), fname)
         output.save(tmp_path, 'JPEG', quality=95, dpi=(DPI, DPI))
         output_files.append(tmp_path)
