@@ -8,18 +8,21 @@ Görüntü işleme — MediaPipe (modern YZ) + OpenCV fallback
 4. Yüz odaklı kırpma (belden yukarısı garantili)
 5. Çözünürlük ve netlik iyileştirme
 """
-import cv2
 import numpy as np
 from PIL import Image, ImageEnhance, ImageFilter
 import os
 
-# ── MediaPipe kurulumu ────────────────────────────────────────────────────────
+try:
+    import cv2
+    CV2_OK = True
+except Exception:
+    CV2_OK = False
+
 MEDIAPIPE_OK = False
 _mp_face     = None
 
 try:
     import mediapipe as mp
-    # MediaPipe 0.10+ yeni API
     try:
         _mp_face = mp.solutions.face_detection.FaceDetection(
             model_selection=1,
@@ -27,23 +30,20 @@ try:
         )
         MEDIAPIPE_OK = True
     except AttributeError:
-        # Eski API dene
-        from mediapipe.tasks import python as mp_tasks
-        from mediapipe.tasks.python import vision as mp_vision
-        _mp_face = None  # task tabanlı API farklı kullanım gerektirir
         MEDIAPIPE_OK = False
-except Exception as e:
+except Exception:
     pass
 
-# OpenCV fallback cascade'leri
-FACE_CASCADE    = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-FACE_ALT        = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_alt2.xml')
-PROFILE_CASCADE = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_profileface.xml')
-UPPER_CASCADE   = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_upperbody.xml')
+FACE_CASCADE    = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml') if CV2_OK else None
+FACE_ALT        = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_alt2.xml')    if CV2_OK else None
+PROFILE_CASCADE = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_profileface.xml')         if CV2_OK else None
+UPPER_CASCADE   = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_upperbody.xml')           if CV2_OK else None
 
 
 def pil_to_gray(img: Image.Image) -> np.ndarray:
-    return cv2.cvtColor(np.array(img.convert('RGB')), cv2.COLOR_RGB2GRAY)
+    if CV2_OK:
+        return cv2.cvtColor(np.array(img.convert('RGB')), cv2.COLOR_RGB2GRAY)
+    return np.array(img.convert('L'))
 
 
 # ── Yüz/kafa tespiti ─────────────────────────────────────────────────────────
@@ -290,9 +290,15 @@ def enhance_image(img: Image.Image, zone_w_px: int, zone_h_px: int) -> Image.Ima
     src_w, src_h = img.size
     scale = max(zone_w_px / src_w, zone_h_px / src_h, 1.0)
 
-    gray    = pil_to_gray(img)
-    lap_var = cv2.Laplacian(gray, cv2.CV_64F).var()
-    needs_sharpen = lap_var < 100
+    if CV2_OK:
+        gray = pil_to_gray(img)
+        lap_var = cv2.Laplacian(gray, cv2.CV_64F).var()
+        needs_sharpen = lap_var < 100
+    else:
+        gray = pil_to_gray(img)
+        dx = np.diff(gray.astype(float), axis=1)
+        dy = np.diff(gray.astype(float), axis=0)
+        needs_sharpen = (np.var(dx) + np.var(dy)) < 500
 
     # Pre-upscale: hafif keskinleştirme (küçük boyutta ucuz)
     if needs_sharpen:
