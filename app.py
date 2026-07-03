@@ -41,6 +41,13 @@ A3_LOG_FILE      = os.path.join(DATA_DIR, 'a3_log.json')   # hangi A3 hangi gün
 for d in [DATA_DIR, UPLOAD_DIR, OUTPUT_DIR, FONTS_DIR, STAGING_DIR]:
     os.makedirs(d, exist_ok=True)
 
+# Volume bağlandığında data/ boş gelir; templates.json yoksa yedekten kopyala
+_DEFAULT_TMPL_SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data_default', 'templates.json')
+if not os.path.exists(TEMPLATES_FILE) and os.path.exists(_DEFAULT_TMPL_SRC):
+    import shutil as _shutil
+    _shutil.copy(_DEFAULT_TMPL_SRC, TEMPLATES_FILE)
+    print("[Init] templates.json data_default'tan kopyalandı")
+
 # ── Baskı kuyruğu boyutları (300 DPI piksel) ─────────────────────────────────
 _A3_W, _A3_H = 3508, 4961
 _A4_W, _A4_H = 2480, 3508
