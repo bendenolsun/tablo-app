@@ -596,11 +596,12 @@ def customer_form(tid):
     is_custom_multi   = (ptype == 'CUSTOM_MULTI')
     is_multipage_tmpl = (ptype == 'MULTIPAGE')
 
-    multipage_pages = []
-    page_photo_map  = {}
-    page_text_map   = {}
-    bg_urls         = {}
-    bg_url          = ''   # müşteri formunda /static/uploads/ üzerinden (auth gerekmez)
+    multipage_pages    = []
+    page_photo_map     = {}
+    page_text_map      = {}
+    page_calendar_map  = {}
+    bg_urls            = {}
+    bg_url             = ''   # müşteri formunda /static/uploads/ üzerinden (auth gerekmez)
 
     if is_mdf:
         first_variant = next(iter(tmpl['mdf_variants'].values()), {})
@@ -652,6 +653,9 @@ def customer_form(tid):
         for i, z in enumerate(text_zones):
             pg = z.get('page_num', 1)
             page_text_map.setdefault(pg, []).append((i, z))
+        for i, z in enumerate(calendar_zones):
+            pg = z.get('page_num', 1)
+            page_calendar_map.setdefault(pg, []).append((i, z))
 
     def get_out_ratio(ptype, mdf_sk, custom_sk):
         if ptype == 'PSTR':
@@ -691,6 +695,7 @@ def customer_form(tid):
                            multipage_pages=[int(p) for p in multipage_pages],
                            page_photo_map=page_photo_map,
                            page_text_map=page_text_map,
+                           page_calendar_map=page_calendar_map,
                            bg_url=bg_url, bg_urls=bg_urls,
                            variant_sizes=variant_sizes, MDF_SIZES=MDF_SIZES,
                            out_ratio=out_ratio,
@@ -1716,9 +1721,10 @@ def edit_order_get(order_id):
     is_custom_multi   = (ptype == 'CUSTOM_MULTI')
     is_multipage_tmpl = (ptype == 'MULTIPAGE')
 
-    multipage_pages = []
-    page_photo_map  = {}
-    page_text_map   = {}
+    multipage_pages   = []
+    page_photo_map    = {}
+    page_text_map     = {}
+    page_calendar_map = {}
     bg_urls         = {}
 
     if is_mdf:
@@ -1762,6 +1768,8 @@ def edit_order_get(order_id):
             page_photo_map.setdefault(z.get('page_num', 1), []).append((i, z))
         for i, z in enumerate(text_zones):
             page_text_map.setdefault(z.get('page_num', 1), []).append((i, z))
+        for i, z in enumerate(calendar_zones):
+            page_calendar_map.setdefault(z.get('page_num', 1), []).append((i, z))
 
     # out_ratio — siparişin ebadına göre
     def get_out_ratio(ptype, mdf_sk, custom_sk):
@@ -1836,6 +1844,7 @@ def edit_order_get(order_id):
                            multipage_pages=[int(p) for p in multipage_pages],
                            page_photo_map=page_photo_map,
                            page_text_map=page_text_map,
+                           page_calendar_map=page_calendar_map,
                            bg_url=bg_url, bg_urls=bg_urls,
                            variant_sizes=variant_sizes, MDF_SIZES=MDF_SIZES,
                            out_ratio=out_ratio,

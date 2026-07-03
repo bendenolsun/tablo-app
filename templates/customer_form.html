@@ -322,6 +322,37 @@ input:focus,select:focus{border-color:var(--accent);}
       {% endfor %}
     </div>
     {% endif %}
+
+    <!-- Bu sayfanın takvim alanı -->
+    {% if page_calendar_map is defined and page_calendar_map.get(pg_num) %}
+    <div style="margin-top:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px;">📅 Özel Tarih</div>
+      <p class="hint" style="margin-bottom:14px;">Seçtiğiniz tarih takviminizde kırmızı ile işaretlenecektir.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <label style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.5px;">GÜN</label>
+          <input type="text" inputmode="numeric" pattern="[0-9]*" id="cal-day" maxlength="2" placeholder="GG"
+                 value="{{ edit_order.calendar_date.day if edit_mode and edit_order.calendar_date else '' }}"
+                 style="width:64px;text-align:center;padding:10px;font-size:18px;font-weight:700;border:2px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-family:inherit;"
+                 oninput="this.value=this.value.replace(/[^0-9]/g,'');refreshMini({{ pg_num }})">
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <label style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.5px;">AY</label>
+          <input type="text" inputmode="numeric" pattern="[0-9]*" id="cal-month" maxlength="2" placeholder="AA"
+                 value="{{ edit_order.calendar_date.month if edit_mode and edit_order.calendar_date else '' }}"
+                 style="width:64px;text-align:center;padding:10px;font-size:18px;font-weight:700;border:2px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-family:inherit;"
+                 oninput="this.value=this.value.replace(/[^0-9]/g,'');refreshMini({{ pg_num }})">
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <label style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.5px;">YIL</label>
+          <input type="text" inputmode="numeric" pattern="[0-9]*" id="cal-year" maxlength="4" placeholder="YYYY"
+                 value="{{ edit_order.calendar_date.year if edit_mode and edit_order.calendar_date else '' }}"
+                 style="width:88px;text-align:center;padding:10px;font-size:18px;font-weight:700;border:2px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-family:inherit;"
+                 oninput="this.value=this.value.replace(/[^0-9]/g,'');refreshMini({{ pg_num }})">
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </div>
   {% endfor %}
 
@@ -462,8 +493,8 @@ input:focus,select:focus{border-color:var(--accent);}
   </div>
   {% endif %}
 
-  <!-- Takvim Zone tarihi — tüm şablon tipleri için -->
-  {% if calendar_zones %}
+  <!-- Takvim Zone tarihi — sadece tek sayfa şablonlar için (multipage'de sayfa içinde gösterilir) -->
+  {% if calendar_zones and not is_multipage_tmpl %}
   <div class="sec" id="cal-date-sec">
     <div class="stitle">📅 Özel Tarihinizi Girin</div>
     <p class="hint" style="margin-bottom:14px;">Seçtiğiniz tarih takviminizde kırmızı ile işaretlenecektir.</p>
