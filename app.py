@@ -213,6 +213,14 @@ def upload_to_drive(file_path, filename, folder_id, max_retries=3):
                 raise
     raise RuntimeError(f"Drive upload başarısız: {filename}")
 
+def _create_zip_tmp(paths, zip_name):
+    """Birden fazla dosyadan geçici ZIP oluşturur. ZIP dosyasının yolunu döndürür."""
+    tmp_zip = os.path.join(tempfile.gettempdir(), zip_name)
+    with zipfile.ZipFile(tmp_zip, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for path in paths:
+            zf.write(path, os.path.basename(path))
+    return tmp_zip
+
 def download_from_drive(file_id):
     """Drive dosyasını BytesIO olarak indir (Shared Drive destekli)."""
     svc = get_drive_service()
@@ -941,15 +949,20 @@ def submit_form(tid):
             result = generate_design(unit_order, tmpl)
             print(f"[GEN] generate_design döndü: {result!r:.120}")
             if isinstance(result, list):
-                # MULTIPAGE — her dosyayı Drive'a yükle
-                drive_files = []
-                for tmp_path in result:
-                    print(f"[Drive] Yükleme başladı: {os.path.basename(tmp_path)}")
-                    fid, fname2 = upload_to_drive(tmp_path, os.path.basename(tmp_path), folder_id)
-                    print(f"[Drive] Yükleme OK: {fid} — {fname2}")
-                    drive_files.append({'id': fid, 'name': fname2})
-                unit['drive_files'] = drive_files
-                all_drive_files.extend(drive_files)
+                # MULTIPAGE — ZIP oluştur, tek dosya olarak Drive'a yükle
+                name_part  = customer_name.replace('/', '-')
+                _adet      = unit_order.get('adet_count')
+                zip_name   = f"{name_part}, {_adet} ADET.zip" if (_adet and _adet > 1) else f"{name_part}.zip"
+                print(f"[ZIP] {len(result)} sayfa → {zip_name}")
+                zip_path   = _create_zip_tmp(result, zip_name)
+                for p in result:
+                    try: os.remove(p)
+                    except Exception: pass
+                fid, fname2 = upload_to_drive(zip_path, zip_name, folder_id)
+                print(f"[Drive] ZIP yükleme OK: {fid} — {fname2}")
+                unit['drive_file_id']   = fid
+                unit['drive_file_name'] = fname2
+                all_drive_files.append({'id': fid, 'name': fname2})
             else:
                 enqueue_n = unit_count if (same_design and unit_count > 1) else 1
                 queued = _route_to_print_queue(order_id, customer_name, result, unit, enqueue_n)
@@ -967,6 +980,7 @@ def submit_form(tid):
             had_error = True
             unit['error'] = str(e)
     else:
+        collected_paths = []  # ZIP'e eklenecek tüm dosya yolları
         for unit_idx, unit in enumerate(units):
             unit_order = {**order, **{k: v for k, v in unit.items() if k != 'unit_num'}}
             unit_order['unit_num'] = unit['unit_num']
@@ -980,29 +994,42 @@ def submit_form(tid):
                 result = generate_design(unit_order, tmpl)
                 print(f"[GEN] ünite {unit_idx} döndü: {result!r:.120}")
                 if isinstance(result, list):
-                    drive_files = []
-                    for tmp_path in result:
-                        print(f"[Drive] Yükleme başladı: {os.path.basename(tmp_path)}")
-                        fid, fname2 = upload_to_drive(tmp_path, os.path.basename(tmp_path), folder_id)
-                        print(f"[Drive] Yükleme OK: {fid} — {fname2}")
-                        drive_files.append({'id': fid, 'name': fname2})
-                    unit['drive_files'] = drive_files
-                    all_drive_files.extend(drive_files)
+                    collected_paths.extend(result)
+                    unit['has_result'] = True
                 else:
                     queued = _route_to_print_queue(order_id, customer_name, result, unit)
                     print(f"[Queue] ünite {unit_idx} kuyruğa alındı: {queued}")
                     if not queued:
-                        print(f"[Drive] Yükleme başladı: {os.path.basename(result)}")
-                        fid, fname2 = upload_to_drive(result, os.path.basename(result), folder_id)
-                        print(f"[Drive] Yükleme OK: {fid} — {fname2}")
-                        unit['drive_file_id']   = fid
-                        unit['drive_file_name'] = fname2
-                        all_drive_files.append({'id': fid, 'name': fname2})
+                        collected_paths.append(result)
+                        unit['has_result'] = True
             except Exception as e:
                 import traceback
                 print(f"[HATA] ünite {unit_idx} tasarım/yükleme hatası:\n{traceback.format_exc()}")
                 had_error = True
                 unit['error'] = str(e)
+
+        # Toplanan dosyaları ZIP veya tek JPG olarak Drive'a yükle
+        if collected_paths and folder_id:
+            try:
+                name_part = customer_name.replace('/', '-')
+                if len(collected_paths) == 1:
+                    print(f"[Drive] Yükleme başladı: {os.path.basename(collected_paths[0])}")
+                    fid, fname2 = upload_to_drive(collected_paths[0], os.path.basename(collected_paths[0]), folder_id)
+                    print(f"[Drive] Yükleme OK: {fid} — {fname2}")
+                else:
+                    zip_name = f"{name_part}, {unit_count} ADET.zip"
+                    print(f"[ZIP] {len(collected_paths)} dosya → {zip_name}")
+                    zip_path = _create_zip_tmp(collected_paths, zip_name)
+                    for p in collected_paths:
+                        try: os.remove(p)
+                        except Exception: pass
+                    fid, fname2 = upload_to_drive(zip_path, zip_name, folder_id)
+                    print(f"[Drive] ZIP yükleme OK: {fid} — {fname2}")
+                all_drive_files.append({'id': fid, 'name': fname2})
+            except Exception as e:
+                import traceback
+                print(f"[HATA] ZIP/Drive yükleme hatası:\n{traceback.format_exc()}")
+                had_error = True
 
     # Kuyruğa alınan sipariş sayısını kontrol et
     queued_count = sum(1 for u in units if u.get('staging_file'))
@@ -2078,13 +2105,16 @@ def download_order(order_id):
             print(f"[Drive] çoklu indirme hatası: {e}")
             return f"Drive indirme hatası: {e}", 500
 
-    # ── Drive tek dosya ───────────────────────────────────────────────────────
+    # ── Drive tek dosya (JPG veya ZIP) ───────────────────────────────────────
     drive_file_id   = order.get('drive_file_id')
-    drive_file_name = order.get('drive_file_name')
+    drive_file_name = order.get('drive_file_name') or ''
     if drive_file_id:
         try:
             buf = download_from_drive(drive_file_id)
             dn  = drive_file_name or pretty_filename(order)
+            if dn.lower().endswith('.zip'):
+                return send_file(buf, as_attachment=True, download_name=dn,
+                                 mimetype='application/zip')
             return send_file(buf, as_attachment=True, download_name=dn,
                              mimetype='image/jpeg')
         except Exception as e:

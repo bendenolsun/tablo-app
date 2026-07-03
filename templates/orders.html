@@ -72,8 +72,9 @@
               {% set has_local = o.output_file or o.output_files %}
               {% if has_drive or has_local %}
               <a href="/admin/download/{{ o.id }}" class="btn btn-secondary btn-sm">
-                {% if o.drive_files or o.output_files %}
-                  {% if o.unit_count and o.unit_count > 1 and not o.same_design %}
+                {% set is_zip_file = (o.drive_file_name and o.drive_file_name.endswith('.zip')) or o.drive_files or o.output_files %}
+                {% if is_zip_file %}
+                  {% if o.unit_count and o.unit_count > 1 %}
                     ⬇ ZIP ({{ o.unit_count }} ADET)
                   {% else %}
                     ⬇ ZIP
