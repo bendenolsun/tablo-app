@@ -847,7 +847,7 @@ def submit_form(tid):
     if ptype == 'PSTR':
         size_label = '29.7x40cm'
     elif ptype == 'A3':
-        size_label = '29.7x42cm'
+        size_label = 'A3'
     elif ptype == 'MDF' and mdf_size_key:
         size_label = MDF_SIZES[mdf_size_key]['label']
     elif ptype == 'CUSTOM_MULTI' and custom_size_key:
