@@ -36,7 +36,8 @@ html, body { height:100%; overflow:hidden; }
 /* Canvas */
 #canvas-container { background:#111; border:1px solid var(--border);
   border-radius:var(--radius); overflow:auto; user-select:none; }
-#canvas-inner { position:relative; margin:0 auto; transform-origin:top center; }
+#canvas-scale-wrap { position:relative; }
+#canvas-inner { position:relative; transform-origin:top left; }
 #bg-img { display:block; width:100%; height:auto; pointer-events:none; }
 
 .zone-rect { position:absolute; border:2px solid; display:flex; align-items:center;
@@ -255,6 +256,7 @@ html, body { height:100%; overflow:hidden; }
         <span style="font-size:11px;color:var(--text-dim);">Ctrl+Scroll zoom · Shift=snap kapalı</span>
       </div>
       <div id="canvas-container">
+        <div id="canvas-scale-wrap">
         <div id="canvas-inner">
           <img id="bg-img" src="" alt="Şablon">
           <div id="sel-box"></div>
@@ -264,6 +266,7 @@ html, body { height:100%; overflow:hidden; }
           <div id="dist-overlay"></div>
           <div id="selection-box"></div>
           <div id="ghost-zone" style="display:none;position:absolute;pointer-events:none;box-sizing:border-box;"></div>
+        </div>
         </div>
       </div>
     </div>
@@ -812,9 +815,10 @@ function initNaturalSize() {
 
 function applyZoom() {
   canvasInner.style.transform = `scale(${zoomLevel})`;
-  // transform layout boyutunu değiştirmez; görsel yükseklik farkını margin ile telafi et
   const h = naturalH || canvasInner.offsetHeight;
-  canvasInner.style.marginBottom = (h * Math.max(0, zoomLevel - 1)).toFixed(0) + 'px';
+  const wrap = document.getElementById('canvas-scale-wrap');
+  wrap.style.width  = Math.ceil(naturalW * zoomLevel) + 'px';
+  wrap.style.height = Math.ceil(h * zoomLevel) + 'px';
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
