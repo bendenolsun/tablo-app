@@ -1002,32 +1002,35 @@ function getSnapRefs(excludeIdx) {
 
 // Yeni zone çizerken snap: sol→sol, sağ→sağ, üst→üst, alt→alta hizala
 function calcDrawSnap(x, y, w, h) {
+  const MIN = 3; // zone yeterince büyüdükten sonra snap devreye girer (birleşme önlenir)
   const zones = allZones[activeKey] || [];
-  const vLeft = [], vRight = [], hTop = [], hBot = [];
+  const vRefs = [], hRefs = [];
   zones.forEach(z => {
-    vLeft.push(z.x);       // sol kenarlar
-    vRight.push(z.x + z.w); // sağ kenarlar
-    hTop.push(z.y);          // üst kenarlar
-    hBot.push(z.y + z.h);    // alt kenarlar
+    vRefs.push(z.x, z.x + z.w);
+    hRefs.push(z.y, z.y + z.h);
   });
 
   let nx = x, ny = y, nw = w, nh = h, lineX = null, lineY = null;
 
-  const snapL = snapEdge(x,     vLeft);   // yeni sol → diğerlerin solu
-  const snapR = snapEdge(x + w, vRight);  // yeni sağ → diğerlerin sağı
-  if (snapL !== null && snapR !== null) {
-    if (Math.abs(x - snapL) <= Math.abs((x + w) - snapR)) { nx = snapL; lineX = snapL; }
-    else { nw = snapR - x; lineX = snapR; }
-  } else if (snapL !== null) { nx = snapL; lineX = snapL; }
-  else if (snapR !== null)   { nw = snapR - x; lineX = snapR; }
+  if (w >= MIN) {
+    const snapL = snapEdge(x,     vRefs);
+    const snapR = snapEdge(x + w, vRefs);
+    if (snapL !== null && snapR !== null) {
+      if (Math.abs(x - snapL) <= Math.abs((x + w) - snapR)) { nx = snapL; lineX = snapL; }
+      else { nw = snapR - x; lineX = snapR; }
+    } else if (snapL !== null) { nx = snapL; lineX = snapL; }
+    else if (snapR !== null)   { nw = snapR - x; lineX = snapR; }
+  }
 
-  const snapT = snapEdge(y,     hTop);    // yeni üst → diğerlerin üstü
-  const snapB = snapEdge(y + h, hBot);    // yeni alt → diğerlerin altı
-  if (snapT !== null && snapB !== null) {
-    if (Math.abs(y - snapT) <= Math.abs((y + h) - snapB)) { ny = snapT; lineY = snapT; }
-    else { nh = snapB - y; lineY = snapB; }
-  } else if (snapT !== null) { ny = snapT; lineY = snapT; }
-  else if (snapB !== null)   { nh = snapB - y; lineY = snapB; }
+  if (h >= MIN) {
+    const snapT = snapEdge(y,     hRefs);
+    const snapB = snapEdge(y + h, hRefs);
+    if (snapT !== null && snapB !== null) {
+      if (Math.abs(y - snapT) <= Math.abs((y + h) - snapB)) { ny = snapT; lineY = snapT; }
+      else { nh = snapB - y; lineY = snapB; }
+    } else if (snapT !== null) { ny = snapT; lineY = snapT; }
+    else if (snapB !== null)   { nh = snapB - y; lineY = snapB; }
+  }
 
   return { x: nx, y: ny, w: nw > 0 ? nw : w, h: nh > 0 ? nh : h, lineX, lineY };
 }
