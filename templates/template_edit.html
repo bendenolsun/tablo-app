@@ -883,6 +883,7 @@ function selectZone(idx, el) {
   el.classList.add('selected');
   showZoneEditPanel(idx);
   highlightLayerRow(idx);
+  updateSelectionBox();
 }
 
 function toggleSelection(idx, el) {
@@ -2739,27 +2740,50 @@ function computeBBox() {
            cx: (minX + maxX) / 2, cy: (minY + maxY) / 2 };
 }
 
+const _RESIZE_HANDLES = [
+  { id:'nw', lp:0,   tp:0,   cur:'nw-resize' },
+  { id:'n',  lp:50,  tp:0,   cur:'n-resize'  },
+  { id:'ne', lp:100, tp:0,   cur:'ne-resize' },
+  { id:'w',  lp:0,   tp:50,  cur:'w-resize'  },
+  { id:'e',  lp:100, tp:50,  cur:'e-resize'  },
+  { id:'sw', lp:0,   tp:100, cur:'sw-resize' },
+  { id:'s',  lp:50,  tp:100, cur:'s-resize'  },
+  { id:'se', lp:100, tp:100, cur:'se-resize' },
+];
+
 function updateSelectionBox() {
   if (!selBoxEl) return;
-  if (selectedSet.size < 2) { selBoxEl.style.display = 'none'; return; }
+  selBoxEl.innerHTML = '';
+
+  if (selectedSet.size === 0) { selBoxEl.style.display = 'none'; return; }
+
+  const zones = allZones[activeKey];
+
+  // ── Tek seçim: kenarlıksız resize tutamacları ────────────────────────────
+  if (selectedSet.size === 1) {
+    const idx = [...selectedSet][0];
+    if (!zones || !zones[idx]) { selBoxEl.style.display = 'none'; return; }
+    const z = zones[idx];
+    selBoxEl.style.cssText = `display:block;position:absolute;left:${z.x.toFixed(3)}%;top:${z.y.toFixed(3)}%;width:${z.w.toFixed(3)}%;height:${z.h.toFixed(3)}%;border:none;pointer-events:none;z-index:17;box-sizing:border-box;`;
+    _RESIZE_HANDLES.forEach(h => {
+      const el = document.createElement('div');
+      el.className = 'sel-handle';
+      el.style.left   = h.lp + '%';
+      el.style.top    = h.tp + '%';
+      el.style.cursor = h.cur;
+      el.addEventListener('mousedown', (e) => { e.stopPropagation(); startSingleResize(e, h.id, idx); });
+      selBoxEl.appendChild(el);
+    });
+    return;
+  }
+
+  // ── Çoklu seçim: mavi çerçeve + resize + döndürme ────────────────────────
   const bbox = computeBBox();
   if (!bbox) { selBoxEl.style.display = 'none'; return; }
 
   selBoxEl.style.cssText = `display:block;position:absolute;left:${bbox.x.toFixed(3)}%;top:${bbox.y.toFixed(3)}%;width:${bbox.w.toFixed(3)}%;height:${bbox.h.toFixed(3)}%;border:1.5px dashed rgba(96,165,250,.85);pointer-events:none;z-index:17;box-sizing:border-box;`;
 
-  selBoxEl.innerHTML = '';
-
-  // 8 resize tutamacı
-  [
-    { id:'nw', lp:0,   tp:0,   cur:'nw-resize' },
-    { id:'n',  lp:50,  tp:0,   cur:'n-resize'  },
-    { id:'ne', lp:100, tp:0,   cur:'ne-resize' },
-    { id:'w',  lp:0,   tp:50,  cur:'w-resize'  },
-    { id:'e',  lp:100, tp:50,  cur:'e-resize'  },
-    { id:'sw', lp:0,   tp:100, cur:'sw-resize' },
-    { id:'s',  lp:50,  tp:100, cur:'s-resize'  },
-    { id:'se', lp:100, tp:100, cur:'se-resize' },
-  ].forEach(h => {
+  _RESIZE_HANDLES.forEach(h => {
     const el = document.createElement('div');
     el.className = 'sel-handle';
     el.style.left   = h.lp + '%';
@@ -2769,12 +2793,71 @@ function updateSelectionBox() {
     selBoxEl.appendChild(el);
   });
 
-  // Döndürme tutacağı (bbox üstünde, ortada)
   const rot = document.createElement('div');
   rot.className = 'sel-handle sel-rot';
   rot.textContent = '↻';
   rot.addEventListener('mousedown', (e) => { e.stopPropagation(); startBBoxRotate(e, bbox); });
   selBoxEl.appendChild(rot);
+}
+
+// ── Tek zone resize ───────────────────────────────────────────────────────────
+function startSingleResize(e, handleId, idx) {
+  if (_activeDrag) return;
+  _activeDrag = true;
+  e.preventDefault();
+  const zones = allZones[activeKey];
+  const iz = { x: zones[idx].x, y: zones[idx].y, w: zones[idx].w, h: zones[idx].h };
+  const pos0 = getPos(e);
+  const doL = handleId.includes('w'), doR = handleId.includes('e');
+  const doT = handleId.includes('n'), doB = handleId.includes('s');
+  let resized = false;
+
+  function onMove(e) {
+    if (!resized) resized = true;
+    const pos = getPos(e);
+    const dx = pos.x - pos0.x, dy = pos.y - pos0.y;
+
+    let nx = iz.x, ny = iz.y, nw = iz.w, nh = iz.h;
+    if (doL) { nx = iz.x + dx; nw = iz.w - dx; }
+    if (doR) { nw = iz.w + dx; }
+    if (doT) { ny = iz.y + dy; nh = iz.h - dy; }
+    if (doB) { nh = iz.h + dy; }
+
+    const MIN = 2;
+    if (nw < MIN) { nw = MIN; if (doL) nx = iz.x + iz.w - MIN; }
+    if (nh < MIN) { nh = MIN; if (doT) ny = iz.y + iz.h - MIN; }
+
+    zones[idx].x = nx; zones[idx].y = ny;
+    zones[idx].w = nw; zones[idx].h = nh;
+
+    // Canlı DOM güncelle
+    const zEl = canvasInner.querySelectorAll('.zone-rect')[idx];
+    if (zEl) {
+      zEl.style.left   = nx.toFixed(2) + '%';
+      zEl.style.top    = ny.toFixed(2) + '%';
+      zEl.style.width  = nw.toFixed(2) + '%';
+      zEl.style.height = nh.toFixed(2) + '%';
+    }
+    // Selection box konumunu güncelle
+    if (selBoxEl) {
+      selBoxEl.style.left   = nx.toFixed(3) + '%';
+      selBoxEl.style.top    = ny.toFixed(3) + '%';
+      selBoxEl.style.width  = nw.toFixed(3) + '%';
+      selBoxEl.style.height = nh.toFixed(3) + '%';
+    }
+  }
+
+  function onUp() {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup',   onUp);
+    _activeDrag = false;
+    if (resized) pushHistory();
+    renderZones();
+    updateSelectionBox();
+  }
+
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup',   onUp);
 }
 
 function startBBoxResize(e, handleId, initBBox) {
