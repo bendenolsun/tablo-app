@@ -1002,8 +1002,8 @@ function getSnapRefs(excludeIdx) {
 
 // Yeni zone çizerken snap: sol→sol, sağ→sağ, üst→üst, alt→alta hizala
 function calcDrawSnap(x, y, w, h) {
-  // Aynı taraf snap: sol→sol kenarlar, sağ→sağ kenarlar (birleşme/bitişme olmaz)
-  // Çizim için daha geniş eşik (3%) kullanılır ki kenar hizalama daha kolay tetiklensin
+  // Aynı taraf snap: sol→sol, sağ→sağ, üst→üst, alt→alt (bitişme olmaz)
+  // Her iki kenar da bağımsız snap yapabilir (winner-takes-all değil)
   const DT = 3.0;
   const zones = allZones[activeKey] || [];
   const vLeft = [], vRight = [], hTop = [], hBot = [];
@@ -1022,21 +1022,18 @@ function calcDrawSnap(x, y, w, h) {
 
   let nx = x, ny = y, nw = w, nh = h, lineX = null, lineY = null;
 
+  // Sol/sağ bağımsız — her ikisi de aynı anda tetiklenebilir
   const snapL = snapNearest(x,     vLeft);
   const snapR = snapNearest(x + w, vRight);
-  if (snapL !== null && snapR !== null) {
-    if (Math.abs(x - snapL) <= Math.abs((x + w) - snapR)) { nx = snapL; lineX = snapL; }
-    else { nw = snapR - x; lineX = snapR; }
-  } else if (snapL !== null) { nx = snapL; lineX = snapL; }
-  else if (snapR !== null)   { nw = snapR - x; lineX = snapR; }
+  if (snapL !== null) { nx = snapL; lineX = snapL; }
+  if (snapR !== null) { nw = snapR - nx; lineX = snapR; }
 
+  // Üst/alt bağımsız — her ikisi de aynı anda tetiklenebilir
+  // Üst tam hizalı olsa bile alt kenar ayrıca snap yapabilir
   const snapT = snapNearest(y,     hTop);
   const snapB = snapNearest(y + h, hBot);
-  if (snapT !== null && snapB !== null) {
-    if (Math.abs(y - snapT) <= Math.abs((y + h) - snapB)) { ny = snapT; lineY = snapT; }
-    else { nh = snapB - y; lineY = snapB; }
-  } else if (snapT !== null) { ny = snapT; lineY = snapT; }
-  else if (snapB !== null)   { nh = snapB - y; lineY = snapB; }
+  if (snapT !== null) { ny = snapT; lineY = snapT; }
+  if (snapB !== null) { nh = snapB - ny; lineY = snapB; }
 
   return { x: nx, y: ny, w: nw > 0 ? nw : w, h: nh > 0 ? nh : h, lineX, lineY };
 }
