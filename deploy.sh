@@ -11,7 +11,7 @@ sync_json() {
   echo "→ $LABEL çekiliyor..."
   DATA=$(curl -s "$BASE/$ENDPOINT?token=$TOKEN")
   # Geçerli JSON dizisi mi kontrol et
-  COUNT=$(echo "$DATA" | python3 -c "import json,sys; t=json.load(sys.stdin); assert isinstance(t,list); print(len(t))" 2>/dev/null)
+  COUNT=$(echo "$DATA" | python3 -c "import json,sys; t=json.load(sys.stdin); assert isinstance(t,list); print(len(t))" 2>/dev/null) || COUNT=""
   if [ -z "$COUNT" ]; then
     echo "  ⚠ $LABEL geçerli JSON değil, mevcut dosya korunuyor"
     return
