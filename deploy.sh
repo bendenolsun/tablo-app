@@ -10,11 +10,12 @@ sync_json() {
   local ENDPOINT="$1" DEST="$2" LABEL="$3"
   echo "→ $LABEL çekiliyor..."
   DATA=$(curl -s "$BASE/$ENDPOINT?token=$TOKEN")
-  if [ -z "$DATA" ] || [ "$DATA" = "null" ] || [ "$DATA" = "Unauthorized" ]; then
-    echo "  ⚠ $LABEL çekilemedi, mevcut dosya korunuyor"
+  # Geçerli JSON dizisi mi kontrol et
+  COUNT=$(echo "$DATA" | python3 -c "import json,sys; t=json.load(sys.stdin); assert isinstance(t,list); print(len(t))" 2>/dev/null)
+  if [ -z "$COUNT" ]; then
+    echo "  ⚠ $LABEL geçerli JSON değil, mevcut dosya korunuyor"
     return
   fi
-  COUNT=$(echo "$DATA" | python3 -c "import json,sys; t=json.load(sys.stdin); print(len(t))" 2>/dev/null || echo "?")
   echo "  → $COUNT kayıt bulundu"
   echo "$DATA" > "$DEST"
   git add "$DEST"
