@@ -43,10 +43,15 @@ for d in [DATA_DIR, UPLOAD_DIR, OUTPUT_DIR, FONTS_DIR, STAGING_DIR]:
 
 # Volume bağlandığında data/ boş gelir; templates.json yoksa yedekten kopyala
 _DEFAULT_TMPL_SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data_default', 'templates.json')
+print(f"[Init] DATA_DIR abs: {os.path.abspath(DATA_DIR)}")
+_data_files = os.listdir(DATA_DIR) if os.path.isdir(DATA_DIR) else []
+print(f"[Init] data/ içeriği: {_data_files}")
 if not os.path.exists(TEMPLATES_FILE) and os.path.exists(_DEFAULT_TMPL_SRC):
     import shutil as _shutil
     _shutil.copy(_DEFAULT_TMPL_SRC, TEMPLATES_FILE)
     print("[Init] templates.json data_default'tan kopyalandı")
+else:
+    print(f"[Init] templates.json bulundu, kopyalanmadı ({os.path.getsize(TEMPLATES_FILE) if os.path.exists(TEMPLATES_FILE) else 'YOK'} byte)")
 
 # ── Baskı kuyruğu boyutları (300 DPI piksel) ─────────────────────────────────
 _A3_W, _A3_H = 3508, 4961
