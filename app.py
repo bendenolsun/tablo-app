@@ -283,7 +283,9 @@ def admin_logout():
 # ── Admin panel ────────────────────────────────────────────────────────────────
 @app.route('/admin/export-templates')
 def export_templates():
-    if require_admin(): return redirect(url_for('admin_login'))
+    token = request.args.get('token', '')
+    if token != ADMIN_PASSWORD and not session.get('admin'):
+        return 'Unauthorized', 401
     import json as _json
     data = _json.dumps(get_templates(), ensure_ascii=False, indent=2)
     return data, 200, {'Content-Type': 'application/json; charset=utf-8',

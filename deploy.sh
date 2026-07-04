@@ -2,15 +2,12 @@
 # Deploy öncesi sunucudaki güncel şablonları data_default'a kaydet, sonra deploy et
 set -e
 
-COOKIE="/tmp/tablo_deploy_cookies.txt"
 BASE="https://www.thesalefy.com"
 DATA_DEFAULT="data_default/templates.json"
-
-echo "→ Sunucuya giriş yapılıyor..."
-curl -s -c "$COOKIE" -X POST "$BASE/admin/login" -d "password=ifep.2024" -L -o /dev/null
+TOKEN="ifep.2024"
 
 echo "→ Güncel şablonlar çekiliyor..."
-EXPORTED=$(curl -s -b "$COOKIE" "$BASE/admin/export-templates")
+EXPORTED=$(curl -s "$BASE/admin/export-templates?token=$TOKEN")
 
 if [ -z "$EXPORTED" ] || [ "$EXPORTED" = "null" ]; then
   echo "⚠ Şablonlar çekilemedi, mevcut data_default korunuyor"
