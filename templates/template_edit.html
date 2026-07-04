@@ -1002,35 +1002,41 @@ function getSnapRefs(excludeIdx) {
 
 // Yeni zone çizerken snap: sol→sol, sağ→sağ, üst→üst, alt→alta hizala
 function calcDrawSnap(x, y, w, h) {
-  const MIN = 3; // zone yeterince büyüdükten sonra snap devreye girer (birleşme önlenir)
+  // Aynı taraf snap: sol→sol kenarlar, sağ→sağ kenarlar (birleşme/bitişme olmaz)
+  // Çizim için daha geniş eşik (3%) kullanılır ki kenar hizalama daha kolay tetiklensin
+  const DT = 3.0;
   const zones = allZones[activeKey] || [];
-  const vRefs = [], hRefs = [];
+  const vLeft = [], vRight = [], hTop = [], hBot = [];
   zones.forEach(z => {
-    vRefs.push(z.x, z.x + z.w);
-    hRefs.push(z.y, z.y + z.h);
+    vLeft.push(z.x);
+    vRight.push(z.x + z.w);
+    hTop.push(z.y);
+    hBot.push(z.y + z.h);
   });
+
+  function snapNearest(val, refs) {
+    let best = null, bestD = DT;
+    refs.forEach(r => { const d = Math.abs(val - r); if (d < bestD) { bestD = d; best = r; } });
+    return best;
+  }
 
   let nx = x, ny = y, nw = w, nh = h, lineX = null, lineY = null;
 
-  if (w >= MIN) {
-    const snapL = snapEdge(x,     vRefs);
-    const snapR = snapEdge(x + w, vRefs);
-    if (snapL !== null && snapR !== null) {
-      if (Math.abs(x - snapL) <= Math.abs((x + w) - snapR)) { nx = snapL; lineX = snapL; }
-      else { nw = snapR - x; lineX = snapR; }
-    } else if (snapL !== null) { nx = snapL; lineX = snapL; }
-    else if (snapR !== null)   { nw = snapR - x; lineX = snapR; }
-  }
+  const snapL = snapNearest(x,     vLeft);
+  const snapR = snapNearest(x + w, vRight);
+  if (snapL !== null && snapR !== null) {
+    if (Math.abs(x - snapL) <= Math.abs((x + w) - snapR)) { nx = snapL; lineX = snapL; }
+    else { nw = snapR - x; lineX = snapR; }
+  } else if (snapL !== null) { nx = snapL; lineX = snapL; }
+  else if (snapR !== null)   { nw = snapR - x; lineX = snapR; }
 
-  if (h >= MIN) {
-    const snapT = snapEdge(y,     hRefs);
-    const snapB = snapEdge(y + h, hRefs);
-    if (snapT !== null && snapB !== null) {
-      if (Math.abs(y - snapT) <= Math.abs((y + h) - snapB)) { ny = snapT; lineY = snapT; }
-      else { nh = snapB - y; lineY = snapB; }
-    } else if (snapT !== null) { ny = snapT; lineY = snapT; }
-    else if (snapB !== null)   { nh = snapB - y; lineY = snapB; }
-  }
+  const snapT = snapNearest(y,     hTop);
+  const snapB = snapNearest(y + h, hBot);
+  if (snapT !== null && snapB !== null) {
+    if (Math.abs(y - snapT) <= Math.abs((y + h) - snapB)) { ny = snapT; lineY = snapT; }
+    else { nh = snapB - y; lineY = snapB; }
+  } else if (snapT !== null) { ny = snapT; lineY = snapT; }
+  else if (snapB !== null)   { nh = snapB - y; lineY = snapB; }
 
   return { x: nx, y: ny, w: nw > 0 ? nw : w, h: nh > 0 ? nh : h, lineX, lineY };
 }
