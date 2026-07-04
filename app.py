@@ -41,12 +41,15 @@ A3_LOG_FILE      = os.path.join(DATA_DIR, 'a3_log.json')   # hangi A3 hangi gün
 for d in [DATA_DIR, UPLOAD_DIR, OUTPUT_DIR, FONTS_DIR, STAGING_DIR]:
     os.makedirs(d, exist_ok=True)
 
-# Volume sıfırlandığında data/ boş gelir; templates.json yoksa data_default'tan kopyala
-_DEFAULT_TMPL_SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data_default', 'templates.json')
-if not os.path.exists(TEMPLATES_FILE) and os.path.exists(_DEFAULT_TMPL_SRC):
-    import shutil as _shutil
-    _shutil.copy(_DEFAULT_TMPL_SRC, TEMPLATES_FILE)
-    print("[Init] templates.json data_default'tan kopyalandı")
+# Volume sıfırlandığında data/ boş gelir; data_default'tan eksik dosyaları kopyala
+import shutil as _shutil
+_DATA_DEFAULT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data_default')
+for _fname in ['templates.json', 'orders.json']:
+    _src = os.path.join(_DATA_DEFAULT, _fname)
+    _dst = os.path.join(DATA_DIR, _fname)
+    if not os.path.exists(_dst) and os.path.exists(_src):
+        _shutil.copy(_src, _dst)
+        print(f"[Init] {_fname} data_default'tan kopyalandı")
 
 # ── Baskı kuyruğu boyutları (300 DPI piksel) ─────────────────────────────────
 _A3_W, _A3_H = 3508, 4961
@@ -290,6 +293,16 @@ def export_templates():
     data = _json.dumps(get_templates(), ensure_ascii=False, indent=2)
     return data, 200, {'Content-Type': 'application/json; charset=utf-8',
                        'Content-Disposition': 'attachment; filename="templates.json"'}
+
+@app.route('/admin/export-orders')
+def export_orders():
+    token = request.args.get('token', '')
+    if token != ADMIN_PASSWORD and not session.get('admin'):
+        return 'Unauthorized', 401
+    import json as _json
+    data = _json.dumps(get_orders(), ensure_ascii=False, indent=2)
+    return data, 200, {'Content-Type': 'application/json; charset=utf-8',
+                       'Content-Disposition': 'attachment; filename="orders.json"'}
 
 @app.route('/admin')
 def admin_panel():
