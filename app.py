@@ -286,6 +286,15 @@ def admin_logout():
     return redirect(url_for('admin_login'))
 
 # ── Admin panel ────────────────────────────────────────────────────────────────
+@app.route('/admin/debug/volume')
+def debug_volume():
+    if require_admin(): return redirect(url_for('admin_login'))
+    import json as _json
+    files = os.listdir(DATA_DIR) if os.path.isdir(DATA_DIR) else []
+    sizes = {f: os.path.getsize(os.path.join(DATA_DIR, f)) for f in files}
+    tmpl_count = len(get_templates())
+    return _json.dumps({'data_dir': os.path.abspath(DATA_DIR), 'files': sizes, 'template_count': tmpl_count}, ensure_ascii=False), 200, {'Content-Type': 'application/json'}
+
 @app.route('/admin')
 def admin_panel():
     if require_admin(): return redirect(url_for('admin_login'))
