@@ -1000,21 +1000,29 @@ function getSnapRefs(excludeIdx) {
   return { vRefs, hRefs };
 }
 
-// Yeni zone çizerken snap: kenar pozisyonu VE boyutu ayarlayabilir
+// Yeni zone çizerken snap: sol→sol, sağ→sağ, üst→üst, alt→alta hizala
 function calcDrawSnap(x, y, w, h) {
-  const { vRefs, hRefs } = getSnapRefs(-1);
+  const zones = allZones[activeKey] || [];
+  const vLeft = [], vRight = [], hTop = [], hBot = [];
+  zones.forEach(z => {
+    vLeft.push(z.x);       // sol kenarlar
+    vRight.push(z.x + z.w); // sağ kenarlar
+    hTop.push(z.y);          // üst kenarlar
+    hBot.push(z.y + z.h);    // alt kenarlar
+  });
+
   let nx = x, ny = y, nw = w, nh = h, lineX = null, lineY = null;
 
-  const snapL = snapEdge(x,     vRefs);
-  const snapR = snapEdge(x + w, vRefs);
+  const snapL = snapEdge(x,     vLeft);   // yeni sol → diğerlerin solu
+  const snapR = snapEdge(x + w, vRight);  // yeni sağ → diğerlerin sağı
   if (snapL !== null && snapR !== null) {
     if (Math.abs(x - snapL) <= Math.abs((x + w) - snapR)) { nx = snapL; lineX = snapL; }
     else { nw = snapR - x; lineX = snapR; }
   } else if (snapL !== null) { nx = snapL; lineX = snapL; }
   else if (snapR !== null)   { nw = snapR - x; lineX = snapR; }
 
-  const snapT = snapEdge(y,     hRefs);
-  const snapB = snapEdge(y + h, hRefs);
+  const snapT = snapEdge(y,     hTop);    // yeni üst → diğerlerin üstü
+  const snapB = snapEdge(y + h, hBot);    // yeni alt → diğerlerin altı
   if (snapT !== null && snapB !== null) {
     if (Math.abs(y - snapT) <= Math.abs((y + h) - snapB)) { ny = snapT; lineY = snapT; }
     else { nh = snapB - y; lineY = snapB; }
