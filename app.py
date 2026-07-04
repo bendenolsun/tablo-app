@@ -41,17 +41,12 @@ A3_LOG_FILE      = os.path.join(DATA_DIR, 'a3_log.json')   # hangi A3 hangi gün
 for d in [DATA_DIR, UPLOAD_DIR, OUTPUT_DIR, FONTS_DIR, STAGING_DIR]:
     os.makedirs(d, exist_ok=True)
 
-# Volume bağlandığında data/ boş gelir; templates.json yoksa yedekten kopyala
+# Volume sıfırlandığında data/ boş gelir; templates.json yoksa data_default'tan kopyala
 _DEFAULT_TMPL_SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data_default', 'templates.json')
-print(f"[Init] DATA_DIR abs: {os.path.abspath(DATA_DIR)}")
-_data_files = os.listdir(DATA_DIR) if os.path.isdir(DATA_DIR) else []
-print(f"[Init] data/ içeriği: {_data_files}")
 if not os.path.exists(TEMPLATES_FILE) and os.path.exists(_DEFAULT_TMPL_SRC):
     import shutil as _shutil
     _shutil.copy(_DEFAULT_TMPL_SRC, TEMPLATES_FILE)
     print("[Init] templates.json data_default'tan kopyalandı")
-else:
-    print(f"[Init] templates.json bulundu, kopyalanmadı ({os.path.getsize(TEMPLATES_FILE) if os.path.exists(TEMPLATES_FILE) else 'YOK'} byte)")
 
 # ── Baskı kuyruğu boyutları (300 DPI piksel) ─────────────────────────────────
 _A3_W, _A3_H = 3508, 4961
@@ -286,14 +281,13 @@ def admin_logout():
     return redirect(url_for('admin_login'))
 
 # ── Admin panel ────────────────────────────────────────────────────────────────
-@app.route('/admin/debug/volume')
-def debug_volume():
+@app.route('/admin/export-templates')
+def export_templates():
     if require_admin(): return redirect(url_for('admin_login'))
     import json as _json
-    files = os.listdir(DATA_DIR) if os.path.isdir(DATA_DIR) else []
-    sizes = {f: os.path.getsize(os.path.join(DATA_DIR, f)) for f in files}
-    tmpl_count = len(get_templates())
-    return _json.dumps({'data_dir': os.path.abspath(DATA_DIR), 'files': sizes, 'template_count': tmpl_count}, ensure_ascii=False), 200, {'Content-Type': 'application/json'}
+    data = _json.dumps(get_templates(), ensure_ascii=False, indent=2)
+    return data, 200, {'Content-Type': 'application/json; charset=utf-8',
+                       'Content-Disposition': 'attachment; filename="templates.json"'}
 
 @app.route('/admin')
 def admin_panel():
