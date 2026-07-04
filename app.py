@@ -120,8 +120,11 @@ def _load_img(fname):
 # ── JSON yardımcıları ──────────────────────────────────────────────────────────
 def load_json(path, default):
     if os.path.exists(path):
-        with open(path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except (json.JSONDecodeError, ValueError):
+            print(f"[Warn] {path} geçersiz JSON, varsayılan kullanılıyor")
     return default
 
 def save_json(path, data):
