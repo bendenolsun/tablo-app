@@ -1,200 +1,31 @@
 [
   {
-    "id": "cb909ec0",
+    "id": "c5631138",
     "name": "12 FOTOĞRAFLI KOLAJ, MDF",
     "product_type": "MDF",
     "mdf_variants": {
       "15x21cm": {
-        "background": "bg_e72fa0df.jpg",
+        "background": "bg_c2d1df90.jpg",
         "width": 2819,
         "height": 4000,
-        "zones": [
-          {
-            "x": 28.07017543859649,
-            "y": 21.221927070755857,
-            "w": 42.98245614035088,
-            "h": 38.5607341221927,
-            "rotation": 0,
-            "type": "photo",
-            "label": "Ortadaki Fotoğraf",
-            "description": null,
-            "required": true,
-            "group_name": null,
-            "form_label": null,
-            "order": 0
-          },
-          {
-            "x": 11.732456140350877,
-            "y": 8.316831683168317,
-            "w": 15.460526315789476,
-            "h": 12.286887225307897,
-            "rotation": 0,
-            "type": "photo",
-            "label": "Fotoğraf 1",
-            "description": null,
-            "required": true,
-            "group_name": null,
-            "form_label": null,
-            "order": 1
-          },
-          {
-            "x": 28.07017543859649,
-            "y": 8.316831683168317,
-            "w": 30.263157894736846,
-            "h": 12.286887225307897,
-            "rotation": 0,
-            "type": "photo",
-            "label": "Fotoğraf 2",
-            "description": null,
-            "required": true,
-            "group_name": null,
-            "form_label": null,
-            "order": 2
-          },
-          {
-            "x": 59.210526315789465,
-            "y": 8.316831683168317,
-            "w": 29.276315789473685,
-            "h": 12.286887225307897,
-            "rotation": 0,
-            "type": "photo",
-            "label": "Fotoğraf 3",
-            "description": null,
-            "required": true,
-            "group_name": null,
-            "form_label": null,
-            "order": 3
-          },
-          {
-            "x": 72.03947368421053,
-            "y": 21.299203091040813,
-            "w": 16.447368421052616,
-            "h": 10.354986718184012,
-            "rotation": 0,
-            "type": "photo",
-            "label": "Fotoğraf 4",
-            "description": null,
-            "required": true,
-            "group_name": null,
-            "form_label": null,
-            "order": 4
-          },
-          {
-            "x": 72.03947368421053,
-            "y": 32.34967399178942,
-            "w": 16.447368421052616,
-            "h": 13.446027529582231,
-            "rotation": 0,
-            "type": "photo",
-            "label": "Fotoğraf 5",
-            "description": null,
-            "required": true,
-            "group_name": null,
-            "form_label": null,
-            "order": 5
-          },
-          {
-            "x": 72.03947368421053,
-            "y": 46.33663366336634,
-            "w": 16.447368421052616,
-            "h": 13.446027529582217,
-            "rotation": 0,
-            "type": "photo",
-            "label": "Fotoğraf 6",
-            "description": null,
-            "required": true,
-            "group_name": null,
-            "form_label": null,
-            "order": 6
-          },
-          {
-            "x": 74.4517543859649,
-            "y": 60.4008693552282,
-            "w": 13.925438596491233,
-            "h": 11.977783144168079,
-            "rotation": 0,
-            "type": "photo",
-            "label": "Fotoğraf 7",
-            "description": null,
-            "required": true,
-            "group_name": null,
-            "form_label": null,
-            "order": 7
-          },
-          {
-            "x": 42.98245614035088,
-            "y": 60.4008693552282,
-            "w": 30.372807017543863,
-            "h": 11.977783144168079,
-            "rotation": 0,
-            "type": "photo",
-            "label": "Fotoğraf 8",
-            "description": null,
-            "required": true,
-            "group_name": null,
-            "form_label": null,
-            "order": 8
-          },
-          {
-            "x": 11.732456140350877,
-            "y": 60.4008693552282,
-            "w": 30.37280701754386,
-            "h": 11.977783144168079,
-            "rotation": 0,
-            "type": "photo",
-            "label": "Fotoğraf 9",
-            "description": null,
-            "required": true,
-            "group_name": null,
-            "form_label": null,
-            "order": 9
-          },
-          {
-            "x": 11.732456140350877,
-            "y": 46.33663366336634,
-            "w": 15.460526315789476,
-            "h": 13.446027529582217,
-            "rotation": 0,
-            "type": "photo",
-            "label": "Fotoğraf 10",
-            "description": null,
-            "required": true,
-            "group_name": null,
-            "form_label": null,
-            "order": 10
-          },
-          {
-            "x": 11.732456140350877,
-            "y": 21.299203091040813,
-            "w": 15.460526315789476,
-            "h": 24.496498430330842,
-            "rotation": 0,
-            "type": "photo",
-            "label": "Fotoğraf 11",
-            "description": null,
-            "required": true,
-            "group_name": null,
-            "form_label": null,
-            "order": 11
-          }
-        ]
+        "zones": []
       },
       "21x30cm": {
-        "background": "bg_ad6ea740.jpg",
+        "background": "bg_8b57026e.jpg",
         "width": 3359,
         "height": 4750,
         "zones": []
       },
       "30x40cm": {
-        "background": "bg_5282e20c.jpg",
+        "background": "bg_c935207f.jpg",
         "width": 4266,
         "height": 5750,
         "zones": []
       }
     },
-    "preview": "preview_cb909ec0.jpg",
-    "created_at": "2026-07-06T12:07:15.197584",
-    "form_description": "Ürümüz çerçeveli görünümlü MDF tablodur. Çerçeveli görünümlü kişiye özel tasarım, yapışkanlı orijinal fotoğraf kağıdına baskı yapıldıktan sonra 4mm kalınlığında ham MDF üzerine uygulanarak hazırlanır. Arka yüzeyinde yer alan çift taraflı bantlar sayesinde tablonuzu kolaylıkla duvara asabilirsiniz.",
-    "enable_bw_option": true
+    "preview": "preview_c5631138.jpg",
+    "created_at": "2026-07-06T14:33:38.366819",
+    "form_description": "Ürünümüz çerçeveli görünümlü MDF tablodur. Çerçeveli görünümlü kişiye özel tasarım, yapışkanlı orijinal fotoğraf kağıdına baskı yapıldıktan sonra 4mm kalınlığındaki ham MDF üzerine uygulanarak hazırlanmaktadır. Arkasında yer alan çift taraflı bantlar sayesinde kolaylıkla duvara asabilirsiniz.",
+    "enable_bw_option": false
   }
 ]
