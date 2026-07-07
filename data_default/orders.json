@@ -2877,5 +2877,309 @@
       "ALT METİN": "#050505"
     },
     "unit_size_key": "15x21cm"
+  },
+  {
+    "id": "9D8A8EFD-8",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "15x21cm",
+    "custom_size_key": null,
+    "size_label": "14.8x21cm",
+    "customer_name": "HÜSEYIN CAMBAZ",
+    "order_number": "831246483949",
+    "phone": "05446110150",
+    "bw_option": "bw",
+    "status": "ready",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-07T19:58:17.320714",
+    "folder_name": "7 TEMMUZ BASKILAR",
+    "unit_count": 1,
+    "same_design": false,
+    "units": [
+      {
+        "photo_files": [
+          "order_9D8A8EFD-8_p0.jpg",
+          "order_9D8A8EFD-8_p1.jpg",
+          "order_9D8A8EFD-8_p2.jpg",
+          "order_9D8A8EFD-8_p3.jpg",
+          "order_9D8A8EFD-8_p4.jpg",
+          "order_9D8A8EFD-8_p5.jpg",
+          "order_9D8A8EFD-8_p6.jpg",
+          "order_9D8A8EFD-8_p7.jpg",
+          "order_9D8A8EFD-8_p8.jpg",
+          "order_9D8A8EFD-8_p9.jpg",
+          "order_9D8A8EFD-8_p10.jpg",
+          "order_9D8A8EFD-8_p11.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_9D8A8EFD-8_p0_orig.jpg",
+          "order_9D8A8EFD-8_p1_orig.jpg",
+          "order_9D8A8EFD-8_p2_orig.jpg",
+          "order_9D8A8EFD-8_p3_orig.jpg",
+          "order_9D8A8EFD-8_p4_orig.jpg",
+          "order_9D8A8EFD-8_p5_orig.jpg",
+          "order_9D8A8EFD-8_p6_orig.jpg",
+          "order_9D8A8EFD-8_p7_orig.jpg",
+          "order_9D8A8EFD-8_p8_orig.jpg",
+          "order_9D8A8EFD-8_p9_orig.jpg",
+          "order_9D8A8EFD-8_p10_orig.jpg",
+          "order_9D8A8EFD-8_p11_orig.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": -6.963645673323099,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": 13.676633444075312,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 45.559845559845556,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 33.82899628252788,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": 26.05459057071961,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": 13.186813186813195,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 6.20071684587813,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 44.401544401544385,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 10.687022900763356,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": -0.29121863799283154,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": -16.787148594377488,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "Ali & Defne",
+          "ÖZEL METİN": "İYİ Kİ DOĞDUN CANIM EŞİM",
+          "ALT METİN": "19.08.2024"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "bw",
+        "unit_size_key": "15x21cm",
+        "unit_num": null,
+        "has_result": true
+      }
+    ],
+    "photo_files": [
+      "order_9D8A8EFD-8_p0.jpg",
+      "order_9D8A8EFD-8_p1.jpg",
+      "order_9D8A8EFD-8_p2.jpg",
+      "order_9D8A8EFD-8_p3.jpg",
+      "order_9D8A8EFD-8_p4.jpg",
+      "order_9D8A8EFD-8_p5.jpg",
+      "order_9D8A8EFD-8_p6.jpg",
+      "order_9D8A8EFD-8_p7.jpg",
+      "order_9D8A8EFD-8_p8.jpg",
+      "order_9D8A8EFD-8_p9.jpg",
+      "order_9D8A8EFD-8_p10.jpg",
+      "order_9D8A8EFD-8_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_9D8A8EFD-8_p0_orig.jpg",
+      "order_9D8A8EFD-8_p1_orig.jpg",
+      "order_9D8A8EFD-8_p2_orig.jpg",
+      "order_9D8A8EFD-8_p3_orig.jpg",
+      "order_9D8A8EFD-8_p4_orig.jpg",
+      "order_9D8A8EFD-8_p5_orig.jpg",
+      "order_9D8A8EFD-8_p6_orig.jpg",
+      "order_9D8A8EFD-8_p7_orig.jpg",
+      "order_9D8A8EFD-8_p8_orig.jpg",
+      "order_9D8A8EFD-8_p9_orig.jpg",
+      "order_9D8A8EFD-8_p10_orig.jpg",
+      "order_9D8A8EFD-8_p11_orig.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": -6.963645673323099,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": 13.676633444075312,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 45.559845559845556,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": 33.82899628252788,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": 26.05459057071961,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 0,
+        "offsetY": 13.186813186813195,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": 6.20071684587813,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": 44.401544401544385,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 10.687022900763356,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": -0.29121863799283154,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": -16.787148594377488,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "Ali & Defne",
+      "ÖZEL METİN": "İYİ Kİ DOĞDUN CANIM EŞİM",
+      "ALT METİN": "19.08.2024"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "15x21cm",
+    "drive_file_id": "1Uj5kt7wYWytz2iCGFpCs46piNvtMRosC",
+    "drive_file_name": "HÜSEYIN CAMBAZ, 14.8x21cm.jpg",
+    "drive_files": null
   }
 ]
