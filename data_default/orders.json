@@ -1522,5 +1522,1058 @@
     "drive_file_id": "1x3XtHBs5v6h4rPkbpkq_v1I27S0sJinH",
     "drive_file_name": "9EMRE PARSAN, 2 ADET, 29.7x40cm.jpg",
     "drive_files": null
+  },
+  {
+    "id": "F963DE2C-B",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "30x40cm",
+    "custom_size_key": null,
+    "size_label": "29.7x40cm",
+    "customer_name": "8EMRE PARSAN",
+    "order_number": "142353662536",
+    "phone": "05446110150",
+    "bw_option": "bw",
+    "status": "ready",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-07T18:00:53.784107",
+    "folder_name": "7 TEMMUZ BASKILAR",
+    "unit_count": 2,
+    "same_design": true,
+    "units": [
+      {
+        "photo_files": [
+          "order_F963DE2C-B_p0.jpg",
+          "order_F963DE2C-B_p1.jpg",
+          "order_F963DE2C-B_p2.jpg",
+          "order_F963DE2C-B_p3.jpg",
+          "order_F963DE2C-B_p4.jpg",
+          "order_F963DE2C-B_p5.jpg",
+          "order_F963DE2C-B_p6.jpg",
+          "order_F963DE2C-B_p7.jpg",
+          "order_F963DE2C-B_p8.jpg",
+          "order_F963DE2C-B_p9.jpg",
+          "order_F963DE2C-B_p10.jpg",
+          "order_F963DE2C-B_p11.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_F963DE2C-B_p0_orig.jpg",
+          "order_F963DE2C-B_p1_orig.jpg",
+          "order_F963DE2C-B_p2_orig.jpg",
+          "order_F963DE2C-B_p3_orig.jpg",
+          "order_F963DE2C-B_p4_orig.jpg",
+          "order_F963DE2C-B_p5_orig.jpg",
+          "order_F963DE2C-B_p6_orig.jpg",
+          "order_F963DE2C-B_p7_orig.jpg",
+          "order_F963DE2C-B_p8_orig.jpg",
+          "order_F963DE2C-B_p9_orig.jpg",
+          "order_F963DE2C-B_p10_orig.jpg",
+          "order_F963DE2C-B_p11_orig.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": 6.944788313939101,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": 13.676633444075312,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 52.89575289575286,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 28.99628252788104,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": 35.980148883374696,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 2.805777042274709,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 0.17452006980802792,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 33.59073359073359,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 58.396946564885475,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": 7.543157368026026,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": 30.086580086580096,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "EYLÜL & SAMET",
+          "ÖZEL METİN": "İYİ Kİ DOĞDUN CANIM EŞİM",
+          "ALT METİN": "19.08.2024"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "bw",
+        "unit_size_key": "30x40cm",
+        "unit_num": null,
+        "drive_file_id": "1NBnmNJR7xqOLxQ310RFi3Y1t1WP5T9Dm",
+        "drive_file_name": "8EMRE PARSAN, 2 ADET, 29.7x40cm.jpg"
+      }
+    ],
+    "photo_files": [
+      "order_F963DE2C-B_p0.jpg",
+      "order_F963DE2C-B_p1.jpg",
+      "order_F963DE2C-B_p2.jpg",
+      "order_F963DE2C-B_p3.jpg",
+      "order_F963DE2C-B_p4.jpg",
+      "order_F963DE2C-B_p5.jpg",
+      "order_F963DE2C-B_p6.jpg",
+      "order_F963DE2C-B_p7.jpg",
+      "order_F963DE2C-B_p8.jpg",
+      "order_F963DE2C-B_p9.jpg",
+      "order_F963DE2C-B_p10.jpg",
+      "order_F963DE2C-B_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_F963DE2C-B_p0_orig.jpg",
+      "order_F963DE2C-B_p1_orig.jpg",
+      "order_F963DE2C-B_p2_orig.jpg",
+      "order_F963DE2C-B_p3_orig.jpg",
+      "order_F963DE2C-B_p4_orig.jpg",
+      "order_F963DE2C-B_p5_orig.jpg",
+      "order_F963DE2C-B_p6_orig.jpg",
+      "order_F963DE2C-B_p7_orig.jpg",
+      "order_F963DE2C-B_p8_orig.jpg",
+      "order_F963DE2C-B_p9_orig.jpg",
+      "order_F963DE2C-B_p10_orig.jpg",
+      "order_F963DE2C-B_p11_orig.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": -6.748087836170745,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": 13.676633444075312,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 52.89575289575286,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": 28.99628252788104,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": 35.980148883374696,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 2.805777042274709,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": 0.17452006980802792,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": 33.59073359073359,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 58.396946564885475,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": 7.543157368026026,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": 30.086580086580096,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "EYLÜL & SAMET",
+      "ÖZEL METİN": "İYİ Kİ DOĞDUN CANIM EŞİM",
+      "ALT METİN": "19.08.2024"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "30x40cm",
+    "drive_file_id": "1Rp4V2h095E2GcxgJ-bTj0AAeLtopbbtK",
+    "drive_file_name": "8EMRE PARSAN, 29.7x40cm.jpg",
+    "drive_files": null
+  },
+  {
+    "id": "E5CBB8FE-F",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "30x40cm",
+    "custom_size_key": null,
+    "size_label": "29.7x40cm",
+    "customer_name": "EMRE.7 PARSAN",
+    "order_number": "90815391930",
+    "phone": "05446110150",
+    "bw_option": "color",
+    "status": "ready",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-07T18:16:14.337636",
+    "folder_name": "7 TEMMUZ BASKILAR",
+    "unit_count": 2,
+    "same_design": false,
+    "units": [
+      {
+        "photo_files": [
+          "order_E5CBB8FE-F_p0_u0.jpg",
+          "order_E5CBB8FE-F_p1_u0.jpg",
+          "order_E5CBB8FE-F_p2_u0.jpg",
+          "order_E5CBB8FE-F_p3_u0.jpg",
+          "order_E5CBB8FE-F_p4_u0.jpg",
+          "order_E5CBB8FE-F_p5_u0.jpg",
+          "order_E5CBB8FE-F_p6_u0.jpg",
+          "order_E5CBB8FE-F_p7_u0.jpg",
+          "order_E5CBB8FE-F_p8_u0.jpg",
+          "order_E5CBB8FE-F_p9_u0.jpg",
+          "order_E5CBB8FE-F_p10_u0.jpg",
+          "order_E5CBB8FE-F_p11_u0.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_E5CBB8FE-F_p0_orig_u0.jpg",
+          "order_E5CBB8FE-F_p1_orig_u0.jpg",
+          "order_E5CBB8FE-F_p2_orig_u0.jpg",
+          "order_E5CBB8FE-F_p3_orig_u0.jpg",
+          "order_E5CBB8FE-F_p4_orig_u0.jpg",
+          "order_E5CBB8FE-F_p5_orig_u0.jpg",
+          "order_E5CBB8FE-F_p6_orig_u0.jpg",
+          "order_E5CBB8FE-F_p7_orig_u0.jpg",
+          "order_E5CBB8FE-F_p8_orig_u0.jpg",
+          "order_E5CBB8FE-F_p9_orig_u0.jpg",
+          "order_E5CBB8FE-F_p10_orig_u0.jpg",
+          "order_E5CBB8FE-F_p11_orig_u0.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": -4.3133712724355995,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": -57.777913411458314,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": -26.06837606837607,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": -16.202779031878144,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": -9.038142620232174,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": -21.43215450213193,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": -23.888427734375,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 6.302801339475426,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": 1.5473215203536075,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "Eylül & Samet",
+          "ÖZEL METİN": "İyi ki doğdun",
+          "ALT METİN": "19.08.2024"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "color",
+        "unit_size_key": "30x40cm",
+        "unit_num": 0,
+        "has_result": true
+      },
+      {
+        "photo_files": [
+          "order_E5CBB8FE-F_p0_u1.jpg",
+          "order_E5CBB8FE-F_p1_u1.jpg",
+          "order_E5CBB8FE-F_p2_u1.jpg",
+          "order_E5CBB8FE-F_p3_u1.jpg",
+          "order_E5CBB8FE-F_p4_u1.jpg",
+          "order_E5CBB8FE-F_p5_u1.jpg",
+          "order_E5CBB8FE-F_p6_u1.jpg",
+          "order_E5CBB8FE-F_p7_u1.jpg",
+          "order_E5CBB8FE-F_p8_u1.jpg",
+          "order_E5CBB8FE-F_p9_u1.jpg",
+          "order_E5CBB8FE-F_p10_u1.jpg",
+          "order_E5CBB8FE-F_p11_u1.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_E5CBB8FE-F_p0_orig_u1.jpg",
+          "order_E5CBB8FE-F_p1_orig_u1.jpg",
+          "order_E5CBB8FE-F_p2_orig_u1.jpg",
+          "order_E5CBB8FE-F_p3_orig_u1.jpg",
+          "order_E5CBB8FE-F_p4_orig_u1.jpg",
+          "order_E5CBB8FE-F_p5_orig_u1.jpg",
+          "order_E5CBB8FE-F_p6_orig_u1.jpg",
+          "order_E5CBB8FE-F_p7_orig_u1.jpg",
+          "order_E5CBB8FE-F_p8_orig_u1.jpg",
+          "order_E5CBB8FE-F_p9_orig_u1.jpg",
+          "order_E5CBB8FE-F_p10_orig_u1.jpg",
+          "order_E5CBB8FE-F_p11_orig_u1.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 4.271409752663606,
+            "offsetY": -51.42370660208799,
+            "scale": 209,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": -1.4418526981653794,
+            "offsetY": -10.127711811282726,
+            "scale": 160,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": -14.4329833984375,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": -19.486647385817307,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": -1.2171305967180917,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": -16.185308807524876,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": -12.666259765625,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": -27.78260179341133,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 1.479313882549157,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": -1.457486171954075,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "Ekim & Ocak",
+          "ÖZEL METİN": "İyi ki doğdun canım eşim",
+          "ALT METİN": "19.08.2024"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "bw",
+        "unit_size_key": "30x40cm",
+        "unit_num": 1,
+        "has_result": true
+      }
+    ],
+    "photo_files": [
+      "order_E5CBB8FE-F_p0_u0.jpg",
+      "order_E5CBB8FE-F_p1_u0.jpg",
+      "order_E5CBB8FE-F_p2_u0.jpg",
+      "order_E5CBB8FE-F_p3_u0.jpg",
+      "order_E5CBB8FE-F_p4_u0.jpg",
+      "order_E5CBB8FE-F_p5_u0.jpg",
+      "order_E5CBB8FE-F_p6_u0.jpg",
+      "order_E5CBB8FE-F_p7_u0.jpg",
+      "order_E5CBB8FE-F_p8_u0.jpg",
+      "order_E5CBB8FE-F_p9_u0.jpg",
+      "order_E5CBB8FE-F_p10_u0.jpg",
+      "order_E5CBB8FE-F_p11_u0.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_E5CBB8FE-F_p0_orig_u0.jpg",
+      "order_E5CBB8FE-F_p1_orig_u0.jpg",
+      "order_E5CBB8FE-F_p2_orig_u0.jpg",
+      "order_E5CBB8FE-F_p3_orig_u0.jpg",
+      "order_E5CBB8FE-F_p4_orig_u0.jpg",
+      "order_E5CBB8FE-F_p5_orig_u0.jpg",
+      "order_E5CBB8FE-F_p6_orig_u0.jpg",
+      "order_E5CBB8FE-F_p7_orig_u0.jpg",
+      "order_E5CBB8FE-F_p8_orig_u0.jpg",
+      "order_E5CBB8FE-F_p9_orig_u0.jpg",
+      "order_E5CBB8FE-F_p10_orig_u0.jpg",
+      "order_E5CBB8FE-F_p11_orig_u0.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": -4.3133712724355995,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": -57.777913411458314,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": -26.06837606837607,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": -16.202779031878144,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 0,
+        "offsetY": -9.038142620232174,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": -21.43215450213193,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": -23.888427734375,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 6.302801339475426,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": 1.5473215203536075,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "Eylül & Samet",
+      "ÖZEL METİN": "İyi ki doğdun",
+      "ALT METİN": "19.08.2024"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "30x40cm",
+    "drive_file_id": "1DYLZOjuN0O9L5fqI5nKNVa2nu5MCprLt",
+    "drive_file_name": "EMRE.7 PARSAN, 2 ADET.zip",
+    "drive_files": null
+  },
+  {
+    "id": "62E44171-E",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "15x21cm",
+    "custom_size_key": null,
+    "size_label": "14.8x21cm",
+    "customer_name": "EMRE.6 PARSAN",
+    "order_number": "6805674321",
+    "phone": "05446110150",
+    "bw_option": "bw",
+    "status": "queued",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-07T18:26:12.696708",
+    "folder_name": "7 TEMMUZ BASKILAR",
+    "unit_count": 1,
+    "same_design": false,
+    "units": [
+      {
+        "photo_files": [
+          "order_62E44171-E_p0.jpg",
+          "order_62E44171-E_p1.jpg",
+          "order_62E44171-E_p2.jpg",
+          "order_62E44171-E_p3.jpg",
+          "order_62E44171-E_p4.jpg",
+          "order_62E44171-E_p5.jpg",
+          "order_62E44171-E_p6.jpg",
+          "order_62E44171-E_p7.jpg",
+          "order_62E44171-E_p8.jpg",
+          "order_62E44171-E_p9.jpg",
+          "order_62E44171-E_p10.jpg",
+          "order_62E44171-E_p11.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_62E44171-E_p0_orig.jpg",
+          "order_62E44171-E_p1_orig.jpg",
+          "order_62E44171-E_p2_orig.jpg",
+          "order_62E44171-E_p3_orig.jpg",
+          "order_62E44171-E_p4_orig.jpg",
+          "order_62E44171-E_p5_orig.jpg",
+          "order_62E44171-E_p6_orig.jpg",
+          "order_62E44171-E_p7_orig.jpg",
+          "order_62E44171-E_p8_orig.jpg",
+          "order_62E44171-E_p9_orig.jpg",
+          "order_62E44171-E_p10_orig.jpg",
+          "order_62E44171-E_p11_orig.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": -3.2137518684603905,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": 12.70363408521303,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": -20.6328125,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 32.467064490685104,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": -10.414501177319103,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": -3.1937510378447618,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "EYLÜL & SAMET",
+          "ÖZEL METİN": "İYİ Kİ DOĞDUN CANIM EŞİM",
+          "ALT METİN": "19.08.2024"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#ff0000",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "bw",
+        "unit_size_key": "15x21cm",
+        "unit_num": null,
+        "staging_file": "EMRE.6 PARSAN, 14.8x21cm.jpg",
+        "print_size": "A5"
+      }
+    ],
+    "photo_files": [
+      "order_62E44171-E_p0.jpg",
+      "order_62E44171-E_p1.jpg",
+      "order_62E44171-E_p2.jpg",
+      "order_62E44171-E_p3.jpg",
+      "order_62E44171-E_p4.jpg",
+      "order_62E44171-E_p5.jpg",
+      "order_62E44171-E_p6.jpg",
+      "order_62E44171-E_p7.jpg",
+      "order_62E44171-E_p8.jpg",
+      "order_62E44171-E_p9.jpg",
+      "order_62E44171-E_p10.jpg",
+      "order_62E44171-E_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_62E44171-E_p0_orig.jpg",
+      "order_62E44171-E_p1_orig.jpg",
+      "order_62E44171-E_p2_orig.jpg",
+      "order_62E44171-E_p3_orig.jpg",
+      "order_62E44171-E_p4_orig.jpg",
+      "order_62E44171-E_p5_orig.jpg",
+      "order_62E44171-E_p6_orig.jpg",
+      "order_62E44171-E_p7_orig.jpg",
+      "order_62E44171-E_p8_orig.jpg",
+      "order_62E44171-E_p9_orig.jpg",
+      "order_62E44171-E_p10_orig.jpg",
+      "order_62E44171-E_p11_orig.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": -3.2137518684603905,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": 12.70363408521303,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": -20.6328125,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": 32.467064490685104,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": -10.414501177319103,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": -3.1937510378447618,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "EYLÜL & SAMET",
+      "ÖZEL METİN": "İYİ Kİ DOĞDUN CANIM EŞİM",
+      "ALT METİN": "19.08.2024"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#ff0000",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "15x21cm"
   }
 ]
