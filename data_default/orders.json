@@ -1217,5 +1217,310 @@
       "ALT METİN": "#050505"
     },
     "unit_size_key": "30x40cm"
+  },
+  {
+    "id": "225B673E-1",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "30x40cm",
+    "custom_size_key": null,
+    "size_label": "29.7x40cm",
+    "customer_name": "9EMRE PARSAN",
+    "order_number": "09878908",
+    "phone": "05446110150",
+    "bw_option": "color",
+    "status": "ready",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-07T16:50:49.282251",
+    "folder_name": "7 TEMMUZ BASKILAR",
+    "unit_count": 2,
+    "same_design": true,
+    "units": [
+      {
+        "photo_files": [
+          "order_225B673E-1_p0.jpg",
+          "order_225B673E-1_p1.jpg",
+          "order_225B673E-1_p2.jpg",
+          "order_225B673E-1_p3.jpg",
+          "order_225B673E-1_p4.jpg",
+          "order_225B673E-1_p5.jpg",
+          "order_225B673E-1_p6.jpg",
+          "order_225B673E-1_p7.jpg",
+          "order_225B673E-1_p8.jpg",
+          "order_225B673E-1_p9.jpg",
+          "order_225B673E-1_p10.jpg",
+          "order_225B673E-1_p11.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_225B673E-1_p0_orig.jpg",
+          "order_225B673E-1_p1_orig.jpg",
+          "order_225B673E-1_p2_orig.jpg",
+          "order_225B673E-1_p3_orig.jpg",
+          "order_225B673E-1_p4_orig.jpg",
+          "order_225B673E-1_p5_orig.jpg",
+          "order_225B673E-1_p6_orig.jpg",
+          "order_225B673E-1_p7_orig.jpg",
+          "order_225B673E-1_p8_orig.jpg",
+          "order_225B673E-1_p9_orig.jpg",
+          "order_225B673E-1_p10_orig.png",
+          "order_225B673E-1_p11_orig.png"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": 13.676633444075312,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 49.420849420849414,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 56.877323420074354,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": 29.59057071960298,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 13.924402445803233,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 7.347670250896058,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 36.67953667953668,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": -2.8673835125448033,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": 7.228915662650602,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "EYLÜL & SAMET",
+          "ÖZEL METİN": "İYİ Kİ DOĞDUN SEVGİLİM",
+          "ALT METİN": "198.08.2025"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "color",
+        "unit_size_key": "30x40cm",
+        "unit_num": null,
+        "drive_file_id": "1x3XtHBs5v6h4rPkbpkq_v1I27S0sJinH",
+        "drive_file_name": "9EMRE PARSAN, 2 ADET, 29.7x40cm.jpg"
+      }
+    ],
+    "photo_files": [
+      "order_225B673E-1_p0.jpg",
+      "order_225B673E-1_p1.jpg",
+      "order_225B673E-1_p2.jpg",
+      "order_225B673E-1_p3.jpg",
+      "order_225B673E-1_p4.jpg",
+      "order_225B673E-1_p5.jpg",
+      "order_225B673E-1_p6.jpg",
+      "order_225B673E-1_p7.jpg",
+      "order_225B673E-1_p8.jpg",
+      "order_225B673E-1_p9.jpg",
+      "order_225B673E-1_p10.jpg",
+      "order_225B673E-1_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_225B673E-1_p0_orig.jpg",
+      "order_225B673E-1_p1_orig.jpg",
+      "order_225B673E-1_p2_orig.jpg",
+      "order_225B673E-1_p3_orig.jpg",
+      "order_225B673E-1_p4_orig.jpg",
+      "order_225B673E-1_p5_orig.jpg",
+      "order_225B673E-1_p6_orig.jpg",
+      "order_225B673E-1_p7_orig.jpg",
+      "order_225B673E-1_p8_orig.jpg",
+      "order_225B673E-1_p9_orig.jpg",
+      "order_225B673E-1_p10_orig.png",
+      "order_225B673E-1_p11_orig.png"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": 13.676633444075312,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 49.420849420849414,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": 56.877323420074354,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": 29.59057071960298,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": 13.924402445803233,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": 7.347670250896058,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": 36.67953667953668,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": -2.8673835125448033,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": 7.228915662650602,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "EYLÜL & SAMET",
+      "ÖZEL METİN": "İYİ Kİ DOĞDUN SEVGİLİM",
+      "ALT METİN": "198.08.2025"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "30x40cm",
+    "drive_file_id": "1x3XtHBs5v6h4rPkbpkq_v1I27S0sJinH",
+    "drive_file_name": "9EMRE PARSAN, 2 ADET, 29.7x40cm.jpg",
+    "drive_files": null
   }
 ]
