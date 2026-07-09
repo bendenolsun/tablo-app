@@ -1532,7 +1532,7 @@
     "order_number": "9737491074917",
     "phone": "05446110150",
     "bw_option": "bw",
-    "status": "queued",
+    "status": "ready",
     "output_file": null,
     "output_files": null,
     "created_at": "2026-07-09T13:11:25.302954",
@@ -1963,7 +1963,9 @@
       "ÖZEL METİN": "#050505",
       "ALT METİN": "#050505"
     },
-    "unit_size_key": "15x21cm"
+    "unit_size_key": "15x21cm",
+    "a3_file": "üst BURAK AKDENIZ, sl alt AHMET BALCI, sğ alt FEMIH YKSL, 20260709_224650.jpg",
+    "a3_drive_file_id": "18rzHVaSF_RQNRca4uU_ENRXsNqIIx7lI"
   },
   {
     "id": "28467AE0-0",
@@ -1977,7 +1979,7 @@
     "order_number": "848941570295",
     "phone": "05446110150",
     "bw_option": "color",
-    "status": "queued",
+    "status": "ready",
     "output_file": null,
     "output_files": null,
     "created_at": "2026-07-09T21:44:46.014367",
@@ -2265,6 +2267,312 @@
       "ÖZEL METİN": "#050505",
       "ALT METİN": "#ff0000"
     },
-    "unit_size_key": "15x21cm"
+    "unit_size_key": "15x21cm",
+    "a3_file": "üst BURAK AKDENIZ, sl alt AHMET BALCI, sğ alt FEMIH YKSL, 20260709_224650.jpg",
+    "a3_drive_file_id": "18rzHVaSF_RQNRca4uU_ENRXsNqIIx7lI"
+  },
+  {
+    "id": "97FE4C89-9",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "15x21cm",
+    "custom_size_key": null,
+    "size_label": "14.8x21cm",
+    "customer_name": "AHMET BALCI",
+    "order_number": "538153763846",
+    "phone": "05446110150",
+    "bw_option": "bw",
+    "status": "ready",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-09T22:46:32.388837",
+    "folder_name": "9 TEMMUZ BASKILAR",
+    "unit_count": 1,
+    "same_design": false,
+    "units": [
+      {
+        "photo_files": [
+          "order_97FE4C89-9_p0.jpg",
+          "order_97FE4C89-9_p1.jpg",
+          "order_97FE4C89-9_p2.jpg",
+          "order_97FE4C89-9_p3.jpg",
+          "order_97FE4C89-9_p4.jpg",
+          "order_97FE4C89-9_p5.jpg",
+          "order_97FE4C89-9_p6.jpg",
+          "order_97FE4C89-9_p7.jpg",
+          "order_97FE4C89-9_p8.jpg",
+          "order_97FE4C89-9_p9.jpg",
+          "order_97FE4C89-9_p10.jpg",
+          "order_97FE4C89-9_p11.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_97FE4C89-9_p0_orig.jpg",
+          "order_97FE4C89-9_p1_orig.jpg",
+          "order_97FE4C89-9_p2_orig.jpg",
+          "order_97FE4C89-9_p3_orig.jpg",
+          "order_97FE4C89-9_p4_orig.jpg",
+          "order_97FE4C89-9_p5_orig.jpg",
+          "order_97FE4C89-9_p6_orig.jpg",
+          "order_97FE4C89-9_p7_orig.jpg",
+          "order_97FE4C89-9_p8_orig.jpg",
+          "order_97FE4C89-9_p9_orig.jpg",
+          "order_97FE4C89-9_p10_orig.jpg",
+          "order_97FE4C89-9_p11_orig.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": -2.507374631268439,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": 8.600823045267491,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": -12.996322848785546,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": -25.105485232067515,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": -21.885298736042184,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": -8.169934640522879,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": -26.26914978027343,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": 2.4042410928694933,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "Eylül Samet",
+          "ÖZEL METİN": "İyi ki doğdun",
+          "ALT METİN": "Sen de"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "92",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "bw",
+        "unit_size_key": "15x21cm",
+        "unit_num": null,
+        "staging_file": "AHMET BALCI, 14.8x21cm.jpg",
+        "print_size": "A5"
+      }
+    ],
+    "photo_files": [
+      "order_97FE4C89-9_p0.jpg",
+      "order_97FE4C89-9_p1.jpg",
+      "order_97FE4C89-9_p2.jpg",
+      "order_97FE4C89-9_p3.jpg",
+      "order_97FE4C89-9_p4.jpg",
+      "order_97FE4C89-9_p5.jpg",
+      "order_97FE4C89-9_p6.jpg",
+      "order_97FE4C89-9_p7.jpg",
+      "order_97FE4C89-9_p8.jpg",
+      "order_97FE4C89-9_p9.jpg",
+      "order_97FE4C89-9_p10.jpg",
+      "order_97FE4C89-9_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_97FE4C89-9_p0_orig.jpg",
+      "order_97FE4C89-9_p1_orig.jpg",
+      "order_97FE4C89-9_p2_orig.jpg",
+      "order_97FE4C89-9_p3_orig.jpg",
+      "order_97FE4C89-9_p4_orig.jpg",
+      "order_97FE4C89-9_p5_orig.jpg",
+      "order_97FE4C89-9_p6_orig.jpg",
+      "order_97FE4C89-9_p7_orig.jpg",
+      "order_97FE4C89-9_p8_orig.jpg",
+      "order_97FE4C89-9_p9_orig.jpg",
+      "order_97FE4C89-9_p10_orig.jpg",
+      "order_97FE4C89-9_p11_orig.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": -2.507374631268439,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": 8.600823045267491,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": -12.996322848785546,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": -25.105485232067515,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": -21.885298736042184,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 0,
+        "offsetY": -8.169934640522879,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": -26.26914978027343,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": 2.4042410928694933,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "Eylül Samet",
+      "ÖZEL METİN": "İyi ki doğdun",
+      "ALT METİN": "Sen de"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "92",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "15x21cm",
+    "a3_file": "üst BURAK AKDENIZ, sl alt AHMET BALCI, sğ alt FEMIH YKSL, 20260709_224650.jpg",
+    "a3_drive_file_id": "18rzHVaSF_RQNRca4uU_ENRXsNqIIx7lI"
   }
 ]
