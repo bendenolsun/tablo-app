@@ -214,22 +214,24 @@ html, body { height:100%; overflow:hidden; }
   </div>
 
   {% if tmpl.product_type == 'MDF' %}
-  <div class="tab-bar">
+  <div class="tab-bar" id="tab-bar">
     {% for sk, sv in tmpl.mdf_variants.items() %}
     <button class="tab-btn {% if sv.background %}has-bg{% endif %} {% if loop.first %}active{% endif %}"
             id="tab-{{ sk }}" onclick="switchTab('{{ sk }}')">
-      {{ MDF_SIZES[sk]['label'] }}
+      {{ sv.label if sv.label is defined else (MDF_SIZES[sk]['label'] if sk in MDF_SIZES else sk) }}
     </button>
     {% endfor %}
+    <button class="tab-btn" style="color:var(--accent);border-color:var(--accent);" onclick="showAddVariantPanel()">+ Varyant</button>
   </div>
   {% elif tmpl.product_type == 'CUSTOM_MULTI' %}
-  <div class="tab-bar">
+  <div class="tab-bar" id="tab-bar">
     {% for sk, sv in tmpl.custom_variants.items() %}
     <button class="tab-btn {% if sv.background %}has-bg{% endif %} {% if loop.first %}active{% endif %}"
             id="tab-{{ sk }}" onclick="switchTab('{{ sk }}')">
       {{ sv.label }}
     </button>
     {% endfor %}
+    <button class="tab-btn" style="color:var(--accent);border-color:var(--accent);" onclick="showAddVariantPanel()">+ Varyant</button>
   </div>
   {% elif tmpl.product_type == 'MULTIPAGE' %}
   <div class="tab-bar">
@@ -654,6 +656,31 @@ html, body { height:100%; overflow:hidden; }
           <div id="layer-list" style="display:none;"></div>
         </div>
 
+        <!-- ── Temsili Görsel ────────────────────────────────────── -->
+        <hr class="divider" style="margin-top:14px;">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Temsili Görsel</div>
+          {% if tmpl.preview %}
+          <img id="preview-thumb-img" src="/static/uploads/preview_thumb_{{ tmpl.id }}.jpg?v={{ tmpl.get('preview_updated_at', '') }}" alt="Önizleme"
+               style="width:100%;border-radius:6px;margin-bottom:8px;border:1px solid var(--border);display:block;"
+               onerror="this.style.display='none'">
+          {% else %}
+          <img id="preview-thumb-img" src="" alt=""
+               style="width:100%;border-radius:6px;margin-bottom:8px;border:1px solid var(--border);display:none;">
+          {% endif %}
+          <input type="file" id="preview-file-inp" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="uploadPreview(this)">
+          <button class="btn btn-secondary btn-sm" style="width:100%;font-size:12px;" onclick="document.getElementById('preview-file-inp').click()">Görsel Seç &amp; Yükle</button>
+          <div id="preview-upload-status" style="font-size:11px;margin-top:6px;color:var(--text-muted);display:none;"></div>
+        </div>
+
+        <hr class="divider" style="margin-top:14px;">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Şablon Adı</div>
+          <input type="text" id="tmpl-name-inp" class="inline-inp" value="{{ tmpl.name }}" style="font-size:13px;margin-bottom:6px;">
+          <button class="btn btn-secondary btn-sm" style="width:100%;font-size:12px;" onclick="saveTmplName()">Adı Kaydet</button>
+          <div id="name-status" style="font-size:11px;margin-top:4px;color:var(--text-muted);display:none;"></div>
+        </div>
+
         <hr class="divider" style="margin-top:14px;">
         <div>
           <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Form Açıklama Metni</div>
@@ -679,23 +706,110 @@ html, body { height:100%; overflow:hidden; }
           <div id="copy-variant-btns" style="display:flex;flex-direction:column;gap:6px;"></div>
         </div>
         {% endif %}
+
+        <!-- ── Arka Plan Değiştir ──────────────────────────────── -->
+        <hr class="divider" style="margin-top:14px;">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Arka Planı Değiştir</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Yeni bir arka plan görseli yükle (mevcut alanlar korunur).</div>
+          <input type="file" id="bg-file-inp" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="uploadNewBackground(this)">
+          <button class="btn btn-secondary btn-sm" style="width:100%;font-size:12px;" onclick="document.getElementById('bg-file-inp').click()">
+            Görsel Seç &amp; Yükle
+          </button>
+          <div id="bg-upload-status" style="font-size:11px;margin-top:6px;color:var(--text-muted);display:none;"></div>
+        </div>
+
+        <!-- ── Boyutlar ──────────────────────────────────────────── -->
+        {% if tmpl.product_type in ('CUSTOM', 'CUSTOM_MULTI', 'MULTIPAGE', 'PSTR', 'A3', 'MDF') %}
+        <hr class="divider" style="margin-top:14px;">
+        <div id="dims-section">
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Tasarım Boyutları (cm)</div>
+          {% if tmpl.product_type == 'CUSTOM_MULTI' %}
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">Aktif varyantın boyutlarını düzenler.</div>
+          {% elif tmpl.product_type == 'MULTIPAGE' %}
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">Tüm sayfalara ortak sayfa boyutu.</div>
+          {% elif tmpl.product_type == 'MDF' %}
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">Aktif varyantın (sekmedeki ebat) boyutunu özelleştirir.</div>
+          {% elif tmpl.product_type in ('PSTR', 'A3') %}
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">Varsayılan: {% if tmpl.product_type == 'PSTR' %}29.7×40 cm{% else %}29.7×42 cm{% endif %}. İstersen özelleştirebilirsin.</div>
+          {% endif %}
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+            <div>
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px;">Genişlik (cm)</div>
+              <input type="number" id="dim-w" step="0.1" min="1" max="300" class="inline-inp" placeholder="örn. 30" style="font-size:13px;">
+            </div>
+            <div>
+              <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px;">Yükseklik (cm)</div>
+              <input type="number" id="dim-h" step="0.1" min="1" max="300" class="inline-inp" placeholder="örn. 40" style="font-size:13px;">
+            </div>
+          </div>
+          {% if tmpl.product_type in ('CUSTOM', 'CUSTOM_MULTI', 'MDF') %}
+          <div style="margin-bottom:8px;">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px;">Varyant Adı (boş bırakırsan boyutlardan otomatik)</div>
+            <input type="text" id="dim-label" class="inline-inp" placeholder="örn. 30x40cm" style="font-size:13px;">
+          </div>
+          {% endif %}
+          <button class="btn btn-secondary btn-sm" style="width:100%;font-size:12px;" onclick="saveDims()">Boyutları Kaydet</button>
+          <div id="dims-status" style="font-size:11px;margin-top:6px;color:var(--text-muted);display:none;"></div>
+        </div>
+        {% endif %}
+
+        <!-- ── Varyant Sil ───────────────────────────────────────── -->
+        {% if tmpl.product_type in ('MDF', 'CUSTOM_MULTI') %}
+        <hr class="divider" style="margin-top:14px;">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Aktif Varyant</div>
+          <button class="btn btn-sm" style="width:100%;font-size:12px;background:#1a0a0a;border-color:#7f1d1d;color:#fca5a5;" onclick="deleteVariant()">Varyantı Sil</button>
+          <div id="del-variant-status" style="font-size:11px;margin-top:6px;color:var(--error);display:none;"></div>
+        </div>
+        {% endif %}
+
       </div>
     </div>
   </div>
 </div>
 
+{% if tmpl.product_type in ('MDF', 'CUSTOM_MULTI') %}
+<div id="add-variant-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9000;align-items:center;justify-content:center;">
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:24px;min-width:300px;max-width:400px;">
+    <div style="font-size:14px;font-weight:700;margin-bottom:16px;color:var(--text);">Yeni Varyant Ekle</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px;">Genişlik (cm)</div>
+        <input type="number" id="av-w" step="0.1" min="1" class="inline-inp" placeholder="örn. 30">
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px;">Yükseklik (cm)</div>
+        <input type="number" id="av-h" step="0.1" min="1" class="inline-inp" placeholder="örn. 40">
+      </div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px;">Etiket (opsiyonel)</div>
+      <input type="text" id="av-label" class="inline-inp" placeholder="örn. 30x40cm">
+    </div>
+    <div id="av-status" style="font-size:11px;margin-bottom:10px;color:var(--error);display:none;"></div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-primary btn-sm" style="flex:1;" onclick="submitAddVariant()">Ekle</button>
+      <button class="btn btn-secondary btn-sm" onclick="hideAddVariantPanel()">İptal</button>
+    </div>
+  </div>
+</div>
+{% endif %}
+
 <script>
 const TMPL_ID    = "{{ tmpl.id }}";
 const PTYPE      = "{{ tmpl.product_type }}";
-const MDF_VARS   = {{ (tmpl.mdf_variants   if tmpl.product_type == 'MDF'          and tmpl.mdf_variants   is defined else {}) | tojson }};
-const CUSTOM_VARS= {{ (tmpl.custom_variants if tmpl.product_type == 'CUSTOM_MULTI' and tmpl.custom_variants is defined else {}) | tojson }};
-const PAGES      = {{ (tmpl.pages           if tmpl.product_type == 'MULTIPAGE'    and tmpl.pages          is defined else {}) | tojson }};
+const MDF_VARS          = {{ (tmpl.mdf_variants      if tmpl.product_type == 'MDF'          and tmpl.mdf_variants      is defined else {}) | tojson }};
+const CUSTOM_VARS       = {{ (tmpl.custom_variants  if tmpl.product_type == 'CUSTOM_MULTI' and tmpl.custom_variants  is defined else {}) | tojson }};
+const PAGES             = {{ (tmpl.pages            if tmpl.product_type == 'MULTIPAGE'    and tmpl.pages            is defined else {}) | tojson }};
+const MDF_SIZE_OVERRIDES= {{ (tmpl.mdf_size_overrides if tmpl.mdf_size_overrides is defined else {}) | tojson }};
+const ALL_MDF_SIZES     = {{ MDF_SIZES | tojson }};
 
 // Variant boyutları (cm)
 const VARIANT_DIMS = {
 {% if tmpl.product_type == 'MDF' %}
-{% for sk in tmpl.mdf_variants.keys() %}
-  '{{ sk }}': { w_cm: {{ MDF_SIZES[sk]['w_cm'] if sk in MDF_SIZES else 0 }}, h_cm: {{ MDF_SIZES[sk]['h_cm'] if sk in MDF_SIZES else 0 }} },
+{% for sk, sv in tmpl.mdf_variants.items() %}
+  '{{ sk }}': { w_cm: {{ sv.w_cm if sv.w_cm is defined else (MDF_SIZES[sk]['w_cm'] if sk in MDF_SIZES else 0) }}, h_cm: {{ sv.h_cm if sv.h_cm is defined else (MDF_SIZES[sk]['h_cm'] if sk in MDF_SIZES else 0) }} },
 {% endfor %}
 {% elif tmpl.product_type == 'CUSTOM_MULTI' %}
 {% for sk, sv in tmpl.custom_variants.items() %}
@@ -795,11 +909,13 @@ async function _preloadAllZoneFonts() {
 }
 
 bgImg.onload = () => {
+  _applyCanvasAspect();
   initNaturalSize(); renderZones();
   if (!historyStacks[activeKey]) pushHistory();
   _preloadAllZoneFonts();
 };
 if (bgImg.complete && bgImg.src) {
+  _applyCanvasAspect();
   initNaturalSize(); renderZones();
   if (!historyStacks[activeKey]) pushHistory();
   _preloadAllZoneFonts();
@@ -823,6 +939,22 @@ function applyZoom() {
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function getDims() { return VARIANT_DIMS[activeKey] || { w_cm: 0, h_cm: 0 }; }
+function getEffectiveDims() {
+  if (typeof PTYPE !== 'undefined' && PTYPE === 'MDF') {
+    const ov = MDF_SIZE_OVERRIDES[activeKey] || {};
+    const base = getDims();
+    return { w_cm: ov.w_cm || base.w_cm, h_cm: ov.h_cm || base.h_cm };
+  }
+  return getDims();
+}
+function _applyCanvasAspect() {
+  const d = getEffectiveDims();
+  if (d && d.w_cm && d.h_cm) {
+    canvasInner.style.aspectRatio = d.w_cm + ' / ' + d.h_cm;
+    bgImg.style.height = '100%';
+    bgImg.style.objectFit = 'fill';
+  }
+}
 
 function zoneSizeLabel(z) {
   const d = getDims();
@@ -927,6 +1059,7 @@ function switchTab(sk) {
   renderZones();
   updateCopyVariantBtns();
   if (!historyStacks[activeKey]) pushHistory();
+  _syncDimsInputs();
 }
 
 function setTool(type) {
@@ -2821,21 +2954,115 @@ function startSingleResize(e, handleId, idx) {
   e.preventDefault();
   const zones = allZones[activeKey];
   const iz = { x: zones[idx].x, y: zones[idx].y, w: zones[idx].w, h: zones[idx].h };
-  const pos0 = getPos(e);
-  const doL = handleId.includes('w'), doR = handleId.includes('e');
-  const doT = handleId.includes('n'), doB = handleId.includes('s');
+  const pos0  = getPos(e);
+  const doL   = handleId.includes('w'), doR = handleId.includes('e');
+  const doT   = handleId.includes('n'), doB = handleId.includes('s');
+  const isCorner = (doL || doR) && (doT || doB);
   let resized = false;
+
+  // Belirli bir kenar değerini referans listesine snap eder
+  function nearestSnap(val, refs) {
+    let best = null, bestD = SNAP_THRESHOLD;
+    refs.forEach(r => { const d = Math.abs(val - r); if (d < bestD) { bestD = d; best = r; } });
+    return best;
+  }
+
+  // Snap referans kenarlarını topla (canvas sınırları + diğer zone'lar)
+  function buildRefs() {
+    const vRefs = [0, 100], hRefs = [0, 100];
+    (allZones[activeKey] || []).forEach((z, i) => {
+      if (i === idx) return;
+      vRefs.push(z.x, z.x + z.w);
+      hRefs.push(z.y, z.y + z.h);
+    });
+    return { vRefs, hRefs };
+  }
 
   function onMove(e) {
     if (!resized) resized = true;
     const pos = getPos(e);
-    const dx = pos.x - pos0.x, dy = pos.y - pos0.y;
+    const dx  = pos.x - pos0.x, dy = pos.y - pos0.y;
 
     let nx = iz.x, ny = iz.y, nw = iz.w, nh = iz.h;
-    if (doL) { nx = iz.x + dx; nw = iz.w - dx; }
-    if (doR) { nw = iz.w + dx; }
-    if (doT) { ny = iz.y + dy; nh = iz.h - dy; }
-    if (doB) { nh = iz.h + dy; }
+    const snapLines = [];
+
+    if (isCorner) {
+      // ── Köşe tutamaç: orantılı boyutlandırma ─────────────────────────────
+      const sxRaw = doL ? iz.w - dx : iz.w + dx;
+      const syRaw = doT ? iz.h - dy : iz.h + dy;
+      let s = Math.max((sxRaw / iz.w + syRaw / iz.h) / 2, 0.02);
+      nw = iz.w * s; nh = iz.h * s;
+      if (doL) nx = iz.x + iz.w - nw;
+      if (doT) ny = iz.y + iz.h - nh;
+
+      // Snap: hareketli köşenin en yakın kenarını kontrol et
+      if (!e.shiftKey) {
+        const { vRefs, hRefs } = buildRefs();
+        const movingVEdge = doR ? nx + nw : nx;
+        const movingHEdge = doB ? ny + nh : ny;
+        const sv = nearestSnap(movingVEdge, vRefs);
+        const sh = nearestSnap(movingHEdge, hRefs);
+        // En iyi snap hangi ekseni kırparsa o ölçeği kullan
+        if (sv !== null || sh !== null) {
+          let newS = s;
+          if (sv !== null && sh === null) {
+            newS = doR ? (sv - iz.x) / iz.w : (iz.x + iz.w - sv) / iz.w;
+            snapLines.push({ type: 'v', pos: sv, color: 'blue', label: null });
+          } else if (sh !== null && sv === null) {
+            newS = doB ? (sh - iz.y) / iz.h : (iz.y + iz.h - sh) / iz.h;
+            snapLines.push({ type: 'h', pos: sh, color: 'blue', label: null });
+          } else {
+            // İkisi de snap yapıyorsa — daha küçük sapma kazanır
+            const dv = Math.abs(movingVEdge - sv), dh = Math.abs(movingHEdge - sh);
+            if (dv <= dh) {
+              newS = doR ? (sv - iz.x) / iz.w : (iz.x + iz.w - sv) / iz.w;
+              snapLines.push({ type: 'v', pos: sv, color: 'blue', label: null });
+            } else {
+              newS = doB ? (sh - iz.y) / iz.h : (iz.y + iz.h - sh) / iz.h;
+              snapLines.push({ type: 'h', pos: sh, color: 'blue', label: null });
+            }
+          }
+          newS = Math.max(newS, 0.02);
+          nw = iz.w * newS; nh = iz.h * newS;
+          if (doL) nx = iz.x + iz.w - nw;
+          if (doT) ny = iz.y + iz.h - nh;
+          showSnapLines(snapLines);
+        } else {
+          clearActiveSnap();
+        }
+      } else {
+        clearActiveSnap();
+      }
+    } else {
+      // ── Kenar tutamaç: tek eksen boyutlandırma ────────────────────────────
+      if (doL) { nx = iz.x + dx; nw = iz.w - dx; }
+      if (doR) { nw = iz.w + dx; }
+      if (doT) { ny = iz.y + dy; nh = iz.h - dy; }
+      if (doB) { nh = iz.h + dy; }
+
+      if (!e.shiftKey) {
+        const { vRefs, hRefs } = buildRefs();
+        if (doR) {
+          const s = nearestSnap(nx + nw, vRefs);
+          if (s !== null) { nw = s - nx; snapLines.push({ type: 'v', pos: s, color: 'blue', label: null }); }
+        }
+        if (doL) {
+          const s = nearestSnap(nx, vRefs);
+          if (s !== null) { nw = iz.x + iz.w - s; nx = s; snapLines.push({ type: 'v', pos: s, color: 'blue', label: null }); }
+        }
+        if (doB) {
+          const s = nearestSnap(ny + nh, hRefs);
+          if (s !== null) { nh = s - ny; snapLines.push({ type: 'h', pos: s, color: 'blue', label: null }); }
+        }
+        if (doT) {
+          const s = nearestSnap(ny, hRefs);
+          if (s !== null) { nh = iz.y + iz.h - s; ny = s; snapLines.push({ type: 'h', pos: s, color: 'blue', label: null }); }
+        }
+        showSnapLines(snapLines);
+      } else {
+        clearActiveSnap();
+      }
+    }
 
     const MIN = 2;
     if (nw < MIN) { nw = MIN; if (doL) nx = iz.x + iz.w - MIN; }
@@ -2844,7 +3071,6 @@ function startSingleResize(e, handleId, idx) {
     zones[idx].x = nx; zones[idx].y = ny;
     zones[idx].w = nw; zones[idx].h = nh;
 
-    // Canlı DOM güncelle
     const zEl = canvasInner.querySelectorAll('.zone-rect')[idx];
     if (zEl) {
       zEl.style.left   = nx.toFixed(2) + '%';
@@ -2852,7 +3078,6 @@ function startSingleResize(e, handleId, idx) {
       zEl.style.width  = nw.toFixed(2) + '%';
       zEl.style.height = nh.toFixed(2) + '%';
     }
-    // Selection box konumunu güncelle
     if (selBoxEl) {
       selBoxEl.style.left   = nx.toFixed(3) + '%';
       selBoxEl.style.top    = ny.toFixed(3) + '%';
@@ -2865,6 +3090,7 @@ function startSingleResize(e, handleId, idx) {
     document.removeEventListener('mousemove', onMove);
     document.removeEventListener('mouseup',   onUp);
     _activeDrag = false;
+    clearActiveSnap();
     if (resized) pushHistory();
     renderZones();
     updateSelectionBox();
@@ -3162,9 +3388,334 @@ async function saveZones() {
   }
 }
 
+// ── Arka Plan Değiştir ───────────────────────────────────────────────────────
+async function uploadNewBackground(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const statusEl = document.getElementById('bg-upload-status');
+  statusEl.style.display = 'block';
+  statusEl.style.color = 'var(--text-muted)';
+  statusEl.textContent = 'Yükleniyor...';
+
+  const fd = new FormData();
+  fd.append('file', file);
+  if (PTYPE === 'MDF' || PTYPE === 'CUSTOM_MULTI') {
+    fd.append('size_key', activeKey);
+  } else if (PTYPE === 'MULTIPAGE') {
+    fd.append('page_num', activeKey);
+  }
+
+  try {
+    const res = await fetch('/admin/templates/' + TMPL_ID + '/update-background', {
+      method: 'POST', body: fd
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) throw new Error(data.error || 'Hata');
+
+    // Arka planı anında yenile (cache bypass)
+    const param = PTYPE === 'MULTIPAGE'
+      ? 'page_num=' + activeKey
+      : 'size_key=' + activeKey;
+    bgImg.src = '/admin/templates/' + TMPL_ID + '/background?' + param + '&t=' + Date.now();
+
+    // Tab üzerinde ✓ işareti güncelle
+    const tb = document.getElementById('tab-' + activeKey);
+    if (tb) tb.classList.add('has-bg');
+
+    statusEl.style.color = 'var(--success)';
+    statusEl.textContent = '✓ Arka plan güncellendi';
+    setTimeout(() => { statusEl.style.display = 'none'; }, 2500);
+  } catch(e) {
+    statusEl.style.color = 'var(--error)';
+    statusEl.textContent = '✗ Hata: ' + e.message;
+  }
+  input.value = '';
+}
+
+// ── Boyutlar ─────────────────────────────────────────────────────────────────
+const TMPL_DIMS = {
+{% if tmpl.product_type == 'CUSTOM' %}
+  w_cm: {{ tmpl.w_cm | default(0) }}, h_cm: {{ tmpl.h_cm | default(0) }},
+  label: {{ tmpl.size_label | default('') | tojson }}
+{% elif tmpl.product_type == 'MULTIPAGE' %}
+  w_cm: {{ tmpl.w_cm | default(0) }}, h_cm: {{ tmpl.h_cm | default(0) }}
+{% elif tmpl.product_type == 'PSTR' %}
+  w_cm: {{ tmpl.w_cm | default(29.7) }}, h_cm: {{ tmpl.h_cm | default(40.0) }}
+{% elif tmpl.product_type == 'A3' %}
+  w_cm: {{ tmpl.w_cm | default(29.7) }}, h_cm: {{ tmpl.h_cm | default(42.0) }}
+{% else %}
+  w_cm: 0, h_cm: 0
+{% endif %}
+};
+
+// Aktif varyanta göre boyut inputlarını doldur
+function _syncDimsInputs() {
+  const wEl = document.getElementById('dim-w');
+  const hEl = document.getElementById('dim-h');
+  if (!wEl || !hEl) return;
+  if (PTYPE === 'CUSTOM_MULTI') {
+    const v = (typeof CUSTOM_VARS !== 'undefined' ? CUSTOM_VARS : {})[activeKey] || {};
+    wEl.value = v.w_cm || '';
+    hEl.value = v.h_cm || '';
+    const lEl = document.getElementById('dim-label');
+    if (lEl) lEl.value = v.label || '';
+  } else if (PTYPE === 'MDF') {
+    const override = MDF_SIZE_OVERRIDES[activeKey] || {};
+    const fallback = (typeof VARIANT_DIMS !== 'undefined' ? VARIANT_DIMS[activeKey] : {}) || {};
+    wEl.value = override.w_cm || fallback.w_cm || '';
+    hEl.value = override.h_cm || fallback.h_cm || '';
+    const lEl2 = document.getElementById('dim-label');
+    const mdfV = (typeof MDF_VARS !== 'undefined' ? MDF_VARS : {})[activeKey] || {};
+    if (lEl2) lEl2.value = mdfV.label || '';
+  } else {
+    wEl.value = TMPL_DIMS.w_cm || '';
+    hEl.value = TMPL_DIMS.h_cm || '';
+    const lEl = document.getElementById('dim-label');
+    if (lEl) lEl.value = TMPL_DIMS.label || '';
+  }
+}
+
+// ── Temsili görsel yükle ───────────────────────────────────────────────────
+async function uploadPreview(inp) {
+  const stEl = document.getElementById('preview-upload-status');
+  if (!inp.files || !inp.files[0]) return;
+  stEl.style.display = 'block'; stEl.style.color = 'var(--text-muted)'; stEl.textContent = 'Yükleniyor...';
+  const fd = new FormData();
+  fd.append('file', inp.files[0]);
+  try {
+    const res = await fetch('/admin/templates/' + TMPL_ID + '/update-preview', { method: 'POST', body: fd });
+    const d = await res.json();
+    if (!res.ok || !d.ok) { stEl.style.color = 'var(--error)'; stEl.textContent = d.error || 'Hata'; return; }
+    const img = document.getElementById('preview-thumb-img');
+    if (img) { img.src = d.thumb_url + '?t=' + Date.now(); img.style.display = 'block'; }
+    stEl.style.color = 'var(--success)'; stEl.textContent = '✓ Görsel güncellendi';
+    setTimeout(() => { stEl.style.display = 'none'; }, 2500);
+  } catch(e) { stEl.style.color = 'var(--error)'; stEl.textContent = 'Hata: ' + e.message; }
+  inp.value = '';
+}
+
+// ── Şablon adı kaydet ──────────────────────────────────────────────────────
+async function saveTmplName() {
+  const inp = document.getElementById('tmpl-name-inp');
+  const statusEl = document.getElementById('name-status');
+  if (!inp) return;
+  const name = inp.value.trim();
+  if (!name) { _nameStatus('İsim boş olamaz.', true); return; }
+  _nameStatus('Kaydediliyor...', false);
+  try {
+    const res = await fetch('/admin/templates/' + TMPL_ID + '/rename', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({name})
+    });
+    const d = await res.json();
+    if (!res.ok || !d.ok) throw new Error(d.error || 'Hata');
+    _nameStatus('✓ Kaydedildi', false);
+    // Sayfa başlığını da güncelle
+    const h1 = document.querySelector('.page-header h1');
+    if (h1) h1.textContent = name;
+    document.title = 'Şablon Düzenle — ' + name;
+    setTimeout(() => { statusEl.style.display = 'none'; }, 2000);
+  } catch(e) { _nameStatus(e.message, true); }
+}
+function _nameStatus(msg, isErr) {
+  const el = document.getElementById('name-status');
+  if (!el) return;
+  el.style.display = 'block';
+  el.style.color = isErr ? 'var(--error)' : 'var(--text-muted)';
+  el.textContent = msg;
+}
+
+// ── İsim değişince boyutları otomatik doldur ───────────────────────────────
+(function() {
+  const inp = document.getElementById('tmpl-name-inp');
+  if (!inp) return;
+  inp.addEventListener('input', function() {
+    const parts = this.value.split(',');
+    if (parts.length < 2) return;
+    const suffix = parts[parts.length - 1].trim().toUpperCase();
+    const wEl = document.getElementById('dim-w');
+    const hEl = document.getElementById('dim-h');
+    if (!wEl || !hEl) return;
+    if (suffix === 'PSTR') {
+      wEl.value = '29.7'; hEl.value = '40';
+    } else if (suffix === 'A3') {
+      wEl.value = '29.7'; hEl.value = '42';
+    }
+  });
+})();
+
+async function saveDims() {
+  const wEl = document.getElementById('dim-w');
+  const hEl = document.getElementById('dim-h');
+  const lEl = document.getElementById('dim-label');
+  const statusEl = document.getElementById('dims-status');
+  if (!wEl || !hEl) return;
+
+  const w_cm = parseFloat(wEl.value);
+  const h_cm = parseFloat(hEl.value);
+  if (!w_cm || !h_cm || w_cm <= 0 || h_cm <= 0) {
+    statusEl.style.display = 'block';
+    statusEl.style.color = 'var(--error)';
+    statusEl.textContent = 'Geçerli genişlik ve yükseklik girin.';
+    return;
+  }
+
+  statusEl.style.display = 'block';
+  statusEl.style.color = 'var(--text-muted)';
+  statusEl.textContent = 'Kaydediliyor...';
+
+  const payload = { w_cm, h_cm };
+  if (lEl) payload.label = lEl.value.trim() || `${w_cm}x${h_cm}cm`;
+  if (PTYPE === 'CUSTOM_MULTI' || PTYPE === 'MDF') payload.size_key = activeKey;
+
+  try {
+    const res = await fetch('/admin/templates/' + TMPL_ID + '/update-dims', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) throw new Error(data.error || 'Hata');
+
+    // VARIANT_DIMS'i güncelle (canvas render için)
+    if (typeof VARIANT_DIMS !== 'undefined') {
+      VARIANT_DIMS[activeKey] = { w_cm, h_cm };
+    }
+    if (PTYPE === 'CUSTOM_MULTI' && typeof CUSTOM_VARS !== 'undefined') {
+      if (CUSTOM_VARS[activeKey]) {
+        CUSTOM_VARS[activeKey].w_cm  = w_cm;
+        CUSTOM_VARS[activeKey].h_cm  = h_cm;
+        if (lEl) CUSTOM_VARS[activeKey].label = payload.label;
+      }
+    }
+    if (PTYPE === 'MDF') {
+      MDF_SIZE_OVERRIDES[activeKey] = { w_cm, h_cm };
+      if (typeof MDF_VARS !== 'undefined' && MDF_VARS[activeKey])
+        MDF_VARS[activeKey].label = payload.label;
+    }
+    if (PTYPE === 'PSTR' || PTYPE === 'A3') {
+      TMPL_DIMS.w_cm = w_cm; TMPL_DIMS.h_cm = h_cm;
+    }
+
+    // Tab etiketini güncelle
+    const tabBtn = document.getElementById('tab-' + activeKey);
+    if (tabBtn) tabBtn.textContent = payload.label || (w_cm + 'x' + h_cm + 'cm');
+    // Canvas oranını güncelle ve yeniden çiz
+    _applyCanvasAspect();
+    initNaturalSize();
+    renderZones();
+
+    statusEl.style.color = 'var(--success)';
+    statusEl.textContent = '✓ Boyutlar kaydedildi';
+    setTimeout(() => { statusEl.style.display = 'none'; }, 2500);
+  } catch(e) {
+    statusEl.style.color = 'var(--error)';
+    statusEl.textContent = '✗ Hata: ' + e.message;
+  }
+}
+
+// ── Varyant Sil ──────────────────────────────────────────────────────────────
+async function deleteVariant() {
+  const stEl = document.getElementById('del-variant-status');
+  if (!activeKey) return;
+  const tabBtn = document.getElementById('tab-' + activeKey);
+  const label  = tabBtn ? tabBtn.textContent.trim() : activeKey;
+  if (!confirm(`"${label}" varyantını silmek istediğine emin misin?\nBu varyantın alanları kalıcı olarak silinir.`)) return;
+
+  stEl.style.display = 'block'; stEl.textContent = 'Siliniyor...'; stEl.style.color = 'var(--text-muted)';
+  try {
+    const res = await fetch('/admin/templates/' + TMPL_ID + '/delete-variant', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ size_key: activeKey })
+    });
+    const d = await res.json();
+    if (!res.ok || !d.ok) { stEl.style.color = 'var(--error)'; stEl.textContent = d.error || 'Hata'; return; }
+
+    // Tab'ı kaldır, komşu taba geç
+    const tabBar = document.getElementById('tab-bar');
+    const allTabs = Array.from(tabBar.querySelectorAll('.tab-btn[id^="tab-"]'));
+    const idx = allTabs.findIndex(b => b.id === 'tab-' + activeKey);
+    if (tabBtn) tabBtn.remove();
+
+    if (PTYPE === 'MDF') { delete MDF_VARS[activeKey]; }
+    else if (PTYPE === 'CUSTOM_MULTI') { delete CUSTOM_VARS[activeKey]; }
+    delete VARIANT_DIMS[activeKey];
+
+    // Kalan tablardan birine geç
+    const remaining = Array.from(tabBar.querySelectorAll('.tab-btn[id^="tab-"]'));
+    if (remaining.length > 0) {
+      const next = remaining[Math.min(idx, remaining.length - 1)];
+      switchTab(next.id.replace('tab-', ''));
+    }
+    stEl.style.display = 'none';
+  } catch(e) {
+    stEl.style.color = 'var(--error)'; stEl.textContent = 'Bağlantı hatası: ' + e.message;
+  }
+}
+
+// ── Varyant Ekle ─────────────────────────────────────────────────────────────
+function showAddVariantPanel() {
+  const ov = document.getElementById('add-variant-overlay');
+  if (!ov) return;
+  const stEl = document.getElementById('av-status');
+  if (stEl) { stEl.style.display = 'none'; stEl.textContent = ''; }
+  ov.style.display = 'flex';
+}
+function hideAddVariantPanel() {
+  const ov = document.getElementById('add-variant-overlay');
+  if (ov) ov.style.display = 'none';
+}
+async function submitAddVariant() {
+  const stEl = document.getElementById('av-status');
+  const setErr = (msg) => { stEl.style.display = 'block'; stEl.textContent = msg; };
+
+  const w = parseFloat(document.getElementById('av-w').value);
+  const h = parseFloat(document.getElementById('av-h').value);
+  const lbl = (document.getElementById('av-label').value || '').trim();
+  if (!w || !h || w <= 0 || h <= 0) { setErr('Geçerli genişlik ve yükseklik girin.'); return; }
+  const payload = { w_cm: w, h_cm: h, label: lbl };
+
+  try {
+    const res = await fetch('/admin/templates/' + TMPL_ID + '/add-variant', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const d = await res.json();
+    if (!res.ok || !d.ok) { setErr(d.error || 'Hata'); return; }
+
+    // Tab ekle
+    const tabBar = document.getElementById('tab-bar');
+    const addBtn = tabBar.querySelector('button:last-child');
+    const newBtn = document.createElement('button');
+    newBtn.className = 'tab-btn';
+    newBtn.id = 'tab-' + d.size_key;
+    newBtn.textContent = d.label;
+    newBtn.onclick = () => switchTab(d.size_key);
+    tabBar.insertBefore(newBtn, addBtn);
+
+    // JS verilerini güncelle
+    if (PTYPE === 'MDF') {
+      MDF_VARS[d.size_key] = {};
+      VARIANT_DIMS[d.size_key] = { w_cm: d.w_cm, h_cm: d.h_cm };
+    } else if (PTYPE === 'CUSTOM_MULTI') {
+      CUSTOM_VARS[d.size_key] = { w_cm: d.w_cm, h_cm: d.h_cm, label: d.label, zones: [] };
+      VARIANT_DIMS[d.size_key] = { w_cm: d.w_cm, h_cm: d.h_cm };
+    }
+
+    hideAddVariantPanel();
+    switchTab(d.size_key);
+  } catch(e) {
+    setErr('Bağlantı hatası: ' + e.message);
+  }
+}
+
 updateList();
 updateCopyVariantBtns();
 document.getElementById('form-desc-inp').value = {{ tmpl.form_description | default('') | tojson }};
 document.getElementById('enable-bw-option').checked = {{ tmpl.enable_bw_option | default(false) | tojson }};
+_syncDimsInputs();
 </script>
 {% endblock %}

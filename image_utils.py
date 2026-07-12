@@ -290,19 +290,27 @@ def enhance_image(img: Image.Image, zone_w_px: int, zone_h_px: int) -> Image.Ima
     src_w, src_h = img.size
     scale = max(zone_w_px / src_w, zone_h_px / src_h, 1.0)
 
+    # Sharpness check on a thumbnail — avoids expensive Laplacian on full-res originals
+    MAX_CHECK = 1024
+    if max(src_w, src_h) > MAX_CHECK:
+        r = MAX_CHECK / max(src_w, src_h)
+        check_img = img.resize((max(1, int(src_w * r)), max(1, int(src_h * r))), Image.BILINEAR)
+    else:
+        check_img = img
+
     if CV2_OK:
-        gray = pil_to_gray(img)
+        gray = pil_to_gray(check_img)
         lap_var = cv2.Laplacian(gray, cv2.CV_64F).var()
         needs_sharpen = lap_var < 100
     else:
-        gray = pil_to_gray(img)
+        gray = pil_to_gray(check_img)
         dx = np.diff(gray.astype(float), axis=1)
         dy = np.diff(gray.astype(float), axis=0)
         needs_sharpen = (np.var(dx) + np.var(dy)) < 500
 
-    # Pre-upscale: hafif keskinleştirme (küçük boyutta ucuz)
+    # Pre-upscale: çok hafif keskinleştirme
     if needs_sharpen:
-        img = img.filter(ImageFilter.UnsharpMask(radius=1.5, percent=120, threshold=3))
+        img = img.filter(ImageFilter.UnsharpMask(radius=0.5, percent=30, threshold=3))
 
     if scale > 1.05:
         tgt_w = int(src_w * scale)
@@ -314,9 +322,9 @@ def enhance_image(img: Image.Image, zone_w_px: int, zone_h_px: int) -> Image.Ima
         else:
             img = img.resize((tgt_w, tgt_h), Image.LANCZOS)
 
-        # Post-upscale: LANCZOS'un yumuşattığı kenarları geri getir
+        # Post-upscale: LANCZOS'un yumuşattığı kenarları çok hafifçe geri getir
         if needs_sharpen:
-            img = img.filter(ImageFilter.UnsharpMask(radius=3, percent=150, threshold=2))
+            img = img.filter(ImageFilter.UnsharpMask(radius=1.0, percent=40, threshold=3))
 
     return img
 

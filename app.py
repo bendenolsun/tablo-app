@@ -1,3 +1,10 @@
+import os, time as _time_mod
+os.environ.setdefault('TZ', 'Europe/Istanbul')
+try:
+    _time_mod.tzset()
+except AttributeError:
+    pass  # Windows'ta tzset yok, Railway/Linux'ta çalışır
+
 from flask import Flask, render_template, request, jsonify, send_file, redirect, url_for, session
 import json, os, uuid, io, zipfile, calendar as _cal_mod, threading, time, tempfile
 
@@ -38,11 +45,38 @@ ORDERS_FILE      = os.path.join(DATA_DIR, 'orders.json')
 PRINT_QUEUE_FILE = os.path.join(DATA_DIR, 'print_queue.json')
 A3_LOG_FILE      = os.path.join(DATA_DIR, 'a3_log.json')   # hangi A3 hangi güne ait
 
-for d in [DATA_DIR, UPLOAD_DIR, OUTPUT_DIR, FONTS_DIR, STAGING_DIR]:
+for d in [DATA_DIR, OUTPUT_DIR, FONTS_DIR]:
     os.makedirs(d, exist_ok=True)
 
-# Volume sıfırlandığında data/ boş gelir; data_default'tan eksik dosyaları kopyala
 import shutil as _shutil
+
+# static/uploads → data/uploads symlink: yüklenen görseller volume'da kalır, deploy'da silinmez
+_uploads_vol = os.path.join(DATA_DIR, 'uploads')
+os.makedirs(_uploads_vol, exist_ok=True)
+if not os.path.islink(UPLOAD_DIR):
+    if os.path.isdir(UPLOAD_DIR):
+        for _uf in os.listdir(UPLOAD_DIR):
+            _s, _d = os.path.join(UPLOAD_DIR, _uf), os.path.join(_uploads_vol, _uf)
+            if not os.path.exists(_d):
+                _shutil.move(_s, _d)
+        _shutil.rmtree(UPLOAD_DIR)
+    os.symlink(os.path.abspath(_uploads_vol), UPLOAD_DIR)
+    print("[Init] static/uploads → data/uploads symlink oluşturuldu")
+
+# static/print_staging → data/print_staging symlink: kuyruk dosyaları deploy'da silinmez
+_staging_vol = os.path.join(DATA_DIR, 'print_staging')
+os.makedirs(_staging_vol, exist_ok=True)
+if not os.path.islink(STAGING_DIR):
+    if os.path.isdir(STAGING_DIR):
+        for _sf in os.listdir(STAGING_DIR):
+            _s, _d = os.path.join(STAGING_DIR, _sf), os.path.join(_staging_vol, _sf)
+            if not os.path.exists(_d):
+                _shutil.move(_s, _d)
+        _shutil.rmtree(STAGING_DIR)
+    os.symlink(os.path.abspath(_staging_vol), STAGING_DIR)
+    print("[Init] static/print_staging → data/print_staging symlink oluşturuldu")
+
+# Volume sıfırlandığında data/ boş gelir; data_default'tan eksik dosyaları kopyala
 _DATA_DEFAULT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data_default')
 for _fname in ['templates.json', 'orders.json']:
     _src = os.path.join(_DATA_DEFAULT, _fname)
@@ -60,7 +94,8 @@ _A5_W, _A5_H = 1748, 2480
 _IMP_CW = 4961   # yatay A3 canvas genişliği (A3_H): 2×A4_W = 4960 ≈ 4961
 _IMP_CH = 3508   # yatay A3 canvas yüksekliği (A3_W = A4_H)
 
-_pq_lock = threading.Lock()   # print_queue.json thread güvenliği
+_pq_lock     = threading.Lock()   # print_queue.json thread güvenliği
+_orders_lock = threading.Lock()   # orders.json background thread güvenliği
 
 ADMIN_PASSWORD = 'ifep.2024'
 
@@ -79,6 +114,13 @@ MDF_SIZES = {
     '21x30cm':  {'w_cm': 21.0, 'h_cm': 29.7,  'label': '21x29.7cm'},
     '30x40cm':  {'w_cm': 29.7, 'h_cm': 40.0,  'label': '29.7x40cm'},
 }
+
+def _commercial_size_label(w_cm, h_cm):
+    """Gerçek boyutu ticari yuvarlak isme dönüştürür (14.8x21→15x21cm vb.)."""
+    for pw, ph, name in [(14.8, 21.0, '15x21cm'), (21.0, 29.7, '21x30cm'), (29.7, 40.0, '30x40cm')]:
+        if abs(w_cm - pw) <= 0.5 and abs(h_cm - ph) <= 0.5:
+            return name
+    return None
 
 # PSTR ve A3 sabit boyutları (cm)
 FIXED_SIZES = {
@@ -142,11 +184,12 @@ def today_folder_name():
 
 # ── Google Drive ──────────────────────────────────────────────────────────────
 _drive_svc          = None
+_drive_creds        = None   # kimlik bilgisi ayrıca tutulur → retry'da taze servis için
 _drive_status       = {'ok': False, 'error': None}
 _daily_folder_cache = {'date': None, 'id': None}
 
 def get_drive_service():
-    global _drive_svc
+    global _drive_svc, _drive_creds
     if _drive_svc is not None:
         return _drive_svc
     if os.path.exists(TOKEN_FILE):
@@ -169,9 +212,19 @@ def get_drive_service():
         print(f"[Drive] token.json kaydedildi")
     else:
         raise RuntimeError(f"Drive kimlik dosyası bulunamadı: {TOKEN_FILE} veya {CLIENT_SECRET_FILE}")
+    _drive_creds = creds
     _drive_svc = build('drive', 'v3', credentials=creds, cache_discovery=False)
     print("[Drive] Servis oluşturuldu OK")
     return _drive_svc
+
+def _fresh_drive_service():
+    """Her çağrıda yeni HTTP bağlantısı kurar — stale connection pool sorununu önler."""
+    global _drive_creds
+    if _drive_creds is None:
+        return get_drive_service()
+    if _drive_creds.expired and _drive_creds.refresh_token:
+        _drive_creds.refresh(Request())
+    return build('drive', 'v3', credentials=_drive_creds, cache_discovery=False)
 
 def get_or_create_daily_folder():
     today_str = datetime.now().strftime('%Y-%m-%d')
@@ -203,7 +256,8 @@ def upload_to_drive(file_path, filename, folder_id, max_retries=3):
     mime = 'image/jpeg' if filename.lower().endswith('.jpg') else 'application/zip'
     for attempt in range(max_retries):
         try:
-            svc   = get_drive_service()
+            # Retry'da taze HTTP bağlantısı kur — stale pool'daki Broken pipe / SSL EOF hatasını önler
+            svc   = _fresh_drive_service() if attempt > 0 else get_drive_service()
             meta  = {'name': filename, 'parents': [folder_id]}
             media = MediaFileUpload(file_path, mimetype=mime, resumable=False)
             f = svc.files().create(
@@ -217,6 +271,7 @@ def upload_to_drive(file_path, filename, folder_id, max_retries=3):
             print(f"[Drive] upload {attempt+1}/{max_retries} hata: {e}")
             if attempt == max_retries - 1:
                 raise
+            time.sleep(1)
     raise RuntimeError(f"Drive upload başarısız: {filename}")
 
 def _create_zip_tmp(paths, zip_name, arcnames=None):
@@ -336,6 +391,14 @@ def admin_orders():
     orders    = sorted(get_orders(), key=lambda x: x.get('created_at',''), reverse=True)
     tmpl_map  = {t['id']: t for t in get_templates()}
     return render_template('orders.html', orders=orders, tmpl_map=tmpl_map)
+
+@app.route('/admin/orders/processing-count')
+def admin_orders_processing_count():
+    """İşlenmekte olan (pending/processing) sipariş sayısını döner — polling için."""
+    if require_admin(): return jsonify({'error': 'Yetkisiz'}), 401
+    orders = get_orders()
+    count  = sum(1 for o in orders if o.get('status') in ('pending', 'processing'))
+    return jsonify({'count': count})
 
 # ── Şablon yönetimi ────────────────────────────────────────────────────────────
 @app.route('/admin/templates/new', methods=['GET','POST'])
@@ -579,6 +642,30 @@ def delete_template(tid):
     save_templates(templates)
     return redirect(url_for('admin_panel'))
 
+@app.route('/admin/templates/<tid>/restore-from-default', methods=['POST'])
+def restore_template_from_default(tid):
+    """Yanlışlıkla silinen bir şablonu data_default/templates.json'dan geri yükler."""
+    token = request.args.get('token', '')
+    if token != ADMIN_PASSWORD and not session.get('admin'):
+        return jsonify({'error': 'Yetkisiz'}), 401
+    default_file = os.path.join(_DATA_DEFAULT, 'templates.json')
+    if not os.path.exists(default_file):
+        return jsonify({'error': 'data_default/templates.json bulunamadı'}), 404
+    with open(default_file, encoding='utf-8') as _f:
+        default_templates = json.load(_f)
+    src = next((t for t in default_templates if t['id'] == tid), None)
+    if not src:
+        return jsonify({'error': f'ID {tid} data_default içinde bulunamadı'}), 404
+    templates = get_templates()
+    force = (request.json or {}).get('force') is True
+    if any(t['id'] == tid for t in templates):
+        if not force:
+            return jsonify({'error': 'Şablon zaten mevcut', 'name': src['name']}), 409
+        templates = [t for t in templates if t['id'] != tid]
+    templates.append(src)
+    save_templates(templates)
+    return jsonify({'ok': True, 'name': src['name']})
+
 @app.route('/admin/templates/<tid>/copy', methods=['POST'])
 def copy_template(tid):
     if require_admin(): return redirect(url_for('admin_login'))
@@ -620,6 +707,220 @@ def template_background(tid):
     if not bg: return "Görsel bulunamadı.", 404
     return send_file(os.path.join(UPLOAD_DIR, bg))
 
+@app.route('/admin/templates/<tid>/update-background', methods=['POST'])
+def update_template_background(tid):
+    if require_admin(): return jsonify({'error': 'Yetkisiz'}), 401
+    templates = get_templates()
+    tmpl = next((t for t in templates if t['id'] == tid), None)
+    if not tmpl: return jsonify({'error': 'Bulunamadı'}), 404
+
+    f = request.files.get('file')
+    if not f or not f.filename:
+        return jsonify({'error': 'Dosya seçilmedi'}), 400
+    ext = os.path.splitext(f.filename)[1].lower() or '.png'
+    if ext not in {'.jpg', '.jpeg', '.png', '.webp'}:
+        return jsonify({'error': 'Geçersiz dosya türü (jpg, png, webp)'}), 400
+
+    ptype    = tmpl.get('product_type')
+    size_key = request.form.get('size_key', '')
+    page_num = str(request.form.get('page_num', '1'))
+
+    bg_fname = f"bg_{tid}_{uuid.uuid4().hex[:8]}{ext}"
+    fpath    = os.path.join(UPLOAD_DIR, bg_fname)
+    f.save(fpath)
+    with Image.open(fpath) as img:
+        img_w, img_h = img.size
+
+    if ptype == 'MDF' and size_key:
+        if size_key not in tmpl.get('mdf_variants', {}):
+            return jsonify({'error': 'Varyant bulunamadı'}), 404
+        tmpl['mdf_variants'][size_key]['background'] = bg_fname
+        tmpl['mdf_variants'][size_key]['width']      = img_w
+        tmpl['mdf_variants'][size_key]['height']     = img_h
+    elif ptype == 'CUSTOM_MULTI' and size_key:
+        if size_key not in tmpl.get('custom_variants', {}):
+            return jsonify({'error': 'Varyant bulunamadı'}), 404
+        tmpl['custom_variants'][size_key]['background'] = bg_fname
+        tmpl['custom_variants'][size_key]['width']      = img_w
+        tmpl['custom_variants'][size_key]['height']     = img_h
+    elif ptype == 'MULTIPAGE':
+        if page_num not in tmpl.get('pages', {}):
+            return jsonify({'error': 'Sayfa bulunamadı'}), 404
+        tmpl['pages'][page_num]['background'] = bg_fname
+        tmpl['pages'][page_num]['width']      = img_w
+        tmpl['pages'][page_num]['height']     = img_h
+    else:
+        tmpl['background'] = bg_fname
+        tmpl['width']      = img_w
+        tmpl['height']     = img_h
+
+    # Önizleme thumbnailini de güncelle (tek sayfalı tipler için)
+    if ptype not in ('MDF', 'CUSTOM_MULTI', 'MULTIPAGE'):
+        try:
+            with Image.open(fpath) as img:
+                img.thumbnail((400, 400), Image.LANCZOS)
+                img.convert('RGB').save(os.path.join(UPLOAD_DIR, f'preview_thumb_{tid}.jpg'), 'JPEG', quality=85)
+        except Exception:
+            pass
+
+    save_templates(templates)
+    return jsonify({'ok': True, 'filename': bg_fname, 'width': img_w, 'height': img_h})
+
+@app.route('/admin/templates/<tid>/update-preview', methods=['POST'])
+def update_template_preview(tid):
+    if require_admin(): return jsonify({'error': 'Yetkisiz'}), 401
+    templates = get_templates()
+    tmpl = next((t for t in templates if t['id'] == tid), None)
+    if not tmpl: return jsonify({'error': 'Bulunamadı'}), 404
+    f = request.files.get('file')
+    if not f or not f.filename:
+        return jsonify({'error': 'Dosya seçilmedi'}), 400
+    ext = os.path.splitext(f.filename)[1].lower()
+    if ext not in {'.jpg', '.jpeg', '.png', '.webp'}:
+        return jsonify({'error': 'Geçersiz dosya türü (jpg, png, webp)'}), 400
+    fname = _save_preview(f, tid)
+    if not fname:
+        return jsonify({'error': 'Görsel kaydedilemedi'}), 500
+    import time as _time
+    tmpl['preview'] = fname
+    tmpl['preview_updated_at'] = int(_time.time())
+    save_templates(templates)
+    v = tmpl['preview_updated_at']
+    return jsonify({'ok': True, 'thumb_url': f'/static/uploads/preview_thumb_{tid}.jpg?v={v}'})
+
+@app.route('/admin/templates/<tid>/rename', methods=['POST'])
+def rename_template(tid):
+    if require_admin(): return jsonify({'error': 'Yetkisiz'}), 401
+    templates = get_templates()
+    tmpl = next((t for t in templates if t['id'] == tid), None)
+    if not tmpl: return jsonify({'error': 'Bulunamadı'}), 404
+    name = (request.json or {}).get('name', '').strip()
+    if not name: return jsonify({'error': 'İsim boş olamaz'}), 400
+    tmpl['name'] = name
+    save_templates(templates)
+    return jsonify({'ok': True})
+
+@app.route('/admin/templates/<tid>/update-dims', methods=['POST'])
+def update_template_dims(tid):
+    if require_admin(): return jsonify({'error': 'Yetkisiz'}), 401
+    templates = get_templates()
+    tmpl = next((t for t in templates if t['id'] == tid), None)
+    if not tmpl: return jsonify({'error': 'Bulunamadı'}), 404
+
+    data = request.json or {}
+    try:
+        w_cm = float(data.get('w_cm', 0))
+        h_cm = float(data.get('h_cm', 0))
+    except (TypeError, ValueError):
+        return jsonify({'error': 'Geçersiz boyut değeri'}), 400
+    if w_cm <= 0 or h_cm <= 0:
+        return jsonify({'error': 'Boyutlar sıfırdan büyük olmalı'}), 400
+
+    ptype    = tmpl.get('product_type')
+    size_key = data.get('size_key', '')
+
+    if ptype == 'CUSTOM_MULTI' and size_key:
+        if size_key not in tmpl.get('custom_variants', {}):
+            return jsonify({'error': 'Varyant bulunamadı'}), 404
+        tmpl['custom_variants'][size_key]['w_cm']  = w_cm
+        tmpl['custom_variants'][size_key]['h_cm']  = h_cm
+        tmpl['custom_variants'][size_key]['label'] = data.get('label') or f"{w_cm}x{h_cm}cm"
+    elif ptype in ('CUSTOM', 'MULTIPAGE'):
+        tmpl['w_cm'] = w_cm
+        tmpl['h_cm'] = h_cm
+        if ptype == 'CUSTOM':
+            tmpl['size_label'] = data.get('label') or f"{w_cm}x{h_cm}cm"
+    elif ptype in ('PSTR', 'A3'):
+        tmpl['w_cm'] = w_cm
+        tmpl['h_cm'] = h_cm
+    elif ptype == 'MDF' and size_key:
+        overrides = tmpl.setdefault('mdf_size_overrides', {})
+        overrides[size_key] = {'w_cm': w_cm, 'h_cm': h_cm}
+        if size_key in tmpl.get('mdf_variants', {}):
+            lbl = (data.get('label') or '').strip()
+            tmpl['mdf_variants'][size_key]['label'] = lbl or f'{w_cm}x{h_cm}cm'
+    else:
+        return jsonify({'error': 'Bu şablon tipinin boyutları değiştirilemez'}), 400
+
+    save_templates(templates)
+    return jsonify({'ok': True})
+
+@app.route('/admin/templates/<tid>/add-variant', methods=['POST'])
+def add_template_variant(tid):
+    if require_admin(): return jsonify({'error': 'Yetkisiz'}), 401
+    templates = get_templates()
+    tmpl = next((t for t in templates if t['id'] == tid), None)
+    if not tmpl: return jsonify({'error': 'Bulunamadı'}), 404
+    ptype = tmpl.get('product_type')
+    data  = request.json or {}
+
+    import uuid, copy
+    try:
+        w_cm = float(data.get('w_cm', 0))
+        h_cm = float(data.get('h_cm', 0))
+    except (TypeError, ValueError):
+        return jsonify({'error': 'Geçersiz boyut değeri'}), 400
+    if w_cm <= 0 or h_cm <= 0:
+        return jsonify({'error': 'Boyutlar sıfırdan büyük olmalı'}), 400
+    label = (data.get('label') or '').strip() or f'{w_cm}x{h_cm}cm'
+
+    if ptype == 'MDF':
+        # Anahtar: boyuttan türetilmiş; çakışma varsa uuid ekle
+        base_key = f'{w_cm}x{h_cm}cm'
+        size_key = base_key
+        existing = tmpl.get('mdf_variants', {})
+        if size_key in existing:
+            size_key = base_key + '_' + str(uuid.uuid4())[:4]
+        first_zones = next(iter(existing.values()), {}).get('zones', [])
+        tmpl.setdefault('mdf_variants', {})[size_key] = {
+            'label': label, 'zones': copy.deepcopy(first_zones)
+        }
+        save_templates(templates)
+        return jsonify({'ok': True, 'size_key': size_key, 'label': label, 'w_cm': w_cm, 'h_cm': h_cm})
+
+    elif ptype == 'CUSTOM_MULTI':
+        size_key = str(uuid.uuid4())[:8]
+        first_zones = next(iter(tmpl.get('custom_variants', {}).values()), {}).get('zones', [])
+        tmpl.setdefault('custom_variants', {})[size_key] = {
+            'w_cm': w_cm, 'h_cm': h_cm, 'label': label, 'zones': copy.deepcopy(first_zones)
+        }
+        save_templates(templates)
+        return jsonify({'ok': True, 'size_key': size_key, 'label': label, 'w_cm': w_cm, 'h_cm': h_cm})
+
+    return jsonify({'error': 'Bu şablon tipine varyant eklenemiyor'}), 400
+
+@app.route('/admin/templates/<tid>/delete-variant', methods=['POST'])
+def delete_template_variant(tid):
+    if require_admin(): return jsonify({'error': 'Yetkisiz'}), 401
+    templates = get_templates()
+    tmpl = next((t for t in templates if t['id'] == tid), None)
+    if not tmpl: return jsonify({'error': 'Bulunamadı'}), 404
+    ptype    = tmpl.get('product_type')
+    size_key = (request.json or {}).get('size_key', '').strip()
+    if not size_key:
+        return jsonify({'error': 'size_key eksik'}), 400
+
+    if ptype == 'MDF':
+        variants = tmpl.get('mdf_variants', {})
+        if size_key not in variants:
+            return jsonify({'error': 'Varyant bulunamadı'}), 404
+        if len(variants) <= 1:
+            return jsonify({'error': 'Son varyant silinemez'}), 400
+        del variants[size_key]
+        tmpl.get('mdf_size_overrides', {}).pop(size_key, None)
+    elif ptype == 'CUSTOM_MULTI':
+        variants = tmpl.get('custom_variants', {})
+        if size_key not in variants:
+            return jsonify({'error': 'Varyant bulunamadı'}), 404
+        if len(variants) <= 1:
+            return jsonify({'error': 'Son varyant silinemez'}), 400
+        del variants[size_key]
+    else:
+        return jsonify({'error': 'Bu şablon tipinde varyant silinemez'}), 400
+
+    save_templates(templates)
+    return jsonify({'ok': True})
+
 # ── Müşteri formu ──────────────────────────────────────────────────────────────
 @app.route('/form/<tid>')
 def customer_form(tid):
@@ -641,7 +942,21 @@ def customer_form(tid):
     if is_mdf:
         first_variant = next(iter(tmpl['mdf_variants'].values()), {})
         zones = first_variant.get('zones', [])
-        variant_sizes = MDF_SIZES
+        _ov_map = tmpl.get('mdf_size_overrides', {})
+        variant_sizes = {}
+        for sk, sv in tmpl['mdf_variants'].items():
+            _ov = _ov_map.get(sk)
+            if _ov:
+                _w, _h = _ov['w_cm'], _ov['h_cm']
+                variant_sizes[sk] = {'label': sv.get('label', sk), 'w_cm': _w, 'h_cm': _h,
+                                     'commercial_label': _commercial_size_label(_w, _h)}
+            elif sk in MDF_SIZES:
+                _ms = MDF_SIZES[sk]
+                variant_sizes[sk] = {**_ms, 'commercial_label': _commercial_size_label(_ms['w_cm'], _ms['h_cm'])}
+            else:
+                _w, _h = sv.get('w_cm', 0), sv.get('h_cm', 0)
+                variant_sizes[sk] = {'label': sv.get('label', sk), 'w_cm': _w, 'h_cm': _h,
+                                     'commercial_label': _commercial_size_label(_w, _h)}
         _bg   = first_variant.get('background', '')
         bg_url = f"/static/uploads/{_bg}" if _bg else ''
     elif is_custom_multi:
@@ -694,12 +1009,17 @@ def customer_form(tid):
 
     def get_out_ratio(ptype, mdf_sk, custom_sk):
         if ptype == 'PSTR':
-            return FIXED_SIZES['PSTR']['w_cm'] / FIXED_SIZES['PSTR']['h_cm']
+            _w = tmpl.get('w_cm') or FIXED_SIZES['PSTR']['w_cm']
+            _h = tmpl.get('h_cm') or FIXED_SIZES['PSTR']['h_cm']
+            return _w / _h
         elif ptype == 'A3':
-            return FIXED_SIZES['A3']['w_cm'] / FIXED_SIZES['A3']['h_cm']
-        elif ptype == 'MDF' and mdf_sk and mdf_sk in MDF_SIZES:
-            s = MDF_SIZES[mdf_sk]
-            return s['w_cm'] / s['h_cm']
+            _w = tmpl.get('w_cm') or FIXED_SIZES['A3']['w_cm']
+            _h = tmpl.get('h_cm') or FIXED_SIZES['A3']['h_cm']
+            return _w / _h
+        elif ptype == 'MDF' and mdf_sk:
+            _override = tmpl.get('mdf_size_overrides', {}).get(mdf_sk)
+            s = _override or MDF_SIZES.get(mdf_sk)
+            return s['w_cm'] / s['h_cm'] if s else 1.0
         elif ptype == 'CUSTOM_MULTI' and custom_sk:
             v = tmpl.get('custom_variants',{}).get(custom_sk,{})
             if v.get('w_cm') and v.get('h_cm'):
@@ -718,6 +1038,27 @@ def customer_form(tid):
         request.args.get('mdf_size'),
         request.args.get('custom_size'))
 
+    # Her varyantın oranını ve arka planını JS'e geçir → çoklu ünite önizlemesinde doğru ebat kullanılır
+    variant_ratios      = {}
+    variant_backgrounds = {}
+    if is_custom_multi:
+        for sk, sv in tmpl.get('custom_variants', {}).items():
+            w_v, h_v = sv.get('w_cm', 0), sv.get('h_cm', 0)
+            if w_v and h_v:
+                variant_ratios[sk] = round(w_v / h_v, 6)
+            _vbg = sv.get('background', '')
+            if _vbg:
+                variant_backgrounds[sk] = f"/static/uploads/{_vbg}"
+    elif is_mdf:
+        for sk, sv in tmpl.get('mdf_variants', {}).items():
+            _vbg = sv.get('background', '')
+            if _vbg:
+                variant_backgrounds[sk] = f"/static/uploads/{_vbg}"
+            _override = tmpl.get('mdf_size_overrides', {}).get(sk)
+            s = _override or MDF_SIZES.get(sk) or {}
+            if s.get('w_cm') and s.get('h_cm'):
+                variant_ratios[sk] = round(s['w_cm'] / s['h_cm'], 6)
+
     return render_template('customer_form.html', tmpl=tmpl,
                            photo_zones=photo_zones, text_zones=text_zones,
                            static_image_zones=static_image_zones,
@@ -733,7 +1074,8 @@ def customer_form(tid):
                            page_calendar_map=page_calendar_map,
                            bg_url=bg_url, bg_urls=bg_urls,
                            variant_sizes=variant_sizes, MDF_SIZES=MDF_SIZES,
-                           out_ratio=out_ratio,
+                           out_ratio=out_ratio, variant_ratios=variant_ratios,
+                           variant_backgrounds=variant_backgrounds,
                            enable_bw_option=tmpl.get('enable_bw_option', False),
                            edit_mode=False, edit_order=None,
                            edit_photo_urls={}, edit_group_urls={},
@@ -842,6 +1184,47 @@ def _extract_unit_data(form_files, form_data, prefix, order_id, zones, tmpl, uni
     }
 
 
+@app.route('/form/<tid>/variant_info')
+def form_variant_info(tid):
+    tmpl = next((t for t in get_templates() if t['id'] == tid), None)
+    if not tmpl:
+        return jsonify({'error': 'not found'}), 404
+    ptype = tmpl.get('product_type')
+    custom_sk = request.args.get('custom_size', '')
+    mdf_sk    = request.args.get('mdf_size', '')
+    bg_url    = ''
+    out_ratio = None
+    zones     = []
+    if ptype == 'CUSTOM_MULTI' and custom_sk:
+        variant = tmpl.get('custom_variants', {}).get(custom_sk, {})
+        _bg = variant.get('background', '')
+        if _bg:
+            bg_url = f"/static/uploads/{_bg}"
+        w_v, h_v = variant.get('w_cm', 0), variant.get('h_cm', 0)
+        if w_v and h_v:
+            out_ratio = round(w_v / h_v, 6)
+        zones = variant.get('zones', [])
+    elif ptype == 'MDF' and mdf_sk and mdf_sk in MDF_SIZES:
+        variant = tmpl.get('mdf_variants', {}).get(mdf_sk, {})
+        _bg = variant.get('background', '')
+        if _bg:
+            bg_url = f"/static/uploads/{_bg}"
+        s = MDF_SIZES[mdf_sk]
+        out_ratio = round(s['w_cm'] / s['h_cm'], 6)
+        zones = variant.get('zones', [])
+    def _fz(t): return [z for z in zones if z.get('type') == t]
+    return jsonify({
+        'bg_url':                 bg_url,
+        'out_ratio':              out_ratio,
+        'photo_zones':            _fz('photo'),
+        'text_zones':             _fz('text'),
+        'static_image_zones':     _fz('static_image'),
+        'static_text_zones':      _fz('static_text'),
+        'calendar_zones':         _fz('calendar'),
+        'selectable_image_zones': _fz('selectable_image'),
+    })
+
+
 @app.route('/form/<tid>/submit', methods=['POST'])
 def submit_form(tid):
     tmpl = next((t for t in get_templates() if t['id'] == tid), None)
@@ -851,6 +1234,8 @@ def submit_form(tid):
     customer_name= request.form.get('customer_name','').strip().upper()
     order_number = request.form.get('order_number','').strip()
     phone        = request.form.get('phone','').strip()
+    if not customer_name or not order_number or not phone:
+        return "Müşteri adı, sipariş numarası ve telefon zorunludur.", 400
     unit_count   = max(1, int(request.form.get('unit_count', 1) or 1))
     same_design  = request.form.get('same_design', '0') == '1'
     # same_design: tek form doldurulur, prefix yok; farklı tasarım: çoklu prefix
@@ -861,6 +1246,8 @@ def submit_form(tid):
         bw_option = 'color'
     if ptype == 'MDF':
         mdf_size_key = (request.form.get(f'{first_prefix}mdf_size') or request.form.get('mdf_size') or None)
+        if not mdf_size_key:
+            mdf_size_key = next(iter(tmpl.get('mdf_variants', {})), None)
         custom_size_key = None
     elif ptype == 'CUSTOM_MULTI':
         custom_size_key = (request.form.get(f'{first_prefix}custom_size') or request.form.get('custom_size') or None)
@@ -871,6 +1258,8 @@ def submit_form(tid):
 
     if ptype == 'MDF' and mdf_size_key:
         zones = tmpl['mdf_variants'].get(mdf_size_key, {}).get('zones', [])
+        if not zones:
+            zones = next(iter(tmpl['mdf_variants'].values()), {}).get('zones', [])
     elif ptype == 'CUSTOM_MULTI' and custom_size_key:
         zones = tmpl['custom_variants'].get(custom_size_key, {}).get('zones', [])
     elif ptype == 'MULTIPAGE':
@@ -889,7 +1278,7 @@ def submit_form(tid):
     elif ptype == 'A3':
         size_label = 'A3'
     elif ptype == 'MDF' and mdf_size_key:
-        size_label = MDF_SIZES[mdf_size_key]['label']
+        size_label = MDF_SIZES.get(mdf_size_key, {}).get('label', mdf_size_key)
     elif ptype == 'CUSTOM_MULTI' and custom_size_key:
         size_label = tmpl['custom_variants'][custom_size_key]['label']
     elif ptype == 'CUSTOM':
@@ -944,23 +1333,44 @@ def submit_form(tid):
     # Backward-compat: düzenleme modu için ilk ünitenin verisini üst seviyeye de yaz
     order.update({k: v for k, v in units[0].items() if k != 'unit_num'})
 
-    orders = get_orders()
-    orders.append(order)
-    save_orders(orders)
+    order['status'] = 'processing'
+    with _orders_lock:
+        orders = get_orders()
+        orders.append(order)
+        save_orders(orders)
 
-    # Tasarım üret
-    all_drive_files = []   # [{'id': ..., 'name': ...}]
-    had_error = False
+    # Tasarım üretimini background thread'de başlat; sayfa anında döner
+    import copy as _copy
+    threading.Thread(
+        target=_generate_order_bg,
+        args=(order_id, same_design, unit_count, ptype,
+              _copy.deepcopy(units), _copy.deepcopy(order), tmpl),
+        daemon=True
+    ).start()
 
+    return render_template('form_success.html', order={**order, 'status': 'pending'}, all_orders=[order])
+
+_bg_semaphore = threading.Semaphore(1)  # Aynı anda yalnızca 1 tasarım üretilir
+
+def _generate_order_bg(order_id, same_design, unit_count, ptype, units, order, tmpl):
+    """
+    Background thread:
+    Aşama 1 — Tasarım üret → status='ready' yaz  (kullanıcı polling'de hemen görsün)
+    Aşama 2 — Drive'a yükle                       (kullanıcı artık beklemez)
+    """
+    _bg_semaphore.acquire()
     try:
-        folder_id = get_or_create_daily_folder()
-        print(f"[Drive] Günlük klasör ID: {folder_id}")
-    except Exception as _de:
-        print(f"[Drive] HATA — günlük klasör: {_de}")
-        folder_id = None
+        _generate_order_bg_inner(order_id, same_design, unit_count, ptype, units, order, tmpl)
+    finally:
+        _bg_semaphore.release()
 
+def _generate_order_bg_inner(order_id, same_design, unit_count, ptype, units, order, tmpl):
+    customer_name = order.get('customer_name', '')
+    had_error     = False
+    to_upload     = []  # [(local_path, drive_filename, unit_or_None)]
+
+    # ── Aşama 1: Tasarım üretimi ────────────────────────────────────────────
     if same_design:
-        # Tek tasarım — adet sayısını dosya adına göm
         unit = units[0]
         unit_order = {**order, **{k: v for k, v in unit.items() if k != 'unit_num'}}
         unit_order['unit_num'] = None
@@ -972,44 +1382,36 @@ def submit_form(tid):
             elif ptype == 'CUSTOM_MULTI':
                 unit_order['custom_size_key'] = unit['unit_size_key']
         try:
-            print(f"[GEN] same_design generate_design başladı")
+            print(f"[BG] generate_design başladı")
             result = generate_design(unit_order, tmpl)
-            print(f"[GEN] generate_design döndü: {result!r:.120}")
+            print(f"[BG] generate_design döndü")
             if isinstance(result, list):
-                # MULTIPAGE — ZIP oluştur, tek dosya olarak Drive'a yükle
-                name_part  = customer_name.replace('/', '-')
-                _adet      = unit_order.get('adet_count')
-                zip_name   = f"{name_part}, {_adet} ADET.zip" if (_adet and _adet > 1) else f"{name_part}.zip"
-                _is_imp    = any(', IMP ' in os.path.basename(p) for p in result)
-                _arcnames  = [f"{i+1}.jpg" for i in range(len(result))] if _is_imp else None
-                print(f"[ZIP] {len(result)} sayfa → {zip_name}")
-                zip_path   = _create_zip_tmp(result, zip_name, _arcnames)
+                name_part = customer_name.replace('/', '-')
+                _adet     = unit_order.get('adet_count')
+                zip_name  = f"{name_part}, {_adet} ADET.zip" if (_adet and _adet > 1) else f"{name_part}.zip"
+                _is_imp   = any(', IMP ' in os.path.basename(p) for p in result)
+                _arcnames = [f"{i+1}.jpg" for i in range(len(result))] if _is_imp else None
+                zip_path  = _create_zip_tmp(result, zip_name, _arcnames)
                 for p in result:
                     try: os.remove(p)
                     except Exception: pass
-                fid, fname2 = upload_to_drive(zip_path, zip_name, folder_id)
-                print(f"[Drive] ZIP yükleme OK: {fid} — {fname2}")
-                unit['drive_file_id']   = fid
-                unit['drive_file_name'] = fname2
-                all_drive_files.append({'id': fid, 'name': fname2})
+                to_upload.append((zip_path, zip_name, unit))
             else:
                 enqueue_n = unit_count if (same_design and unit_count > 1) else 1
                 queued = _route_to_print_queue(order_id, customer_name, result, unit, enqueue_n)
-                print(f"[Queue] kuyruğa alındı: {queued}")
                 if not queued:
-                    print(f"[Drive] Yükleme başladı: {os.path.basename(result)}")
-                    fid, fname2 = upload_to_drive(result, os.path.basename(result), folder_id)
-                    print(f"[Drive] Yükleme OK: {fid} — {fname2}")
-                    unit['drive_file_id']   = fid
-                    unit['drive_file_name'] = fname2
-                    all_drive_files.append({'id': fid, 'name': fname2})
-        except Exception as e:
+                    to_upload.append((result, os.path.basename(result), unit))
+        except Exception:
             import traceback
-            print(f"[HATA] same_design tasarım/yükleme hatası:\n{traceback.format_exc()}")
+            _tb = traceback.format_exc()
+            print(f"[BG] HATA same_design:\n{_tb}")
             had_error = True
-            unit['error'] = str(e)
+            order['_last_error'] = _tb[-800:]
     else:
-        collected_paths = []  # ZIP'e eklenecek tüm dosya yolları
+        collected_paths = []
+
+        # Aşama 1: tüm ünite tasarımlarını üret
+        unit_results = []
         for unit_idx, unit in enumerate(units):
             unit_order = {**order, **{k: v for k, v in unit.items() if k != 'unit_num'}}
             unit_order['unit_num'] = unit['unit_num']
@@ -1019,72 +1421,159 @@ def submit_form(tid):
                 elif ptype == 'CUSTOM_MULTI':
                     unit_order['custom_size_key'] = unit['unit_size_key']
             try:
-                print(f"[GEN] ünite {unit_idx} generate_design başladı")
+                print(f"[BG] ünite {unit_idx} generate_design başladı")
                 result = generate_design(unit_order, tmpl)
-                print(f"[GEN] ünite {unit_idx} döndü: {result!r:.120}")
-                if isinstance(result, list):
-                    collected_paths.extend(result)
-                    unit['has_result'] = True
-                else:
-                    queued = _route_to_print_queue(order_id, customer_name, result, unit)
-                    print(f"[Queue] ünite {unit_idx} kuyruğa alındı: {queued}")
-                    if not queued:
-                        collected_paths.append(result)
-                        unit['has_result'] = True
-            except Exception as e:
+                unit_results.append((unit, result, isinstance(result, list)))
+            except Exception:
                 import traceback
-                print(f"[HATA] ünite {unit_idx} tasarım/yükleme hatası:\n{traceback.format_exc()}")
+                _tb = traceback.format_exc()
+                print(f"[BG] HATA ünite {unit_idx}:\n{_tb}")
                 had_error = True
-                unit['error'] = str(e)
+                order['_last_error'] = _tb[-800:]
+                unit_results.append((unit, None, False))
 
-        # Toplanan dosyaları ZIP veya tek JPG olarak Drive'a yükle
-        if collected_paths and folder_id:
+        # Aşama 2: siparişte A3'e yerleştirilemeyen ürün var mı kontrol et
+        # (varsa aynı siparişin A4/A5'leri de kuyruğa alınmaz; hepsi tek ZIP'e gider)
+        has_non_queueable = False
+        for _u, _r, _il in unit_results:
+            if _r is None or _il:
+                has_non_queueable = True
+                break
             try:
-                name_part = customer_name.replace('/', '-')
-                if len(collected_paths) == 1:
-                    print(f"[Drive] Yükleme başladı: {os.path.basename(collected_paths[0])}")
-                    fid, fname2 = upload_to_drive(collected_paths[0], os.path.basename(collected_paths[0]), folder_id)
-                    print(f"[Drive] Yükleme OK: {fid} — {fname2}")
+                with Image.open(_r) as _img:
+                    if not _detect_print_size(*_img.size):
+                        has_non_queueable = True
+                        break
+            except Exception:
+                has_non_queueable = True
+                break
+
+        # Aşama 3: yönlendirme
+        a4a5_own = []  # (unit, path) — has_non_queueable durumunda aynı siparişin A4/A5'leri
+        for unit, result, is_list in unit_results:
+            if result is None:
+                continue
+            if is_list:
+                collected_paths.extend(result)
+                unit['has_result'] = True
+            elif has_non_queueable:
+                try:
+                    with Image.open(result) as _img:
+                        _sz = _detect_print_size(*_img.size)
+                except Exception:
+                    _sz = None
+                if _sz:
+                    a4a5_own.append((unit, result))
                 else:
-                    zip_name  = f"{name_part}, {unit_count} ADET.zip"
-                    _is_imp   = any(', IMP ' in os.path.basename(p) for p in collected_paths)
-                    _arcnames = [f"{i+1}.jpg" for i in range(len(collected_paths))] if _is_imp else None
-                    print(f"[ZIP] {len(collected_paths)} dosya → {zip_name}")
-                    zip_path = _create_zip_tmp(collected_paths, zip_name, _arcnames)
-                    for p in collected_paths:
-                        try: os.remove(p)
+                    collected_paths.append(result)
+                    unit['has_result'] = True
+            else:
+                queued = _route_to_print_queue(order_id, customer_name, result, unit)
+                if not queued:
+                    collected_paths.append(result)
+                    unit['has_result'] = True
+
+        # Aşama 4: aynı siparişin A4/A5'lerini kendi aralarında A3'e yerleştir (2+ varsa)
+        if a4a5_own:
+            a4a5_paths = [r for _, r in a4a5_own]
+            if len(a4a5_paths) == 1:
+                collected_paths.append(a4a5_paths[0])
+            else:
+                _a3p = _build_order_a3(a4a5_paths)
+                if _a3p:
+                    collected_paths.append(_a3p)
+                    for _p in a4a5_paths:
+                        try: os.remove(_p)
                         except Exception: pass
-                    fid, fname2 = upload_to_drive(zip_path, zip_name, folder_id)
-                    print(f"[Drive] ZIP yükleme OK: {fid} — {fname2}")
-                all_drive_files.append({'id': fid, 'name': fname2})
-            except Exception as e:
-                import traceback
-                print(f"[HATA] ZIP/Drive yükleme hatası:\n{traceback.format_exc()}")
-                had_error = True
+                else:
+                    collected_paths.extend(a4a5_paths)
+            for _u, _ in a4a5_own:
+                _u['has_result'] = True
 
-    # Kuyruğa alınan sipariş sayısını kontrol et
-    queued_count = sum(1 for u in units if u.get('staging_file'))
-    if all_drive_files:
-        if len(all_drive_files) == 1:
-            order['drive_file_id']   = all_drive_files[0]['id']
-            order['drive_file_name'] = all_drive_files[0]['name']
-            order['drive_files']     = None
-        else:
-            order['drive_files']     = all_drive_files
-            order['drive_file_id']   = None
-            order['drive_file_name'] = None
-    if queued_count and not all_drive_files and not had_error:
-        order['status'] = 'queued'
+        if collected_paths:
+            name_part = customer_name.replace('/', '-')
+            if len(collected_paths) == 1:
+                to_upload.append((collected_paths[0], os.path.basename(collected_paths[0]), None))
+            else:
+                zip_name  = f"{name_part}, {unit_count} ADET.zip"
+                _is_imp   = any(', IMP ' in os.path.basename(p) for p in collected_paths)
+                _arcnames = [f"{i+1}.jpg" for i in range(len(collected_paths))] if _is_imp else None
+                zip_path  = _create_zip_tmp(collected_paths, zip_name, _arcnames)
+                for p in collected_paths:
+                    try: os.remove(p)
+                    except Exception: pass
+                to_upload.append((zip_path, zip_name, None))
+
+    # ── Aşama 1 sonu: durumu hemen yaz — kullanıcı "Tasarım Hazır" görsün ──
+    queued_count     = sum(1 for u in units if u.get('staging_file'))
+    immediate_status = 'error' if had_error else ('queued' if (queued_count and not to_upload) else 'ready')
+    with _orders_lock:
+        orders = get_orders()
+        for i, o in enumerate(orders):
+            if o['id'] == order_id:
+                orders[i]['status'] = immediate_status
+                orders[i]['units']  = units
+                if had_error and order.get('_last_error'):
+                    orders[i]['error_message'] = order['_last_error']
+                break
+        save_orders(orders)
+    print(f"[BG] {order_id} tasarım bitti → {immediate_status}")
+
+    if had_error or not to_upload:
+        return
+
+    # ── Aşama 2: Drive upload (kullanıcı artık beklemez) ────────────────────
+    try:
+        folder_id = get_or_create_daily_folder()
+    except Exception as _de:
+        print(f"[BG] Drive klasör HATA: {_de}")
+        return
+
+    all_drive_files = []
+    for local_path, drive_fname, unit in to_upload:
+        try:
+            print(f"[BG] Drive yükleme: {drive_fname}")
+            fid, fname2 = upload_to_drive(local_path, drive_fname, folder_id)
+            print(f"[BG] Drive OK: {fid} — {fname2}")
+            all_drive_files.append({'id': fid, 'name': fname2})
+            if unit is not None:
+                unit['drive_file_id']   = fid
+                unit['drive_file_name'] = fname2
+        except Exception:
+            import traceback
+            print(f"[BG] Drive HATA ({drive_fname}):\n{traceback.format_exc()}")
+
+    if not all_drive_files:
+        return
+
+    drive_update = {}
+    if len(all_drive_files) == 1:
+        drive_update = {'drive_file_id': all_drive_files[0]['id'],
+                        'drive_file_name': all_drive_files[0]['name'],
+                        'drive_files': None}
     else:
-        order['status'] = 'error' if had_error else 'ready'
-    order['units']  = units   # güncellenen unit output dosyaları ile kaydet
+        drive_update = {'drive_files': all_drive_files,
+                        'drive_file_id': None, 'drive_file_name': None}
 
-    for i, o in enumerate(orders):
-        if o['id'] == order_id:
-            orders[i] = order; break
-    save_orders(orders)
+    with _orders_lock:
+        orders = get_orders()
+        for i, o in enumerate(orders):
+            if o['id'] == order_id:
+                orders[i].update(drive_update)
+                orders[i]['units'] = units
+                break
+        save_orders(orders)
+    print(f"[BG] {order_id} Drive tamamlandı")
 
-    return render_template('form_success.html', order=order, all_orders=[order])
+
+@app.route('/form/order/<oid>/status')
+def form_order_status(oid):
+    orders = get_orders()
+    o = next((x for x in orders if x['id'] == oid), None)
+    if not o:
+        return jsonify({'status': 'not_found'}), 404
+    return jsonify({'status': o.get('status', 'processing')})
+
 
 # ── Tasarım üretimi ────────────────────────────────────────────────────────────
 def _is_already_grayscale(img):
@@ -1210,22 +1699,29 @@ def _fit_font_size(draw, value, zone, zw, zh, out_h, size_pct=1.0):
         except Exception:
             return ImageFont.load_default()
 
-    fs = start_fs
-    font = load_font(fs)
-    while True:
-        lines     = _wrap_text(draw, value, font, zw)
-        lh        = _line_height(draw, font)
-        total_h   = len(lines) * lh
-        fits      = total_h <= zh
-        print(f"[fit_font] fs={fs} lines={len(lines)} lh={lh} totalH={total_h:.1f} zh={zh:.1f} fits={fits}")
-        if fits or fs <= _MIN_FONT_SIZE:
-            break
-        fs   = max(_MIN_FONT_SIZE, fs - 1)
-        font = load_font(fs)
-
+    # Hızlı kontrol: start_fs zaten sığıyor mu?
+    font  = load_font(start_fs)
     lines = _wrap_text(draw, value, font, zw)
     lh    = _line_height(draw, font)
-    return fs, font, lines, lh
+    if len(lines) * lh <= zh or start_fs <= _MIN_FONT_SIZE:
+        return start_fs, font, lines, lh
+
+    # Binary search: zone yüksekliğine sığan en büyük font boyutunu bul
+    lo, hi = _MIN_FONT_SIZE, start_fs
+    while lo < hi - 1:
+        mid   = (lo + hi) // 2
+        font  = load_font(mid)
+        lines = _wrap_text(draw, value, font, zw)
+        lh    = _line_height(draw, font)
+        if len(lines) * lh <= zh:
+            lo = mid
+        else:
+            hi = mid
+
+    font  = load_font(lo)
+    lines = _wrap_text(draw, value, font, zw)
+    lh    = _line_height(draw, font)
+    return lo, font, lines, lh
 
 
 def _render_text_in_zone(draw, canvas, value, zone, zx, zy, zw, zh, out_h, size_pct=1.0):
@@ -1407,10 +1903,15 @@ def generate_design(order, tmpl):
     mdf_size_key    = order.get('mdf_size_key')
     custom_size_key = order.get('custom_size_key')
 
-    if ptype == 'MDF' and mdf_size_key:
-        variant = tmpl['mdf_variants'][mdf_size_key]
-        bg_file, zones = variant['background'], variant['zones']
-        src_w, src_h   = variant['width'], variant['height']
+    if ptype == 'MDF':
+        if not mdf_size_key:
+            mdf_size_key = next(iter(tmpl.get('mdf_variants', {})), None)
+        variant  = tmpl['mdf_variants'].get(mdf_size_key) or next(iter(tmpl['mdf_variants'].values()))
+        bg_file  = variant['background']
+        zones    = variant.get('zones', [])
+        if not zones:
+            zones = next(iter(tmpl['mdf_variants'].values()), {}).get('zones', [])
+        src_w, src_h = variant['width'], variant['height']
     elif ptype == 'CUSTOM_MULTI' and custom_size_key:
         variant = tmpl['custom_variants'][custom_size_key]
         bg_file, zones = variant['background'], variant['zones']
@@ -1421,15 +1922,35 @@ def generate_design(order, tmpl):
         src_w, src_h = tmpl['width'], tmpl['height']
 
     if ptype == 'PSTR':
-        out_w, out_h = cm_to_px(FIXED_SIZES['PSTR']['w_cm']), cm_to_px(FIXED_SIZES['PSTR']['h_cm'])
+        _w = tmpl.get('w_cm') or FIXED_SIZES['PSTR']['w_cm']
+        _h = tmpl.get('h_cm') or FIXED_SIZES['PSTR']['h_cm']
+        out_w, out_h = cm_to_px(_w), cm_to_px(_h)
     elif ptype == 'A3':
-        out_w, out_h = cm_to_px(FIXED_SIZES['A3']['w_cm']),   cm_to_px(FIXED_SIZES['A3']['h_cm'])
+        _w = tmpl.get('w_cm') or FIXED_SIZES['A3']['w_cm']
+        _h = tmpl.get('h_cm') or FIXED_SIZES['A3']['h_cm']
+        out_w, out_h = cm_to_px(_w), cm_to_px(_h)
     elif ptype == 'MDF' and mdf_size_key:
-        s = MDF_SIZES[mdf_size_key]
-        out_w, out_h = cm_to_px(s['w_cm']), cm_to_px(s['h_cm'])
+        _override = tmpl.get('mdf_size_overrides', {}).get(mdf_size_key)
+        s = _override or MDF_SIZES.get(mdf_size_key)
+        out_w, out_h = (cm_to_px(s['w_cm']), cm_to_px(s['h_cm'])) if s else (src_w, src_h)
     elif ptype == 'CUSTOM_MULTI' and custom_size_key:
         v = tmpl['custom_variants'][custom_size_key]
-        out_w, out_h = cm_to_px(v['w_cm']), cm_to_px(v['h_cm'])
+        native_w = v.get('width', src_w)
+        native_h = v.get('height', src_h)
+        # 200 DPI hedef: 300 DPI OOM'a neden oluyordu, native canvas (~1200px) baskı için yetersiz
+        # max(native, 200dpi_target) ile tasarım boyutunun altına düşmeyiz
+        _w_cm = v.get('w_cm', 0); _h_cm = v.get('h_cm', 0)
+        if _w_cm and _h_cm:
+            target_w = max(native_w, int(_w_cm * 260 / 2.54))
+            target_h = max(native_h, int(_h_cm * 260 / 2.54))
+        else:
+            target_w, target_h = native_w, native_h
+        # 4000px uzun kenar sınırı → ~254 DPI @ 30×40cm, OOM'u önler (300DPI=4724px idi)
+        long = max(target_w, target_h)
+        if long > 4000:
+            s = 4000 / long
+            target_w, target_h = int(target_w * s), int(target_h * s)
+        out_w, out_h = target_w, target_h
     elif ptype == 'CUSTOM':
         out_w = cm_to_px(tmpl.get('w_cm', src_w / DPI * 2.54))
         out_h = cm_to_px(tmpl.get('h_cm', src_h / DPI * 2.54))
@@ -1457,6 +1978,19 @@ def generate_design(order, tmpl):
         if gname:
             groups.setdefault(gname, []).append(i)
 
+    def _load_for_zone(fname, zone):
+        img = _load_img(fname)
+        if img is None:
+            return None
+        zw = max(int(zone['w'] * out_w / 100), 1)
+        zh = max(int(zone['h'] * out_h / 100), 1)
+        iw, ih = img.size
+        cap_w, cap_h = zw * 2, zh * 2
+        if iw > cap_w or ih > cap_h:
+            ratio = min(cap_w / iw, cap_h / ih)
+            img = img.resize((max(1, int(iw * ratio)), max(1, int(ih * ratio))), Image.BILINEAR)
+        return img
+
     zone_images = {}
     for i, zone in enumerate(photo_zones):
         gname = zone.get('group_name') or ''
@@ -1464,7 +1998,7 @@ def generate_design(order, tmpl):
             orig  = photo_originals[i] if i < len(photo_originals) else None
             fname = orig or (raw_files[i] if i < len(raw_files) else None)
             if fname:
-                img = _load_img(fname)
+                img = _load_for_zone(fname, zone)
                 if img:
                     zone_images[i] = img
 
@@ -1474,7 +2008,7 @@ def generate_design(order, tmpl):
             orig  = photo_originals[zi] if zi < len(photo_originals) else None
             fname = orig or (fnames[j] if j < len(fnames) else None)
             if fname:
-                img = _load_img(fname)
+                img = _load_for_zone(fname, photo_zones[zi])
                 if img:
                     zone_images[zi] = img
 
@@ -1557,7 +2091,7 @@ def generate_design(order, tmpl):
     else:
         fname = f"{name_part}, {label}.jpg"
     tmp_path = os.path.join(tempfile.gettempdir(), fname)
-    output.save(tmp_path, 'JPEG', quality=95, dpi=(300, 300))
+    output.save(tmp_path, 'JPEG', quality=85, dpi=(300, 300))
     print(f"[GEN] /tmp kaydedildi: {tmp_path} ({os.path.getsize(tmp_path)} bytes)")
     return tmp_path
 
@@ -1683,6 +2217,19 @@ def generate_design_multipage(order, tmpl):
         if gname:
             groups.setdefault(gname, []).append(i)
 
+    def _load_for_zone_mp(fname, zone):
+        img = _load_img(fname)
+        if img is None:
+            return None
+        zw = max(int(zone['w'] * out_w / 100), 1)
+        zh = max(int(zone['h'] * out_h / 100), 1)
+        iw, ih = img.size
+        cap_w, cap_h = zw * 2, zh * 2
+        if iw > cap_w or ih > cap_h:
+            ratio = min(cap_w / iw, cap_h / ih)
+            img = img.resize((max(1, int(iw * ratio)), max(1, int(ih * ratio))), Image.BILINEAR)
+        return img
+
     zone_images = {}
     for i, zone in enumerate(all_photo_zones):
         if zone.get('group_name'):
@@ -1690,7 +2237,7 @@ def generate_design_multipage(order, tmpl):
         orig  = photo_originals[i] if i < len(photo_originals) else None
         fname = orig or (raw_files[i] if i < len(raw_files) else None)
         if fname:
-            img = _load_img(fname)
+            img = _load_for_zone_mp(fname, zone)
             if img: zone_images[i] = img
     for gname, zone_indices in groups.items():
         fnames = group_files.get(gname, [])
@@ -1698,7 +2245,7 @@ def generate_design_multipage(order, tmpl):
             orig  = photo_originals[zi] if zi < len(photo_originals) else None
             fname = orig or (fnames[j] if j < len(fnames) else None)
             if fname:
-                img = _load_img(fname)
+                img = _load_for_zone_mp(fname, all_photo_zones[zi])
                 if img: zone_images[zi] = img
 
     name_part  = order['customer_name'].replace('/', '-')
@@ -1731,7 +2278,7 @@ def generate_design_multipage(order, tmpl):
                 canvas = canvas.rotate(-90, expand=True)
                 fname    = f"{name_part}{unit_sfx}, IMP {sheet_num}.jpg"
                 tmp_path = os.path.join(tempfile.gettempdir(), fname)
-                canvas.save(tmp_path, 'JPEG', quality=95, dpi=(DPI, DPI))
+                canvas.save(tmp_path, 'JPEG', quality=85, dpi=(DPI, DPI))
                 output_files.append(tmp_path)
                 sheet_num += 1
         print(f"[IMP] {name_part}: {n} sayfa → {len(output_files)} A3 sayfası")
@@ -1743,7 +2290,7 @@ def generate_design_multipage(order, tmpl):
         output  = _render_one_page(pg_num, pages[pg_str], out_w, out_h, zone_images, photo_counter, order)
         fname    = f"{name_part}{unit_sfx}, SAYFA {pg_num}.jpg"
         tmp_path = os.path.join(tempfile.gettempdir(), fname)
-        output.save(tmp_path, 'JPEG', quality=95, dpi=(DPI, DPI))
+        output.save(tmp_path, 'JPEG', quality=85, dpi=(DPI, DPI))
         output_files.append(tmp_path)
     return output_files
 
@@ -1789,7 +2336,21 @@ def edit_order_get(order_id):
         mdf_sk = order.get('mdf_size_key') or next(iter(tmpl['mdf_variants']), None)
         variant = tmpl['mdf_variants'].get(mdf_sk, next(iter(tmpl['mdf_variants'].values()), {}))
         zones         = variant.get('zones', [])
-        variant_sizes = MDF_SIZES
+        _ov_map2 = tmpl.get('mdf_size_overrides', {})
+        variant_sizes = {}
+        for sk, sv in tmpl['mdf_variants'].items():
+            _ov2 = _ov_map2.get(sk)
+            if _ov2:
+                _w, _h = _ov2['w_cm'], _ov2['h_cm']
+                variant_sizes[sk] = {'label': sv.get('label', sk), 'w_cm': _w, 'h_cm': _h,
+                                     'commercial_label': _commercial_size_label(_w, _h)}
+            elif sk in MDF_SIZES:
+                _ms = MDF_SIZES[sk]
+                variant_sizes[sk] = {**_ms, 'commercial_label': _commercial_size_label(_ms['w_cm'], _ms['h_cm'])}
+            else:
+                _w, _h = sv.get('w_cm', 0), sv.get('h_cm', 0)
+                variant_sizes[sk] = {'label': sv.get('label', sk), 'w_cm': _w, 'h_cm': _h,
+                                     'commercial_label': _commercial_size_label(_w, _h)}
     elif is_custom_multi:
         csk = order.get('custom_size_key') or next(iter(tmpl['custom_variants']), None)
         variant = tmpl['custom_variants'].get(csk, next(iter(tmpl['custom_variants'].values()), {}))
@@ -1847,6 +2408,17 @@ def edit_order_get(order_id):
 
     out_ratio = get_out_ratio(ptype, order.get('mdf_size_key'), order.get('custom_size_key'))
 
+    variant_ratios      = {}
+    variant_backgrounds = {}
+    if is_custom_multi:
+        for sk, sv in tmpl.get('custom_variants', {}).items():
+            w_v, h_v = sv.get('w_cm', 0), sv.get('h_cm', 0)
+            if w_v and h_v:
+                variant_ratios[sk] = round(w_v / h_v, 6)
+            _vbg = sv.get('background', '')
+            if _vbg:
+                variant_backgrounds[sk] = f"/static/uploads/{_vbg}"
+
     # Orijinal fotoğraf URL'leri + pozisyon verisi
     photo_originals      = order.get('photo_originals') or []
     edit_photo_positions = order.get('photo_positions', {})
@@ -1890,6 +2462,50 @@ def edit_order_get(order_id):
     print(f"[EDIT_DEBUG] edit_group_urls: {edit_group_urls}")
     print(f"[EDIT_DEBUG] has_originals: {has_originals}")
 
+    # Per-unit data for multi-unit different-design orders
+    edit_unit_count  = order.get('unit_count', 1) or 1
+    edit_same_design = bool(order.get('same_design', True))
+    edit_unit_photo_urls      = {}
+    edit_unit_group_urls      = {}
+    edit_unit_photo_positions = {}
+    edit_unit_text_values     = {}
+    edit_unit_text_size_values  = {}
+    edit_unit_text_color_values = {}
+    edit_unit_bw_option = {}
+
+    units_data = order.get('units', [])
+    if not edit_same_design and len(units_data) > 1:
+        for u_idx, unit in enumerate(units_data):
+            u_originals = unit.get('photo_originals') or []
+            u_raw_files = unit.get('photo_files', [])
+            u_positions = unit.get('photo_positions', {})
+            u_photo_urls = {}
+            for i, z in enumerate(photo_zones):
+                if z.get('group_name'):
+                    continue
+                orig_fn = u_originals[i] if i < len(u_originals) else None
+                fn      = orig_fn or (u_raw_files[i] if i < len(u_raw_files) else None)
+                if fn and os.path.exists(os.path.join(UPLOAD_DIR, fn)):
+                    u_photo_urls[str(i)] = '/static/uploads/' + fn
+            u_group_urls = {}
+            for gname, zi_list in groups_order.items():
+                rendered_fnames = unit.get('group_files', {}).get(gname, [])
+                urls = []
+                for j, zi in enumerate(zi_list):
+                    orig_fn     = u_originals[zi] if zi < len(u_originals) else None
+                    rendered_fn = rendered_fnames[j] if j < len(rendered_fnames) else None
+                    fn          = orig_fn or rendered_fn
+                    urls.append('/static/uploads/' + fn
+                                if fn and os.path.exists(os.path.join(UPLOAD_DIR, fn)) else None)
+                u_group_urls[gname] = urls
+            edit_unit_photo_urls[str(u_idx)]      = u_photo_urls
+            edit_unit_group_urls[str(u_idx)]      = u_group_urls
+            edit_unit_photo_positions[str(u_idx)] = u_positions
+            edit_unit_text_values[str(u_idx)]     = unit.get('text_values', {})
+            edit_unit_text_size_values[str(u_idx)]  = unit.get('text_size_values', {})
+            edit_unit_text_color_values[str(u_idx)] = unit.get('text_color_values', {})
+            edit_unit_bw_option[str(u_idx)]       = unit.get('bw_option', 'color')
+
     return render_template('customer_form.html', tmpl=tmpl,
                            photo_zones=photo_zones, text_zones=text_zones,
                            static_image_zones=static_image_zones,
@@ -1905,13 +2521,23 @@ def edit_order_get(order_id):
                            page_calendar_map=page_calendar_map,
                            bg_url=bg_url, bg_urls=bg_urls,
                            variant_sizes=variant_sizes, MDF_SIZES=MDF_SIZES,
-                           out_ratio=out_ratio,
+                           out_ratio=out_ratio, variant_ratios=variant_ratios,
+                           variant_backgrounds=variant_backgrounds,
                            enable_bw_option=tmpl.get('enable_bw_option', False),
                            edit_mode=True, edit_order=order,
                            edit_photo_urls=edit_photo_urls,
                            edit_group_urls=edit_group_urls,
                            edit_photo_positions=edit_photo_positions,
-                           edit_has_originals=has_originals)
+                           edit_has_originals=has_originals,
+                           edit_unit_count=edit_unit_count,
+                           edit_same_design=edit_same_design,
+                           edit_unit_photo_urls=edit_unit_photo_urls,
+                           edit_unit_group_urls=edit_unit_group_urls,
+                           edit_unit_photo_positions=edit_unit_photo_positions,
+                           edit_unit_text_values=edit_unit_text_values,
+                           edit_unit_text_size_values=edit_unit_text_size_values,
+                           edit_unit_text_color_values=edit_unit_text_color_values,
+                           edit_unit_bw_option=edit_unit_bw_option)
 
 @app.route('/admin/orders/<order_id>/edit', methods=['POST'])
 def edit_order_post(order_id):
@@ -1933,6 +2559,138 @@ def edit_order_post(order_id):
     text_zones  = [z for z in zones if z['type'] == 'text']
     sel_zones   = [z for z in zones if z['type'] == 'selectable_image']
 
+    unit_count_edit = int(request.form.get('unit_count', 1) or 1)
+    same_design_edit = request.form.get('same_design', '1') == '1'
+    is_multi_diff = (not same_design_edit) and (unit_count_edit > 1)
+
+    if is_multi_diff:
+        units_data = order.get('units', [])
+        while len(units_data) < unit_count_edit:
+            units_data.append({})
+        order['units'] = units_data
+        order['unit_count'] = unit_count_edit
+        order['same_design'] = False
+
+        for u_idx in range(unit_count_edit):
+            prefix = f'u{u_idx}_'
+            unit = units_data[u_idx]
+
+            tv  = unit.setdefault('text_values',       {})
+            tsz = unit.setdefault('text_size_values',  {})
+            tcl = unit.setdefault('text_color_values', {})
+            for z in text_zones:
+                lbl = z['label']
+                if f'{prefix}text_{lbl}' in request.form:       tv[lbl]  = request.form[f'{prefix}text_{lbl}'].strip()
+                if f'{prefix}text_size_{lbl}' in request.form:  tsz[lbl] = request.form[f'{prefix}text_size_{lbl}']
+                if f'{prefix}text_color_{lbl}' in request.form: tcl[lbl] = request.form[f'{prefix}text_color_{lbl}']
+
+            if f'{prefix}cal_day' in request.form:
+                unit['calendar_date'] = {
+                    'day':   int(request.form.get(f'{prefix}cal_day',   0) or 0),
+                    'month': int(request.form.get(f'{prefix}cal_month', 0) or 0),
+                    'year':  int(request.form.get(f'{prefix}cal_year',  0) or 0),
+                }
+
+            if tmpl.get('enable_bw_option') and f'{prefix}bw_option' in request.form:
+                bw = request.form.get(f'{prefix}bw_option', 'color').strip()
+                unit['bw_option'] = bw if bw in ('color', 'bw') else 'color'
+
+            if sel_zones:
+                sel = unit.setdefault('selectable_choices', {})
+                for z in sel_zones:
+                    key = f'{prefix}selectable_{z["label"]}'
+                    if key in request.form:
+                        chosen = request.form[key].strip()
+                        if chosen:
+                            sel[z['label']] = chosen
+
+            pf = unit.setdefault('photo_files', [None] * len(photo_zones))
+            while len(pf) < len(photo_zones):
+                pf.append(None)
+            seen_groups_u = set()
+            for i, zone in enumerate(photo_zones):
+                gname = zone.get('group_name') or ''
+                if gname:
+                    if gname in seen_groups_u: continue
+                    seen_groups_u.add(gname)
+                    uploaded = request.files.getlist(f'{prefix}group_{gname}')
+                    new_files = [f for f in uploaded if f and f.filename]
+                    if new_files:
+                        fnames = []
+                        for j, gf in enumerate(new_files):
+                            ext   = os.path.splitext(gf.filename)[1].lower()
+                            fname = f"order_{order_id}_grp_{gname}_{j}_u{u_idx}{ext}"
+                            gf.save(os.path.join(UPLOAD_DIR, fname))
+                            fnames.append(fname)
+                        unit.setdefault('group_files', {})[gname] = fnames
+                else:
+                    f = request.files.get(f'{prefix}photo_{i}')
+                    if f and f.filename:
+                        ext   = os.path.splitext(f.filename)[1].lower()
+                        fname = f"order_{order_id}_p{i}_u{u_idx}{ext}"
+                        f.save(os.path.join(UPLOAD_DIR, fname))
+                        pf[i] = fname
+
+            po = unit.setdefault('photo_originals', [None] * len(photo_zones))
+            while len(po) < len(photo_zones):
+                po.append(None)
+            pp = unit.setdefault('photo_positions', {})
+            for i in range(len(photo_zones)):
+                pos_json = request.form.get(f'{prefix}photo_pos_{i}')
+                if pos_json:
+                    try:
+                        pp[str(i)] = json.loads(pos_json)
+                    except Exception:
+                        pass
+                f_orig = request.files.get(f'{prefix}photo_{i}_orig')
+                if f_orig and f_orig.filename:
+                    ext = os.path.splitext(f_orig.filename)[1].lower() or '.jpg'
+                    orig_fname = f"order_{order_id}_p{i}_u{u_idx}_orig{ext}"
+                    f_orig.save(os.path.join(UPLOAD_DIR, orig_fname))
+                    po[i] = orig_fname
+
+        order.update({k: v for k, v in units_data[0].items() if k != 'unit_num'})
+
+        try:
+            import zipfile as _zipfile
+            collected_paths = []
+            for u_idx, unit in enumerate(units_data):
+                unit_order = {**order, **{k: v for k, v in unit.items() if k != 'unit_num'}}
+                unit_order['unit_num'] = unit.get('unit_num', u_idx)
+                result = generate_design(unit_order, tmpl)
+                if isinstance(result, list):
+                    collected_paths.extend(result)
+                else:
+                    collected_paths.append(result)
+
+            folder_id  = get_or_create_daily_folder()
+            name_part  = order['customer_name'].replace('/', '-')
+            zip_name   = f"{name_part}.zip"
+            zip_path   = os.path.join(tempfile.gettempdir(), zip_name)
+            with _zipfile.ZipFile(zip_path, 'w', _zipfile.ZIP_STORED) as zf:
+                for p in collected_paths:
+                    zf.write(p, os.path.basename(p))
+            for p in collected_paths:
+                try: os.remove(p)
+                except Exception: pass
+            fid, fname2 = upload_to_drive(zip_path, zip_name, folder_id)
+            order['drive_file_id']   = fid
+            order['drive_file_name'] = fname2
+            order['drive_files']     = None
+            order['status'] = 'ready'
+        except Exception as e:
+            orders[idx] = order
+            save_orders(orders)
+            return jsonify({'error': f'Tasarım hatası: {str(e)}'}), 500
+
+        orders[idx] = order
+        save_orders(orders)
+        return jsonify({'ok': True, 'status': 'ready',
+                        'drive_file_id':   order.get('drive_file_id'),
+                        'drive_file_name': order.get('drive_file_name'),
+                        'drive_files':     order.get('drive_files')})
+
+    # Tek ürün / aynı tasarım yolu
     # Metin değerleri
     tv  = order.setdefault('text_values',       {})
     tsz = order.setdefault('text_size_values',  {})
@@ -2083,7 +2841,45 @@ def delete_order(order_id):
 
     orders = [o for o in orders if o['id'] != order_id]
     save_orders(orders)
+
+    # Print kuyruğundan da bu siparişe ait tüm girişleri kaldır
+    q = _get_print_queue()
+    filtered = [item for item in q if item.get('order_id') != order_id]
+    if len(filtered) != len(q):
+        _save_print_queue(filtered)
+
     return jsonify({'ok': True})
+
+# ── Hatalı siparişi yeniden işle ──────────────────────────────────────────────
+@app.route('/admin/orders/<order_id>/retry', methods=['POST'])
+def retry_order(order_id):
+    if require_admin(): return jsonify({'error': 'Yetkisiz'}), 401
+    orders = get_orders()
+    order  = next((o for o in orders if o['id'] == order_id), None)
+    if not order: return jsonify({'error': 'Sipariş bulunamadı'}), 404
+    if order.get('status') not in ('error', 'processing'):
+        return jsonify({'error': 'Yalnızca hatalı veya bekleyen siparişler yeniden işlenebilir'}), 400
+    tmpl = next((t for t in get_templates() if t['id'] == order.get('template_id')), None)
+    if not tmpl: return jsonify({'error': 'Şablon bulunamadı'}), 404
+
+    order['status']        = 'processing'
+    order['error_message'] = None
+    order.pop('_last_error', None)
+    save_orders(orders)
+
+    import copy as _copy
+    units      = order.get('units', [order])
+    same_design = order.get('same_design', True)
+    unit_count  = order.get('unit_count', 1)
+    ptype       = order.get('product_type', tmpl.get('product_type'))
+    threading.Thread(
+        target=_generate_order_bg,
+        args=(order_id, same_design, unit_count, ptype,
+              _copy.deepcopy(units), _copy.deepcopy(order), tmpl),
+        daemon=True
+    ).start()
+    return jsonify({'ok': True})
+
 
 # ── İndirme ────────────────────────────────────────────────────────────────────
 def pretty_filename(order):
@@ -2331,7 +3127,7 @@ def _route_to_print_queue(order_id, customer_name, tmp_path, unit, enqueue_count
         if not size:
             return False
         dst = os.path.join(STAGING_DIR, filename)
-        os.rename(src, dst)
+        _shutil.move(src, dst)  # os.rename yerine: volume farklı cihazda olduğunda cross-device hatasını önler
         _enqueue_print_items(order_id, customer_name, size, filename, count=enqueue_count)
         unit['staging_file'] = filename
         unit['print_size']   = size
@@ -2358,25 +3154,39 @@ def _safe_name(s):
 
 def _a3_filename(slot_defs):
     """
-    slot_defs: [(label, x, y, item, rot), ...]
-    → "ust Emre, alt Ahmet, YYYYMMDD_HHMMSS.jpg"
-    Aynı satırdaki (y<_A5_H → 'ust', y≥_A5_H → 'alt') müşteri adları tekilleştirilir.
+    Kural:
+    - Üst/alt yarıda tek müşteri → "üst İsim" / "alt İsim"
+    - Üst/alt yarıda birden fazla farklı müşteri → "sl üst İsim1, sğ üst İsim2" (x=0 → sol, x>0 → sağ)
     """
-    rows = {}
-    for _lbl, _x, y, item, _rot in slot_defs:
-        if item:
-            row = 'ust' if y < _A5_H else 'alt'
-            name = item['customer_name']
-            if row not in rows:
-                rows[row] = []
-            if name not in rows[row]:
-                rows[row].append(name)
+    top_items = []  # (x, customer_name)
+    bot_items = []  # (x, customer_name)
+    for _lbl, x, y, item, _rot in slot_defs:
+        if not item:
+            continue
+        name = item['customer_name']
+        if y < _A5_H:
+            if (x, name) not in top_items:
+                top_items.append((x, name))
+        else:
+            if (x, name) not in bot_items:
+                bot_items.append((x, name))
+
     parts = []
-    for row_key in ['ust', 'alt']:
-        if row_key in rows:
-            parts.append(f"{row_key} {' '.join(rows[row_key])}")
-    ts  = datetime.now().strftime('%Y%m%d_%H%M%S')
-    raw = ', '.join(parts) + f', {ts}.jpg'
+    for row_label, items in [('üst', top_items), ('alt', bot_items)]:
+        if not items:
+            continue
+        customers = list(dict.fromkeys(n for _, n in items))
+        if len(customers) == 1:
+            parts.append(f"{row_label} {customers[0]}")
+        else:
+            seen_pos = set()
+            for x, name in sorted(items, key=lambda t: t[0]):
+                pos = ('sl ' if x == 0 else 'sğ ') + row_label
+                if pos not in seen_pos:
+                    seen_pos.add(pos)
+                    parts.append(f"{pos} {name}")
+
+    raw = ', '.join(parts) + '.jpg'
     return _safe_name(raw)
 
 def _a3_log_sheet(fname, drive_file_id, folder_name):
@@ -2510,39 +3320,136 @@ def _assemble_timeout(items):
 
     return _build_a3(slots)
 
+def _build_order_a3(paths):
+    """
+    Aynı siparişe ait 2+ A4/A5 JPG'yi tek A3 canvas'ına yerleştir.
+    Kuyruğa almaz, Drive'a yüklemez — geçici dosya yolunu döner.
+    """
+    a4_paths, a5_paths = [], []
+    for p in paths:
+        try:
+            with Image.open(p) as img:
+                sz = _detect_print_size(*img.size)
+            if sz == 'A4':
+                a4_paths.append(p)
+            elif sz == 'A5':
+                a5_paths.append(p)
+        except Exception as exc:
+            print(f"[A3-order] boyut hatası {p}: {exc}")
+    if not a4_paths and not a5_paths:
+        return None
+    canvas = Image.new('RGB', (_A3_W, _A3_H), (255, 255, 255))
+    if a4_paths:
+        _place_on_a3(canvas, a4_paths[0], 0, 0, rotate90=True)
+        for i, p in enumerate(a5_paths[:2]):
+            _place_on_a3(canvas, p, i * _A5_W, _A5_H, rotate90=False)
+    else:
+        pos = [(0, 0), (_A5_W, 0), (0, _A5_H), (_A5_W, _A5_H)]
+        for i, p in enumerate(a5_paths[:4]):
+            _place_on_a3(canvas, p, pos[i][0], pos[i][1], rotate90=False)
+    fname = f'order_a3_{uuid.uuid4().hex[:8]}.jpg'
+    tmp = os.path.join(tempfile.gettempdir(), fname)
+    canvas.save(tmp, 'JPEG', quality=95, dpi=(DPI, DPI))
+    print(f"[A3-order] {len(a4_paths)} A4 + {len(a5_paths)} A5 → {fname}")
+    return tmp
+
 def _try_combine_queue():
-    """Kuyruğu kontrol et; hazır kombinasyon varsa A3 oluştur."""
+    """
+    Kuyruğu kontrol et; hazır kombinasyon varsa A3 oluştur.
+    Kurallar:
+      - Aynı siparişe ait öğeler asla farklı A3 sayfalarına bölünmez.
+      - Kalan kapasiteyi dolduracak öğe seçiminde: tam dolduran grup öncelikli,
+        sonra büyük grup, sonra FIFO.
+    """
     q = _get_print_queue()
     if not q:
         return
 
-    a4s  = [it for it in q if it['size'] == 'A4']
-    a5s  = [it for it in q if it['size'] == 'A5']
-    done = set()
+    from collections import defaultdict
 
-    # 4× A5
-    while len(a5s) >= 4:
-        batch = a5s[:4]; a5s = a5s[4:]
-        _assemble_4xa5(batch)
-        done |= {it['order_id'] for it in batch}
+    order_groups = defaultdict(list)
+    for it in q:
+        order_groups[it['order_id']].append(it)
 
-    # 2× A4
-    while len(a4s) >= 2:
-        batch = a4s[:2]; a4s = a4s[2:]
-        _assemble_2xa4(batch)
-        done |= {it['order_id'] for it in batch}
+    def _order_arrival(oid):
+        return min(it['queued_at'] for it in order_groups[oid])
 
-    # 1× A4 + 2× A5
-    while len(a4s) >= 1 and len(a5s) >= 2:
-        a4  = a4s.pop(0)
-        a5b = a5s[:2]; a5s = a5s[2:]
-        _assemble_a4_2xa5(a4, a5b)
-        done |= {a4['order_id']} | {it['order_id'] for it in a5b}
+    sorted_oids = sorted(order_groups.keys(), key=_order_arrival)
 
-    if done:
-        q = [it for it in q if it['order_id'] not in done]
-        _save_print_queue(q)
-        return  # güncel kuyruğu bir sonraki turda kontrol et
+    used = set()  # birleştirilen jpg_file'lar
+
+    def _cap(items):
+        return sum(2 if it['size'] == 'A4' else 1 for it in items)
+
+    def _do_assemble(a4_items, a5_items):
+        na4, na5 = len(a4_items), len(a5_items)
+        if na4 == 0 and na5 == 4:
+            _assemble_4xa5(a5_items)
+        elif na4 == 2 and na5 == 0:
+            _assemble_2xa4(a4_items)
+        elif na4 == 1 and na5 == 2:
+            _assemble_a4_2xa5(a4_items[0], a5_items)
+        else:
+            _assemble_timeout(a4_items + a5_items)
+
+    def _fill_for(exclude_oid, need_cap):
+        """Diğer siparişlerden need_cap A5-birimi dolduracak öğe seç (bölünmeden)."""
+        other = {oid: [it for it in grp if it['jpg_file'] not in used]
+                 for oid, grp in order_groups.items() if oid != exclude_oid}
+        other = {oid: grp for oid, grp in other.items() if grp}
+        # Tam dolduran grup önce, büyük grup önce, FIFO
+        candidates = sorted(
+            [(oid, grp) for oid, grp in other.items() if _cap(grp) <= need_cap],
+            key=lambda x: (0 if _cap(x[1]) == need_cap else 1, -_cap(x[1]), _order_arrival(x[0]))
+        )
+        fill, cap_left = [], need_cap
+        for _oid, grp in candidates:
+            c = _cap(grp)
+            if c <= cap_left:
+                fill.extend(grp)
+                cap_left -= c
+                if cap_left == 0:
+                    break
+        return fill
+
+    assembled_any = False
+
+    for oid in sorted_oids:
+        items = [it for it in order_groups[oid] if it['jpg_file'] not in used]
+        if not items:
+            continue
+        a4s = [it for it in items if it['size'] == 'A4']
+        a5s = [it for it in items if it['size'] == 'A5']
+
+        # Siparişin kendi öğeleri tek başına A3 dolduruyorsa birleştir
+        while _cap(a4s) + _cap(a5s) >= 4:
+            batch_a4, batch_a5, cap_left = [], [], 4
+            for it in list(a4s):
+                if cap_left >= 2:
+                    batch_a4.append(it); a4s.remove(it); cap_left -= 2
+            for it in list(a5s):
+                if cap_left >= 1:
+                    batch_a5.append(it); a5s.remove(it); cap_left -= 1
+            _do_assemble(batch_a4, batch_a5)
+            used |= {it['jpg_file'] for it in batch_a4 + batch_a5}
+            assembled_any = True
+
+        own_cap = _cap(a4s) + _cap(a5s)
+        if own_cap == 0:
+            continue
+
+        # Kalan kapasiteyi diğer sipariş gruplarından doldur (her grubu bütün al)
+        fill = _fill_for(oid, 4 - own_cap)
+        if own_cap + _cap(fill) == 4:
+            all_a4 = a4s + [it for it in fill if it['size'] == 'A4']
+            all_a5 = a5s + [it for it in fill if it['size'] == 'A5']
+            _do_assemble(all_a4, all_a5)
+            used |= {it['jpg_file'] for it in a4s + a5s + fill}
+            assembled_any = True
+
+    if assembled_any:
+        _save_print_queue([it for it in q if it['jpg_file'] not in used])
+        return
 
     # 24 saat zaman aşımı
     now = datetime.now()
@@ -2576,6 +3483,21 @@ def download_queue_item(filename):
     path = os.path.join(STAGING_DIR, filename)
     if not os.path.exists(path): return "Dosya bulunamadı.", 404
     return send_file(path, as_attachment=True, download_name=filename)
+
+@app.route('/admin/print-queue/<path:filename>/remove', methods=['POST'])
+def remove_queue_item(filename):
+    if require_admin(): return jsonify({'error': 'Yetkisiz'}), 401
+    q = _get_print_queue()
+    new_q = [item for item in q if item.get('jpg_file') != filename]
+    if len(new_q) == len(q):
+        return jsonify({'error': 'Kuyrukta bulunamadı'}), 404
+    _save_print_queue(new_q)
+    # Staging dosyasını da sil (varsa)
+    fpath = os.path.join(STAGING_DIR, filename)
+    if os.path.exists(fpath):
+        try: os.remove(fpath)
+        except Exception: pass
+    return jsonify({'ok': True})
 
 # ── A3 baskı sayfası indirme ─────────────────────────────────────────────────
 @app.route('/admin/a3-sheets/<path:filename>/download')

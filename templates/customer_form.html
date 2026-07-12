@@ -203,7 +203,7 @@ input:focus,select:focus{border-color:var(--accent);}
         {% for sk, sv in variant_sizes.items() %}
         <option value="{{ sk }}"
           {% if edit_mode and (edit_order.mdf_size_key == sk or edit_order.custom_size_key == sk) %}selected{% endif %}>
-          {{ sk }} — {{ sv.label }}</option>
+          {{ sv.commercial_label if sv.commercial_label else sk }} — {{ sv.label }}</option>
         {% endfor %}
       </select>
     </div>
@@ -242,9 +242,9 @@ input:focus,select:focus{border-color:var(--accent);}
     </div>
     <p id="dm-hint" class="hint" style="margin:10px 0 0;min-height:18px;"></p>
   </div>
-  <!-- Ürün sekmeleri (Farklı Tasarım + 2+ ürün seçince görünür) -->
-  <div class="sec unit-tabs" id="unit-tabs" style="padding:12px 16px;"></div>
   {% endif %}
+  <!-- Ürün sekmeleri (Farklı Tasarım + 2+ ürün seçince görünür, edit modunda da gösterilir) -->
+  <div class="sec unit-tabs" id="unit-tabs" style="padding:12px 16px;display:none;"></div>
 
   {% if is_multipage_tmpl %}
   <!-- ── ÇOKLU SAYFA: her sayfa ayrı bölüm ─────────────────────────────────── -->
@@ -592,8 +592,14 @@ input:focus,select:focus{border-color:var(--accent);}
 <!-- Loading -->
 <div class="loading" id="loading">
   <div class="spin"></div>
-  <div style="font-size:15px;font-weight:600;">Tasarım hazırlanıyor...</div>
-  <div style="font-size:12px;color:#aaa;">Sayfayı kapatmayın.</div>
+  <div id="loading-title" style="font-size:15px;font-weight:700;">Önizleme hazırlanıyor...</div>
+  <div id="loading-sub" style="font-size:13px;color:#ddd;text-align:center;line-height:1.6;max-width:300px;display:none;"></div>
+  <div id="upload-progress-wrap" style="display:none;width:260px;margin-top:4px;">
+    <div style="background:rgba(255,255,255,.2);border-radius:6px;overflow:hidden;height:8px;">
+      <div id="upload-progress-bar" style="height:100%;background:var(--accent);width:0%;transition:width .2s;border-radius:6px;"></div>
+    </div>
+    <div id="upload-progress-pct" style="text-align:center;font-size:12px;color:#ccc;margin-top:4px;">%0</div>
+  </div>
 </div>
 
 <!-- Alt bar -->
@@ -609,13 +615,24 @@ const EDIT_PHOTO_URLS      = {{ edit_photo_urls      | tojson }};  // {zi_str: u
 const EDIT_GROUP_URLS      = {{ edit_group_urls      | tojson }};  // {gname: [url,...]}
 const EDIT_PHOTO_POSITIONS = {{ edit_photo_positions | tojson }};  // {zi_str: {offsetX,offsetY,scale,rotation,flipH}}
 const EDIT_HAS_ORIGINALS   = {{ 'true' if edit_has_originals else 'false' }};
+const EDIT_UNIT_COUNT      = {{ edit_unit_count      | default(1) }};
+const EDIT_SAME_DESIGN     = {{ 'true' if edit_same_design is defined and edit_same_design else 'false' }};
+const EDIT_UNIT_PHOTO_URLS      = {{ edit_unit_photo_urls      | default({}) | tojson }};
+const EDIT_UNIT_GROUP_URLS      = {{ edit_unit_group_urls      | default({}) | tojson }};
+const EDIT_UNIT_PHOTO_POSITIONS = {{ edit_unit_photo_positions | default({}) | tojson }};
+const EDIT_UNIT_TEXT_VALUES     = {{ edit_unit_text_values     | default({}) | tojson }};
+const EDIT_UNIT_TEXT_SIZE_VALUES  = {{ edit_unit_text_size_values  | default({}) | tojson }};
+const EDIT_UNIT_TEXT_COLOR_VALUES = {{ edit_unit_text_color_values | default({}) | tojson }};
+const EDIT_UNIT_BW_OPTION = {{ edit_unit_bw_option | default({}) | tojson }};
 
 // ── Şablon verileri ───────────────────────────────────────────────────────────
 const TMPL_ID       = "{{ tmpl.id }}";
 const TMPL_W        = {{ tmpl.width  if tmpl.width  else 1000 }};
 const TMPL_H        = {{ tmpl.height if tmpl.height else 1400 }};
-const OUT_RATIO     = {{ out_ratio if out_ratio is defined else (tmpl.width / tmpl.height if tmpl.width and tmpl.height else 0.7143) }};
-const BG_URL        = "{{ bg_url }}";
+let OUT_RATIO        = {{ out_ratio if out_ratio is defined else (tmpl.width / tmpl.height if tmpl.width and tmpl.height else 0.7143) }};
+let BG_URL           = "{{ bg_url }}";
+const VARIANT_RATIOS      = {{ variant_ratios      | tojson if variant_ratios      is defined else '{}' }};
+const VARIANT_BACKGROUNDS = {{ variant_backgrounds | tojson if variant_backgrounds is defined else '{}' }};
 const PHOTO_ZONES        = {{ photo_zones        | tojson }};
 const TEXT_ZONES         = {{ text_zones         | tojson }};
 const STATIC_IMAGE_ZONES = {{ static_image_zones | tojson }};
@@ -1206,6 +1223,21 @@ async function _renderPrevForUnit(u) {
   const monEl = document.getElementById('cal-month'); if (monEl) { savedCal.month = monEl.value; monEl.value   = uCal.month || ''; }
   const yrEl  = document.getElementById('cal-year');  if (yrEl)  { savedCal.year  = yrEl.value;  yrEl.value    = uCal.year  || ''; }
 
+  // Üniteye özgü arka plan + oran uygula (MDF / CUSTOM_MULTI çoklu ünite)
+  const _savedBgUrl    = BG_URL;
+  const _savedRatio    = OUT_RATIO;
+  const _savedBgImage  = bgImage;
+  const _savedBgLoading = bgLoading;
+  const _unitSk = unitSizeData[u] || '';
+  if (_unitSk) {
+    if (VARIANT_BACKGROUNDS[_unitSk] && VARIANT_BACKGROUNDS[_unitSk] !== BG_URL) {
+      BG_URL    = VARIANT_BACKGROUNDS[_unitSk];
+      bgImage   = null;
+      bgLoading = false;
+    }
+    if (VARIANT_RATIOS[_unitSk]) OUT_RATIO = VARIANT_RATIOS[_unitSk];
+  }
+
   // Render
   const c = document.getElementById('prevC');
   const maxW = Math.min(window.innerWidth - 40, 480);
@@ -1235,6 +1267,12 @@ async function _renderPrevForUnit(u) {
   if (ENABLE_BW_OPTION && savedBwVal !== null) {
     document.querySelectorAll('input[name="bw_option"]').forEach(r => { r.checked = (r.value === savedBwVal); });
   }
+
+  // Arka plan + oran geri yükle
+  BG_URL    = _savedBgUrl;
+  OUT_RATIO = _savedRatio;
+  bgImage   = _savedBgImage;
+  bgLoading = _savedBgLoading;
 }
 
 function makeSlot(zi,w,h) {
@@ -1347,10 +1385,13 @@ function openPem(zi) {
 
   const maxW=Math.min(window.innerWidth-28,460);
   const ratio=(zone.w/zone.h)*OUT_RATIO;
-  pemCW=maxW*2; pemCH=Math.round(maxW*2/ratio);
+  const maxDispH=Math.max(80,window.innerHeight-220);
+  let dispW=maxW, dispH=Math.round(maxW/ratio);
+  if(dispH>maxDispH){dispH=maxDispH; dispW=Math.round(maxDispH*ratio);}
+  pemCW=dispW*2; pemCH=dispH*2;
   const c=document.getElementById('pemC');
   c.width=pemCW; c.height=pemCH;
-  c.style.width=maxW+'px'; c.style.height=Math.round(maxW/ratio)+'px';
+  c.style.width=dispW+'px'; c.style.height=dispH+'px';
 
   pemTemp=d?{...d}:{img:null,offsetX:0,offsetY:0,scale:100,rotation:0,flipH:false};
   if (!pemTemp.img&&d?.img) pemTemp.img=d.img;
@@ -1617,6 +1658,14 @@ async function openPrev() {
   const order=document.getElementById('f-order').value.trim();
   const phone=document.getElementById('f-phone').value.trim();
   if (!name||!order||!phone){alert('Lütfen sipariş bilgilerini doldurun.');return;}
+  {% if is_mdf or is_custom_multi %}
+  const sizeEl = document.getElementById('f-size');
+  if (!sizeEl || !sizeEl.value) {
+    alert('Lütfen tablo ebatını seçiniz.');
+    sizeEl?.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  {% endif %}
   if (unitCount > 1 && !designMode) {
     alert('Lütfen tasarım seçeneğini belirtin (Aynı Tasarım veya Farklı Tasarım).');
     document.getElementById('design-mode-sec')?.scrollIntoView({behavior:'smooth',block:'center'});
@@ -1915,6 +1964,17 @@ async function _buildUnitFormData(u, fd, prefix) {
 async function submitOrder() {
   const btn = document.getElementById('sendBtn');
   btn.disabled = true; btn.textContent = 'Gönderiliyor...';
+  const ldTitle   = document.getElementById('loading-title');
+  const ldSub     = document.getElementById('loading-sub');
+  const progWrap  = document.getElementById('upload-progress-wrap');
+  const progBar   = document.getElementById('upload-progress-bar');
+  const progPct   = document.getElementById('upload-progress-pct');
+
+  if (ldTitle) ldTitle.textContent = 'Fotoğraflar yükleniyor...';
+  if (ldSub) { ldSub.style.display = 'none'; }
+  if (progWrap) progWrap.style.display = 'block';
+  if (progBar)  progBar.style.width = '0%';
+  if (progPct)  progPct.textContent = '%0';
   document.getElementById('loading').classList.add('show');
   document.getElementById('prevModal').classList.remove('open');
 
@@ -1928,10 +1988,8 @@ async function submitOrder() {
     fd.append('client_rendered', '1');
 
     if (designMode === 'same') {
-      // Tek form — prefix yok, unit 0 verisini gönder
       await _buildUnitFormData(0, fd, '');
     } else {
-      // Her ürün için ayrı veri — tek ürün ise prefix yok, çoklu ise u{n}_ prefix
       for (let u = 0; u < unitCount; u++) {
         const prefix = unitCount > 1 ? `u${u}_` : '';
         await _buildUnitFormData(u, fd, prefix);
@@ -1941,21 +1999,49 @@ async function submitOrder() {
     const url = EDIT_MODE
       ? `/admin/orders/${EDIT_ORDER_ID}/edit`
       : `/form/${TMPL_ID}/submit`;
-    const res = await fetch(url, {method: 'POST', body: fd});
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    if (EDIT_MODE) {
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      document.getElementById('loading').classList.remove('show');
-      document.getElementById('prevModal').classList.remove('open');
-      alert('✓ Tasarım güncellendi!');
-      window.location.href = '/admin/orders';
-    } else {
-      const html = await res.text();
-      document.open(); document.write(html); document.close();
-    }
+
+    await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+
+      xhr.upload.onprogress = function(e) {
+        if (!e.lengthComputable) return;
+        const pct = Math.round((e.loaded / e.total) * 100);
+        if (progBar) progBar.style.width = pct + '%';
+        if (progPct) progPct.textContent = '%' + pct;
+        if (pct === 100 && ldTitle) {
+          ldTitle.textContent = 'Sipariş kaydediliyor...';
+          if (progWrap) progWrap.style.display = 'none';
+        }
+      };
+
+      xhr.onload = function() {
+        if (xhr.status < 200 || xhr.status >= 300) {
+          reject(new Error('HTTP ' + xhr.status));
+          return;
+        }
+        if (EDIT_MODE) {
+          let data;
+          try { data = JSON.parse(xhr.responseText); } catch(e) { data = {}; }
+          if (data.error) { reject(new Error(data.error)); return; }
+          document.getElementById('loading').classList.remove('show');
+          alert('✓ Tasarım güncellendi!');
+          window.location.href = '/admin/orders';
+        } else {
+          document.open(); document.write(xhr.responseText); document.close();
+        }
+        resolve();
+      };
+
+      xhr.onerror = function() { reject(new Error('Ağ hatası')); };
+      xhr.ontimeout = function() { reject(new Error('Zaman aşımı')); };
+      xhr.timeout = 300000; // 5 dakika
+      xhr.send(fd);
+    });
+
   } catch(err) {
     document.getElementById('loading').classList.remove('show');
+    if (progWrap) progWrap.style.display = 'none';
     document.getElementById('prevModal').classList.add('open');
     btn.disabled = false; btn.textContent = '✓ Siparişi Gönder';
     alert('Hata: ' + err.message + '\n\nLütfen tekrar deneyin.');
@@ -1988,26 +2074,65 @@ function _loadImgIntoSlot(zi, url, pos) {
   img.src = url;
 }
 
+function _loadImgIntoUnitSlotData(u, zi, url, pos) {
+  if (!url) return;
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    const zone = PHOTO_ZONES[zi];
+    const {w, h} = slotSize(zone);
+    const ms = calcMinScale(img, w*2, h*2, 0);
+    const entry = (pos && pos.scale !== undefined)
+      ? {img, file:null, offsetX:pos.offsetX||0, offsetY:pos.offsetY||0, scale:pos.scale, rotation:pos.rotation||0, flipH:pos.flipH||false}
+      : {img, file:null, offsetX:0, offsetY:0, scale:ms, rotation:0, flipH:false};
+    if (!unitSlotData[u]) unitSlotData[u] = {};
+    unitSlotData[u][zi] = entry;
+    if (u === activeUnit) { slotData[zi] = entry; drawSlot(zi); updateCount(zi); }
+  };
+  img.src = url;
+}
+
 function preloadEditPhotos() {
   console.log('[EditPhotos] has_originals:', EDIT_HAS_ORIGINALS,
               '| photo_urls:', EDIT_PHOTO_URLS,
               '| group_urls:', EDIT_GROUP_URLS,
               '| positions:', EDIT_PHOTO_POSITIONS);
-  // Bireysel fotoğraflar — orijinal dosya + kaydedilmiş pozisyon
+
+  if (Object.keys(EDIT_UNIT_PHOTO_URLS).length > 0) {
+    // Çoklu ürün farklı tasarım: her ünite için ayrı yükle
+    const groupZiMap = {};
+    PHOTO_ZONES.forEach((zone, zi) => {
+      const gname = zone.group_name || '';
+      if (gname) { if (!groupZiMap[gname]) groupZiMap[gname] = []; groupZiMap[gname].push(zi); }
+    });
+    for (let u = 0; u < EDIT_UNIT_COUNT; u++) {
+      const photoUrls = EDIT_UNIT_PHOTO_URLS[String(u)] || {};
+      const positions = EDIT_UNIT_PHOTO_POSITIONS[String(u)] || {};
+      const groupUrls = EDIT_UNIT_GROUP_URLS[String(u)] || {};
+      Object.entries(photoUrls).forEach(([ziStr, url]) => {
+        _loadImgIntoUnitSlotData(u, parseInt(ziStr), url, positions[ziStr]);
+      });
+      Object.entries(groupUrls).forEach(([gname, urls]) => {
+        const ziList = groupZiMap[gname] || [];
+        ziList.forEach((zi, slotIdx) => {
+          if (urls[slotIdx]) _loadImgIntoUnitSlotData(u, zi, urls[slotIdx], positions[String(zi)]);
+        });
+      });
+    }
+    return;
+  }
+
+  // Tek ürün / aynı tasarım
   Object.entries(EDIT_PHOTO_URLS).forEach(([ziStr, url]) => {
     const pos = EDIT_PHOTO_POSITIONS[ziStr];
     console.log(`[EditPhotos] slot zi=${ziStr} url=${url} pos=`, pos);
     _loadImgIntoSlot(parseInt(ziStr), url, pos);
   });
-  // Grup fotoğrafları
   if (Object.keys(EDIT_GROUP_URLS).length) {
     const groupZiMap = {};
     PHOTO_ZONES.forEach((zone, zi) => {
       const gname = zone.group_name || '';
-      if (gname) {
-        if (!groupZiMap[gname]) groupZiMap[gname] = [];
-        groupZiMap[gname].push(zi);
-      }
+      if (gname) { if (!groupZiMap[gname]) groupZiMap[gname] = []; groupZiMap[gname].push(zi); }
     });
     Object.entries(EDIT_GROUP_URLS).forEach(([gname, urls]) => {
       const ziList = groupZiMap[gname] || [];
@@ -2058,8 +2183,80 @@ if (CALENDAR_ZONES.length) {
 })();
 {% endif %}
 
+// ── CUSTOM_MULTI / MDF: ebat seçince sunucudan doğru arka plan + oran al ─────
+(function() {
+  const sEl = document.getElementById('f-size');
+  if (!sEl) return;
+  const TMPL_ID = {{ tmpl.id | tojson }};
+  {% if is_mdf %}
+  const SIZE_PARAM = 'mdf_size';
+  {% else %}
+  const SIZE_PARAM = 'custom_size';
+  {% endif %}
+  function _replaceArr(arr, newItems) {
+    arr.length = 0;
+    if (newItems) newItems.forEach(function(z) { arr.push(z); });
+  }
+  sEl.addEventListener('change', function() {
+    const sk = this.value;
+    if (!sk) return;
+    fetch('/form/' + TMPL_ID + '/variant_info?' + SIZE_PARAM + '=' + encodeURIComponent(sk))
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.out_ratio) OUT_RATIO = data.out_ratio;
+        if (data.bg_url && data.bg_url !== BG_URL) {
+          BG_URL    = data.bg_url;
+          bgImage   = null;
+          bgLoading = false;
+        }
+        // Zone dizilerini yeni varyantın zone'ları ile değiştir
+        if (data.photo_zones && data.photo_zones.length) {
+          _replaceArr(PHOTO_ZONES, data.photo_zones);
+          // Maske önbelleğini temizle — yeni zone'lar farklı maske dosyalarına sahip olabilir
+          Object.keys(_maskImgCache).forEach(function(k) { delete _maskImgCache[k]; });
+          Object.keys(_maskLoadPromise).forEach(function(k) { delete _maskLoadPromise[k]; });
+        }
+        if (data.text_zones)             _replaceArr(TEXT_ZONES,             data.text_zones);
+        if (data.static_image_zones)     _replaceArr(STATIC_IMAGE_ZONES,     data.static_image_zones);
+        if (data.static_text_zones)      _replaceArr(STATIC_TEXT_ZONES,      data.static_text_zones);
+        if (data.calendar_zones)         _replaceArr(CALENDAR_ZONES,         data.calendar_zones);
+        if (data.selectable_image_zones) _replaceArr(SELECTABLE_IMAGE_ZONES, data.selectable_image_zones);
+        loadBg().then(function(bg) { if (bg) initMini(); });
+      })
+      .catch(function() {
+        loadBg().then(function(bg) { if (bg) initMini(); });
+      });
+  });
+})();
+
 // ── Başlat ────────────────────────────────────────────────────────────────────
 buildSlots();
+
+// Edit modu: çoklu ürün farklı tasarım için ünite sekmelerini ve text verilerini yükle
+if (EDIT_MODE && EDIT_UNIT_COUNT > 1 && !EDIT_SAME_DESIGN) {
+  setUnitCount(EDIT_UNIT_COUNT);
+  designMode = 'different';
+  const tabs = document.getElementById('unit-tabs');
+  if (tabs) { tabs.style.display = 'flex'; _renderUnitTabs(); }
+  for (let u = 0; u < EDIT_UNIT_COUNT; u++) {
+    const tv  = EDIT_UNIT_TEXT_VALUES[String(u)]      || {};
+    const tsv = EDIT_UNIT_TEXT_SIZE_VALUES[String(u)] || {};
+    const tcv = EDIT_UNIT_TEXT_COLOR_VALUES[String(u)] || {};
+    const td  = {};
+    TEXT_ZONES.forEach((zone, zi) => {
+      const lbl = zone.label;
+      td[zi] = {
+        value: tv[lbl]  !== undefined ? tv[lbl]  : (zone.default_text || ''),
+        size:  tsv[lbl] !== undefined ? tsv[lbl] : '100',
+        color: tcv[lbl] !== undefined ? tcv[lbl] : (zone.color || '#000000'),
+      };
+    });
+    unitTextData[u] = td;
+    unitBwData[u] = EDIT_UNIT_BW_OPTION[String(u)] || 'color';
+  }
+  restoreUnitState(0);
+}
+
 saveUnitState(); // ünite 0'ın başlangıç durumunu kaydet
 if (EDIT_MODE) preloadEditPhotos();
 if (IS_MULTIPAGE) {
