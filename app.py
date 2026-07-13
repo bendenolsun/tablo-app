@@ -1905,6 +1905,13 @@ def generate_design(order, tmpl):
     mdf_size_key    = order.get('mdf_size_key')
     custom_size_key = order.get('custom_size_key')
 
+    def _bg_size(obj, bg):
+        w, h = obj.get('width'), obj.get('height')
+        if not w or not h:
+            with Image.open(os.path.join(UPLOAD_DIR, bg)) as _im:
+                w, h = _im.size
+        return w, h
+
     if ptype == 'MDF':
         if not mdf_size_key:
             mdf_size_key = next(iter(tmpl.get('mdf_variants', {})), None)
@@ -1913,15 +1920,15 @@ def generate_design(order, tmpl):
         zones    = variant.get('zones', [])
         if not zones:
             zones = next(iter(tmpl['mdf_variants'].values()), {}).get('zones', [])
-        src_w, src_h = variant['width'], variant['height']
+        src_w, src_h = _bg_size(variant, bg_file)
     elif ptype == 'CUSTOM_MULTI' and custom_size_key:
         variant = tmpl['custom_variants'][custom_size_key]
         bg_file, zones = variant['background'], variant['zones']
-        src_w, src_h   = variant['width'], variant['height']
+        src_w, src_h   = _bg_size(variant, bg_file)
     else:
         bg_file  = tmpl['background']
         zones    = tmpl.get('zones', [])
-        src_w, src_h = tmpl['width'], tmpl['height']
+        src_w, src_h = _bg_size(tmpl, bg_file)
 
     if ptype == 'PSTR':
         _w = tmpl.get('w_cm') or FIXED_SIZES['PSTR']['w_cm']
