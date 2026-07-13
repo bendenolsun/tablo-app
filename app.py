@@ -2579,6 +2579,17 @@ def edit_order_post(order_id):
     order['order_number']  = request.form.get('order_number',  order['order_number']).strip()
     order['phone']         = request.form.get('phone',         order['phone']).strip()
 
+    # Boyut güncellemesi — formdan gelen yeni size_key varsa order'ı güncelle
+    ptype = tmpl.get('product_type')
+    if ptype == 'MDF':
+        _new_sk = (request.form.get('mdf_size') or request.form.get('u0_mdf_size', '')).strip()
+        if _new_sk and _new_sk in tmpl.get('mdf_variants', {}):
+            order['mdf_size_key'] = _new_sk
+    elif ptype == 'CUSTOM_MULTI':
+        _new_sk = (request.form.get('custom_size') or request.form.get('u0_custom_size', '')).strip()
+        if _new_sk and _new_sk in tmpl.get('custom_variants', {}):
+            order['custom_size_key'] = _new_sk
+
     zones       = _order_zones(order, tmpl)
     photo_zones = [z for z in zones if z['type'] == 'photo']
     text_zones  = [z for z in zones if z['type'] == 'text']
@@ -2619,6 +2630,16 @@ def edit_order_post(order_id):
             if tmpl.get('enable_bw_option') and f'{prefix}bw_option' in request.form:
                 bw = request.form.get(f'{prefix}bw_option', 'color').strip()
                 unit['bw_option'] = bw if bw in ('color', 'bw') else 'color'
+
+            # Ünite boyutu güncelleme (MDF / CUSTOM_MULTI)
+            if ptype == 'MDF':
+                _usk = request.form.get(f'{prefix}mdf_size', '').strip()
+                if _usk and _usk in tmpl.get('mdf_variants', {}):
+                    unit['unit_size_key'] = _usk
+            elif ptype == 'CUSTOM_MULTI':
+                _usk = request.form.get(f'{prefix}custom_size', '').strip()
+                if _usk and _usk in tmpl.get('custom_variants', {}):
+                    unit['unit_size_key'] = _usk
 
             if sel_zones:
                 sel = unit.setdefault('selectable_choices', {})
@@ -2682,6 +2703,10 @@ def edit_order_post(order_id):
             for u_idx, unit in enumerate(units_data):
                 unit_order = {**order, **{k: v for k, v in unit.items() if k != 'unit_num'}}
                 unit_order['unit_num'] = unit.get('unit_num', u_idx)
+                if ptype == 'MDF' and unit.get('unit_size_key'):
+                    unit_order['mdf_size_key'] = unit['unit_size_key']
+                elif ptype == 'CUSTOM_MULTI' and unit.get('unit_size_key'):
+                    unit_order['custom_size_key'] = unit['unit_size_key']
                 result = generate_design(unit_order, tmpl)
                 if isinstance(result, list):
                     collected_paths.extend(result)
