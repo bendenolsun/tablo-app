@@ -3110,6 +3110,7 @@ function startBBoxResize(e, handleId, initBBox) {
   const pos0 = getPos(e);
   const doL = handleId.includes('w'), doR = handleId.includes('e');
   const doT = handleId.includes('n'), doB = handleId.includes('s');
+  const isCorner = (doL || doR) && (doT || doB);
   let resized = false;
 
   function onMove(e) {
@@ -3118,10 +3119,19 @@ function startBBoxResize(e, handleId, initBBox) {
     const dx = pos.x - pos0.x, dy = pos.y - pos0.y;
 
     let nx = initBBox.x, ny = initBBox.y, nw = initBBox.w, nh = initBBox.h;
-    if (doL) { nx = initBBox.x + dx; nw = initBBox.w - dx; }
-    if (doR) { nw = initBBox.w + dx; }
-    if (doT) { ny = initBBox.y + dy; nh = initBBox.h - dy; }
-    if (doB) { nh = initBBox.h + dy; }
+    if (isCorner) {
+      const sxRaw = doL ? initBBox.w - dx : initBBox.w + dx;
+      const syRaw = doT ? initBBox.h - dy : initBBox.h + dy;
+      let s = Math.max((sxRaw / initBBox.w + syRaw / initBBox.h) / 2, 0.02);
+      nw = initBBox.w * s; nh = initBBox.h * s;
+      if (doL) nx = initBBox.x + initBBox.w - nw;
+      if (doT) ny = initBBox.y + initBBox.h - nh;
+    } else {
+      if (doL) { nx = initBBox.x + dx; nw = initBBox.w - dx; }
+      if (doR) { nw = initBBox.w + dx; }
+      if (doT) { ny = initBBox.y + dy; nh = initBBox.h - dy; }
+      if (doB) { nh = initBBox.h + dy; }
+    }
 
     const MIN_BOX = 2;
     if (nw < MIN_BOX) { nw = MIN_BOX; if (doL) nx = initBBox.x + initBBox.w - MIN_BOX; }
