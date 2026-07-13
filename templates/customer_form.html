@@ -151,7 +151,6 @@ input:focus,select:focus{border-color:var(--accent);}
 <body>
 
 <div class="hdr">
-  <div class="logo">🖼 Tablo Sipariş</div>
   <h1>{{ tmpl.name }}</h1>
   {% if edit_mode %}
   <p style="color:#f9a825;font-weight:600;margin-top:4px;">✏ Düzenleme Modu — Sipariş #{{ edit_order.order_number }}</p>
@@ -197,7 +196,7 @@ input:focus,select:focus{border-color:var(--accent);}
     </div>
     {% if is_mdf or is_custom_multi %}
     <div class="fg">
-      <label class="lbl">Tablo Ebatı <span class="req">*</span></label>
+      <label class="lbl">{{ tmpl.size_label_title if tmpl.size_label_title else 'Ürün Ebatı' }} <span class="req">*</span></label>
       <select id="f-size" required>
         <option value="">Seçin...</option>
         {% for sk, sv in variant_sizes.items() %}

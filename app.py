@@ -584,6 +584,8 @@ def save_zones(tid):
         tmpl['form_description'] = data['form_description']
     if 'enable_bw_option' in data:
         tmpl['enable_bw_option'] = bool(data['enable_bw_option'])
+    if 'size_label_title' in data:
+        tmpl['size_label_title'] = data['size_label_title'].strip()
 
     save_templates(templates)
     return jsonify({'ok': True})

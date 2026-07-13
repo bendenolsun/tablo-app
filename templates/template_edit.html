@@ -683,6 +683,14 @@ html, body { height:100%; overflow:hidden; }
 
         <hr class="divider" style="margin-top:14px;">
         <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Ebat Seçim Etiketi</div>
+          <input class="inline-inp" id="size-label-title-inp" placeholder="Varsayılan: Ürün Ebatı" style="margin-bottom:4px;">
+          <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Formda ebat seçim kutusunun üstündeki yazı. Boş bırakılırsa "Ürün Ebatı" gösterilir.</div>
+          <button class="btn btn-secondary btn-sm" style="width:100%;font-size:11px;" onclick="saveSizeLabelTitle()">Etiketi Kaydet</button>
+        </div>
+
+        <hr class="divider" style="margin-top:14px;">
+        <div>
           <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Form Açıklama Metni</div>
           <textarea class="inline-inp" id="form-desc-inp" rows="3" placeholder="Müşteriye form sayfasında gösterilecek açıklama..." style="resize:vertical;min-height:60px;"></textarea>
           <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:4px;font-size:11px;" onclick="saveFormDesc()">Açıklamayı Kaydet</button>
@@ -3333,6 +3341,21 @@ function orderedZones(key) {
   return (allZones[key] || []).map((z, idx) => ({ ...z, order: idx }));
 }
 
+async function saveSizeLabelTitle() {
+  const val = document.getElementById('size-label-title-inp').value.trim();
+  const firstKey = Object.keys(allZones)[0] || '__single';
+  const payload = { size_label_title: val };
+  if (PTYPE === 'MDF' || PTYPE === 'CUSTOM_MULTI') payload.size_key = firstKey;
+  else if (PTYPE === 'MULTIPAGE') payload.page_num = firstKey;
+  await fetch('/admin/templates/' + TMPL_ID + '/save-zones', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  });
+  const btn = event.target;
+  btn.textContent = '✓ Kaydedildi'; btn.style.borderColor = 'var(--success)';
+  setTimeout(() => { btn.textContent='Etiketi Kaydet'; btn.style.borderColor=''; }, 1800);
+}
+
 async function saveFormDesc() {
   const fd  = document.getElementById('form-desc-inp').value.trim();
   const bwE = document.getElementById('enable-bw-option')?.checked || false;
@@ -3724,6 +3747,7 @@ async function submitAddVariant() {
 
 updateList();
 updateCopyVariantBtns();
+document.getElementById('size-label-title-inp').value = {{ tmpl.size_label_title | default('') | tojson }};
 document.getElementById('form-desc-inp').value = {{ tmpl.form_description | default('') | tojson }};
 document.getElementById('enable-bw-option').checked = {{ tmpl.enable_bw_option | default(false) | tojson }};
 _syncDimsInputs();
