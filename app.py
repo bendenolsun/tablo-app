@@ -2381,8 +2381,15 @@ def edit_order_get(order_id):
     else:
         zones         = tmpl.get('zones', [])
         variant_sizes = {}
-    # Admin edit modunda /admin/... endpoint'i kullanılabilir (oturum açık)
-    bg_url = f"/admin/templates/{tid}/background"
+    # bg_url: MDF/CUSTOM_MULTI için varyant arka planı, diğerleri için admin endpoint
+    if is_mdf:
+        _edit_bg = variant.get('background', '')
+        bg_url = f"/static/uploads/{_edit_bg}" if _edit_bg else ''
+    elif is_custom_multi:
+        _edit_bg = variant.get('background', '')
+        bg_url = f"/static/uploads/{_edit_bg}" if _edit_bg else ''
+    else:
+        bg_url = f"/admin/templates/{tid}/background"
 
     photo_zones        = [z for z in zones if z['type'] == 'photo']
     text_zones         = [z for z in zones if z['type'] == 'text']
@@ -2427,6 +2434,15 @@ def edit_order_get(order_id):
             _vbg = sv.get('background', '')
             if _vbg:
                 variant_backgrounds[sk] = f"/static/uploads/{_vbg}"
+    elif is_mdf:
+        for sk, sv in tmpl.get('mdf_variants', {}).items():
+            _vbg = sv.get('background', '')
+            if _vbg:
+                variant_backgrounds[sk] = f"/static/uploads/{_vbg}"
+            _override = tmpl.get('mdf_size_overrides', {}).get(sk)
+            s = _override or MDF_SIZES.get(sk) or {}
+            if s.get('w_cm') and s.get('h_cm'):
+                variant_ratios[sk] = round(s['w_cm'] / s['h_cm'], 6)
 
     # Orijinal fotoğraf URL'leri + pozisyon verisi
     photo_originals      = order.get('photo_originals') or []
