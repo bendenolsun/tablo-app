@@ -1263,7 +1263,169 @@
         "h_cm": 40.0
       }
     },
-    "size_label_title": "Tablo Ebatı",
+    "size_label_title": "Ebat seçin",
     "preview_updated_at": 1784015589
+  },
+  {
+    "id": "21cf1de2",
+    "name": "DENEME",
+    "product_type": "CUSTOM_MULTI",
+    "custom_variants": {
+      "21.0x29.7cm": {
+        "background": "bg_21cf1de2_v1.jpg",
+        "width": 1200,
+        "height": 1800,
+        "w_cm": 21.0,
+        "h_cm": 29.7,
+        "label": "21.0x29.7cm",
+        "zones": [
+          {
+            "color": "#000000",
+            "description": null,
+            "h": 36.12884468618638,
+            "label": "Tarih Giriniz",
+            "order": 0,
+            "required": true,
+            "rotation": 0,
+            "type": "calendar",
+            "w": 64.58333333333334,
+            "x": 18.75,
+            "y": 28.036681243867278
+          },
+          {
+            "clip_mask_file": "mask_21cf1de2_71fb002d.png",
+            "description": null,
+            "form_label": null,
+            "group_name": null,
+            "h": 22.32855637257871,
+            "label": "Fotoğraf 1",
+            "order": 1,
+            "required": true,
+            "rotation": 0,
+            "type": "photo",
+            "w": 64.58333333333334,
+            "x": 18.75,
+            "y": 3.149644453597258
+          },
+          {
+            "bold": false,
+            "color": "#000000",
+            "default_text": "Seni Seviyorum",
+            "description": null,
+            "font_file": "Montserrat-Bold.ttf",
+            "font_size": 3,
+            "h": 19.149838277871325,
+            "italic": false,
+            "label": "Özel Söz",
+            "order": 2,
+            "required": false,
+            "rotation": 0,
+            "skew_angle": 0,
+            "stroke_color": "#000000",
+            "stroke_width": 0,
+            "text_align": "center",
+            "type": "text",
+            "w": 64.58333333333334,
+            "x": 18.75,
+            "y": 67.80942228252312
+          }
+        ]
+      },
+      "29.7x42.0cm": {
+        "background": "bg_21cf1de2_v2.jpg",
+        "width": 1200,
+        "height": 1800,
+        "w_cm": 29.7,
+        "h_cm": 42.0,
+        "label": "29.7x42.0cm",
+        "zones": [
+          {
+            "description": null,
+            "h": 11.940877150472502,
+            "image_file": "static_21cf1de2_00eb2ca1.png",
+            "label": "Sabit Görsel 1",
+            "order": 0,
+            "required": true,
+            "rotation": 0,
+            "type": "static_image",
+            "w": 16.8859649122807,
+            "x": 19.84649247556642,
+            "y": 41.53622486067361,
+            "z_index": 7
+          },
+          {
+            "description": "Lütfen yüksek çözünürlüklü resimler yükleyin",
+            "form_label": null,
+            "group_name": null,
+            "h": 23.881754300944984,
+            "label": "Fotoğraf 1",
+            "order": 1,
+            "required": true,
+            "rotation": 0,
+            "type": "photo",
+            "w": 33.66228070175439,
+            "x": 28.28947493170677,
+            "y": 29.59534771020114,
+            "z_index": 0
+          },
+          {
+            "bold": false,
+            "color": "#000000",
+            "description": null,
+            "font_file": "Montserrat-Bold.ttf",
+            "font_size": 3,
+            "h": 8.606736127937964,
+            "italic": true,
+            "label": "Sabit Metin 1",
+            "order": 2,
+            "required": false,
+            "rotation": 0,
+            "skew_angle": 0,
+            "stroke_color": "#000000",
+            "stroke_width": 0,
+            "text": "DENEMEEEEE",
+            "text_align": "center",
+            "type": "static_text",
+            "w": 68.85964912280701,
+            "x": 10.690790721180456,
+            "y": 29.59534771020114,
+            "z_index": 24
+          },
+          {
+            "description": null,
+            "h": 11.630724497213478,
+            "label": "Seçilebilir Görsel 1",
+            "options": [
+              {
+                "file": "sel_21cf1de2_146cd46798.png",
+                "name": "sonsuzluk",
+                "thumbnail": "thumb_sel_21cf1de2_146cd46798.png"
+              },
+              {
+                "file": "sel_21cf1de2_b94900ad17.png",
+                "name": "tekrar",
+                "thumbnail": "thumb_sel_21cf1de2_b94900ad17.png"
+              },
+              {
+                "file": "sel_21cf1de2_e8115c0637.png",
+                "name": "",
+                "thumbnail": "thumb_sel_21cf1de2_e8115c0637.png"
+              }
+            ],
+            "order": 3,
+            "required": true,
+            "rotation": 0,
+            "type": "selectable_image",
+            "w": 16.118421052631582,
+            "x": 36.513159142233086,
+            "y": 7.8022776835473735
+          }
+        ]
+      }
+    },
+    "preview": "preview_21cf1de2.jpg",
+    "created_at": "2026-07-14T19:33:50.775428",
+    "form_description": "Bu şablon Özel bir şekilde kırpma, Seçeneklerden seçme ve katman özelliğini denemek için ayarlandı",
+    "enable_bw_option": true
   }
 ]
