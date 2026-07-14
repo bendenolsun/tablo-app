@@ -1280,7 +1280,8 @@ def submit_form(tid):
     elif ptype == 'A3':
         size_label = 'A3'
     elif ptype == 'MDF' and mdf_size_key:
-        size_label = MDF_SIZES.get(mdf_size_key, {}).get('label', mdf_size_key)
+        _variant_label = tmpl.get('mdf_variants', {}).get(mdf_size_key, {}).get('label', '')
+        size_label = _variant_label or MDF_SIZES.get(mdf_size_key, {}).get('label', mdf_size_key)
     elif ptype == 'CUSTOM_MULTI' and custom_size_key:
         size_label = tmpl['custom_variants'][custom_size_key]['label']
     elif ptype == 'CUSTOM':
@@ -2574,6 +2575,24 @@ def edit_order_post(order_id):
     tmpl  = next((t for t in get_templates() if t['id'] == order['template_id']), None)
     if not tmpl: return jsonify({'error': 'Şablon bulunamadı'}), 404
 
+    # Eski kuyruk girişlerini ve staging dosyasını temizle (düzenleme yeni tasarım üretecek)
+    _old_staging = order.get('staging_file') or next(
+        (_u.get('staging_file') for _u in order.get('units', []) if _u.get('staging_file')), None
+    )
+    _old_q = _get_print_queue()
+    if any(_it.get('order_id') == order_id for _it in _old_q):
+        _save_print_queue([_it for _it in _old_q if _it.get('order_id') != order_id])
+    if _old_staging:
+        _sp = os.path.join(STAGING_DIR, _old_staging)
+        if os.path.exists(_sp):
+            try: os.remove(_sp)
+            except Exception: pass
+        order['staging_file'] = None
+        order['print_size'] = None
+        for _u in order.get('units', []):
+            _u['staging_file'] = None
+            _u['print_size'] = None
+
     # Temel müşteri bilgileri
     order['customer_name'] = request.form.get('customer_name', order['customer_name']).strip().upper()
     order['order_number']  = request.form.get('order_number',  order['order_number']).strip()
@@ -2585,10 +2604,13 @@ def edit_order_post(order_id):
         _new_sk = (request.form.get('mdf_size') or request.form.get('u0_mdf_size', '')).strip()
         if _new_sk and _new_sk in tmpl.get('mdf_variants', {}):
             order['mdf_size_key'] = _new_sk
+            _vl = tmpl['mdf_variants'][_new_sk].get('label', '')
+            order['size_label'] = _vl or MDF_SIZES.get(_new_sk, {}).get('label', _new_sk)
     elif ptype == 'CUSTOM_MULTI':
         _new_sk = (request.form.get('custom_size') or request.form.get('u0_custom_size', '')).strip()
         if _new_sk and _new_sk in tmpl.get('custom_variants', {}):
             order['custom_size_key'] = _new_sk
+            order['size_label'] = tmpl['custom_variants'][_new_sk].get('label', _new_sk)
 
     zones       = _order_zones(order, tmpl)
     photo_zones = [z for z in zones if z['type'] == 'photo']
@@ -2700,6 +2722,7 @@ def edit_order_post(order_id):
         try:
             import zipfile as _zipfile
             collected_paths = []
+            folder_id = get_or_create_daily_folder()
             for u_idx, unit in enumerate(units_data):
                 unit_order = {**order, **{k: v for k, v in unit.items() if k != 'unit_num'}}
                 unit_order['unit_num'] = unit.get('unit_num', u_idx)
@@ -2711,23 +2734,30 @@ def edit_order_post(order_id):
                 if isinstance(result, list):
                     collected_paths.extend(result)
                 else:
-                    collected_paths.append(result)
+                    _queued = _route_to_print_queue(order_id, order['customer_name'], result, unit)
+                    if not _queued:
+                        collected_paths.append(result)
 
-            folder_id  = get_or_create_daily_folder()
-            name_part  = order['customer_name'].replace('/', '-')
-            zip_name   = f"{name_part}.zip"
-            zip_path   = os.path.join(tempfile.gettempdir(), zip_name)
-            with _zipfile.ZipFile(zip_path, 'w', _zipfile.ZIP_STORED) as zf:
+            if not collected_paths:
+                order['drive_file_id']   = None
+                order['drive_file_name'] = None
+                order['drive_files']     = None
+                order['status'] = 'queued'
+            else:
+                name_part  = order['customer_name'].replace('/', '-')
+                zip_name   = f"{name_part}.zip"
+                zip_path   = os.path.join(tempfile.gettempdir(), zip_name)
+                with _zipfile.ZipFile(zip_path, 'w', _zipfile.ZIP_STORED) as zf:
+                    for p in collected_paths:
+                        zf.write(p, os.path.basename(p))
                 for p in collected_paths:
-                    zf.write(p, os.path.basename(p))
-            for p in collected_paths:
-                try: os.remove(p)
-                except Exception: pass
-            fid, fname2 = upload_to_drive(zip_path, zip_name, folder_id)
-            order['drive_file_id']   = fid
-            order['drive_file_name'] = fname2
-            order['drive_files']     = None
-            order['status'] = 'ready'
+                    try: os.remove(p)
+                    except Exception: pass
+                fid, fname2 = upload_to_drive(zip_path, zip_name, folder_id)
+                order['drive_file_id']   = fid
+                order['drive_file_name'] = fname2
+                order['drive_files']     = None
+                order['status'] = 'ready'
         except Exception as e:
             orders[idx] = order
             save_orders(orders)
@@ -2735,7 +2765,7 @@ def edit_order_post(order_id):
 
         orders[idx] = order
         save_orders(orders)
-        return jsonify({'ok': True, 'status': 'ready',
+        return jsonify({'ok': True, 'status': order.get('status', 'ready'),
                         'drive_file_id':   order.get('drive_file_id'),
                         'drive_file_name': order.get('drive_file_name'),
                         'drive_files':     order.get('drive_files')})
@@ -2834,7 +2864,7 @@ def edit_order_post(order_id):
             f_orig.save(os.path.join(UPLOAD_DIR, orig_fname))
             po[i] = orig_fname
 
-    # Tasarımı yeniden oluştur ve Drive'a yükle
+    # Tasarımı yeniden oluştur; A4/A5 ise kuyruğa, değilse Drive'a yükle
     try:
         result    = generate_design(order, tmpl)
         folder_id = get_or_create_daily_folder()
@@ -2846,12 +2876,23 @@ def edit_order_post(order_id):
             order['drive_files']     = drive_files
             order['drive_file_id']   = None
             order['drive_file_name'] = None
+            order['status'] = 'ready'
         else:
-            fid, fname2 = upload_to_drive(result, os.path.basename(result), folder_id)
-            order['drive_file_id']   = fid
-            order['drive_file_name'] = fname2
-            order['drive_files']     = None
-        order['status'] = 'ready'
+            _queued = _route_to_print_queue(order_id, order['customer_name'], result, order)
+            if _queued:
+                if order.get('units'):
+                    order['units'][0]['staging_file'] = order.get('staging_file')
+                    order['units'][0]['print_size']   = order.get('print_size')
+                order['drive_file_id']   = None
+                order['drive_file_name'] = None
+                order['drive_files']     = None
+                order['status'] = 'queued'
+            else:
+                fid, fname2 = upload_to_drive(result, os.path.basename(result), folder_id)
+                order['drive_file_id']   = fid
+                order['drive_file_name'] = fname2
+                order['drive_files']     = None
+                order['status'] = 'ready'
     except Exception as e:
         orders[idx] = order
         save_orders(orders)
@@ -2859,7 +2900,7 @@ def edit_order_post(order_id):
 
     orders[idx] = order
     save_orders(orders)
-    return jsonify({'ok': True, 'status': 'ready',
+    return jsonify({'ok': True, 'status': order.get('status', 'ready'),
                     'drive_file_id':   order.get('drive_file_id'),
                     'drive_file_name': order.get('drive_file_name'),
                     'drive_files':     order.get('drive_files')})
