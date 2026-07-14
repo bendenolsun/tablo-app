@@ -404,6 +404,8 @@ input:focus,select:focus{border-color:var(--accent);}
   {% endif %}
 
   <!-- Seçilebilir Görseller -->
+  {% if selectable_image_zones or is_custom_multi %}
+  <div id="cf-seli-wrap"{% if not selectable_image_zones %} style="display:none"{% endif %}>
   {% if selectable_image_zones %}
   {% set szi = namespace(val=0) %}
   {% for zone in selectable_image_zones %}
@@ -426,6 +428,8 @@ input:focus,select:focus{border-color:var(--accent);}
   </div>
   {% set szi.val = szi.val + 1 %}
   {% endfor %}
+  {% endif %}
+  </div>
   {% endif %}
 
   <!-- Fotoğraflar -->
@@ -493,8 +497,8 @@ input:focus,select:focus{border-color:var(--accent);}
   {% endif %}
 
   <!-- Takvim Zone tarihi — sadece tek sayfa şablonlar için (multipage'de sayfa içinde gösterilir) -->
-  {% if calendar_zones and not is_multipage_tmpl %}
-  <div class="sec" id="cal-date-sec">
+  {% if (calendar_zones or is_custom_multi) and not is_multipage_tmpl %}
+  <div class="sec" id="cf-cal-sec"{% if not calendar_zones %} style="display:none"{% endif %}>
     <div class="stitle">📅 Özel Tarihinizi Girin</div>
     <p class="hint" style="margin-bottom:14px;">Seçtiğiniz tarih takviminizde kırmızı ile işaretlenecektir.</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
@@ -2265,6 +2269,41 @@ function _rebuildTextSec() {
   editors.innerHTML = html;
 }
 
+function _rebuildCalSec() {
+  const sec = document.getElementById('cf-cal-sec');
+  if (!sec) return;
+  sec.style.display = CALENDAR_ZONES.length ? '' : 'none';
+}
+
+function _rebuildSeliSec() {
+  const wrap = document.getElementById('cf-seli-wrap');
+  if (!wrap) return;
+  if (!SELECTABLE_IMAGE_ZONES.length) {
+    wrap.style.display = 'none';
+    wrap.innerHTML = '';
+    return;
+  }
+  wrap.style.display = '';
+  let html = '';
+  SELECTABLE_IMAGE_ZONES.forEach((zone, zi) => {
+    const reqStar = zone.required ? ' <span style="color:#f44336;font-weight:700;">*</span>' : '';
+    const desc = zone.description ? `<p class="hint" style="margin-bottom:10px;">${_vmEsc(zone.description)}</p>` : '';
+    html += `<div class="sec" id="sel-sec-${zi}" data-sel-label="${_vmEsc(zone.label)}">
+      <div class="stitle">🖼️ ${_vmEsc(zone.label)}${reqStar}</div>
+      ${desc}<p class="hint" style="margin-bottom:4px;">Aşağıdaki görsellerden birini seçin.</p>
+      <div class="sel-grid" id="sel-grid-${zi}">`;
+    (zone.options || []).forEach(opt => {
+      const thumb = opt.thumbnail || opt.file;
+      html += `<div class="sel-item" style="width:100px;height:100px;" onclick="selectSelImage(this)" data-sel-zi="${zi}" data-sel-file="${_vmEsc(opt.file)}">
+        <img src="/static/uploads/${_vmEsc(thumb)}" alt="${_vmEsc(opt.name || '')}">
+        ${opt.name ? `<div class="sel-item-name">${_vmEsc(opt.name)}</div>` : ''}
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  wrap.innerHTML = html;
+}
+
 function _switchZonesSk(sk) {
   if (!IS_CUSTOM_MULTI || !sk || !ALL_VARIANT_ZONES_DATA[sk] || sk === _activeZoneSk) return;
   _activeZoneSk = sk;
@@ -2285,6 +2324,8 @@ function _switchZonesSk(sk) {
   }
   _rebuildPhotoSec();
   _rebuildTextSec();
+  _rebuildCalSec();
+  _rebuildSeliSec();
   loadBg().then(bg => { if (bg) initMini(); });
 }
 
@@ -2308,9 +2349,10 @@ function _switchZonesSk(sk) {
     unitSizeData[activeUnit] = sk;
     // CUSTOM_MULTI: yerel veri kullan (sunucu isteği gerekmez)
     if (IS_CUSTOM_MULTI && ALL_VARIANT_ZONES_DATA[sk]) {
-      _switchZonesSk(sk);
-      // Aktif ünite için slotData'yı sıfırla (zone yapısı değişti)
+      // Zone yapısı değişti — aktif üniteye ait geçici verileri sıfırla
       Object.keys(slotData).forEach(k => delete slotData[k]);
+      Object.keys(_seliSelected).forEach(k => delete _seliSelected[k]);
+      _switchZonesSk(sk);
       PHOTO_ZONES.forEach((_, zi) => { drawSlot(zi); updateCount(zi); });
       return;
     }
