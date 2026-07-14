@@ -1,72 +1,72 @@
 [
   {
-    "id": "917CDCD1-9",
+    "id": "FCB77089-2",
     "template_id": "c5631138",
     "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
     "product_type": "MDF",
-    "mdf_size_key": "15x21cm",
+    "mdf_size_key": "30x40cm",
     "custom_size_key": null,
-    "size_label": "14.8x21cm",
+    "size_label": "29.7x40cm",
     "customer_name": "EMRE PARSAN",
-    "order_number": "744528462924",
+    "order_number": "462664836946",
     "phone": "05446110150",
     "bw_option": "bw",
     "status": "ready",
     "output_file": null,
     "output_files": null,
-    "created_at": "2026-07-09T09:53:11.315467",
-    "folder_name": "9 TEMMUZ BASKILAR",
-    "unit_count": 1,
-    "same_design": false,
+    "created_at": "2026-07-14T00:54:14.464048",
+    "folder_name": "14 TEMMUZ BASKILAR",
+    "unit_count": 2,
+    "same_design": true,
     "units": [
       {
         "photo_files": [
-          "order_917CDCD1-9_p0.jpg",
-          "order_917CDCD1-9_p1.jpg",
-          "order_917CDCD1-9_p2.jpg",
-          "order_917CDCD1-9_p3.jpg",
-          "order_917CDCD1-9_p4.jpg",
-          "order_917CDCD1-9_p5.jpg",
-          "order_917CDCD1-9_p6.jpg",
-          "order_917CDCD1-9_p7.jpg",
-          "order_917CDCD1-9_p8.jpg",
-          "order_917CDCD1-9_p9.jpg",
-          "order_917CDCD1-9_p10.jpg",
-          "order_917CDCD1-9_p11.jpg"
+          "order_FCB77089-2_p0.jpg",
+          "order_FCB77089-2_p1.jpg",
+          "order_FCB77089-2_p2.jpg",
+          "order_FCB77089-2_p3.jpg",
+          "order_FCB77089-2_p4.jpg",
+          "order_FCB77089-2_p5.jpg",
+          "order_FCB77089-2_p6.jpg",
+          "order_FCB77089-2_p7.jpg",
+          "order_FCB77089-2_p8.jpg",
+          "order_FCB77089-2_p9.jpg",
+          "order_FCB77089-2_p10.jpg",
+          "order_FCB77089-2_p11.jpg"
         ],
         "group_files": {},
         "photo_originals": [
-          "order_917CDCD1-9_p0_orig.jpg",
-          "order_917CDCD1-9_p1_orig.jpg",
-          "order_917CDCD1-9_p2_orig.jpg",
-          "order_917CDCD1-9_p3_orig.jpg",
-          "order_917CDCD1-9_p4_orig.jpg",
-          "order_917CDCD1-9_p5_orig.jpg",
-          "order_917CDCD1-9_p6_orig.jpg",
-          "order_917CDCD1-9_p7_orig.jpg",
-          "order_917CDCD1-9_p8_orig.jpg",
-          "order_917CDCD1-9_p9_orig.jpg",
-          "order_917CDCD1-9_p10_orig.jpg",
-          "order_917CDCD1-9_p11_orig.jpg"
+          "order_FCB77089-2_p0_orig.jpg",
+          "order_FCB77089-2_p1_orig.jpg",
+          "order_FCB77089-2_p2_orig.jpg",
+          "order_FCB77089-2_p3_orig.jpg",
+          "order_FCB77089-2_p4_orig.jpg",
+          "order_FCB77089-2_p5_orig.jpg",
+          "order_FCB77089-2_p6_orig.jpg",
+          "order_FCB77089-2_p7_orig.jpg",
+          "order_FCB77089-2_p8_orig.jpg",
+          "order_FCB77089-2_p9_orig.jpg",
+          "order_FCB77089-2_p10_orig.jpg",
+          "order_FCB77089-2_p11_orig.jpg"
         ],
         "photo_positions": {
           "0": {
             "offsetX": 0,
-            "offsetY": -2.507374631268439,
+            "offsetY": -8.982558694825677,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "1": {
             "offsetX": 0,
-            "offsetY": 0,
+            "offsetY": 1.9911964340965294,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "2": {
             "offsetX": 0,
-            "offsetY": 0,
+            "offsetY": -7.690209199250823,
             "scale": 100,
             "rotation": 0,
             "flipH": false
@@ -143,8 +143,8 @@
         },
         "text_values": {
           "İSİMLERİNİZ": "Emre PARSAN",
-          "ÖZEL METİN": "İyi ki doğdun",
-          "ALT METİN": "Sen de"
+          "ÖZEL METİN": "Deneme",
+          "ALT METİN": "Denemeeeee"
         },
         "text_size_values": {
           "İSİMLERİNİZ": "100",
@@ -157,59 +157,59 @@
           "ALT METİN": "#050505"
         },
         "bw_option": "bw",
-        "unit_size_key": "15x21cm",
+        "unit_size_key": "30x40cm",
         "unit_num": null,
-        "staging_file": "EMRE PARSAN, 14.8x21cm.jpg",
-        "print_size": "A5"
+        "drive_file_id": "1gXXN5ZkcbZVpINA7LXJrirJuJvtwetKI",
+        "drive_file_name": "EMRE PARSAN, 2 ADET, 29.7x40cm.jpg"
       }
     ],
     "photo_files": [
-      "order_917CDCD1-9_p0.jpg",
-      "order_917CDCD1-9_p1.jpg",
-      "order_917CDCD1-9_p2.jpg",
-      "order_917CDCD1-9_p3.jpg",
-      "order_917CDCD1-9_p4.jpg",
-      "order_917CDCD1-9_p5.jpg",
-      "order_917CDCD1-9_p6.jpg",
-      "order_917CDCD1-9_p7.jpg",
-      "order_917CDCD1-9_p8.jpg",
-      "order_917CDCD1-9_p9.jpg",
-      "order_917CDCD1-9_p10.jpg",
-      "order_917CDCD1-9_p11.jpg"
+      "order_FCB77089-2_p0.jpg",
+      "order_FCB77089-2_p1.jpg",
+      "order_FCB77089-2_p2.jpg",
+      "order_FCB77089-2_p3.jpg",
+      "order_FCB77089-2_p4.jpg",
+      "order_FCB77089-2_p5.jpg",
+      "order_FCB77089-2_p6.jpg",
+      "order_FCB77089-2_p7.jpg",
+      "order_FCB77089-2_p8.jpg",
+      "order_FCB77089-2_p9.jpg",
+      "order_FCB77089-2_p10.jpg",
+      "order_FCB77089-2_p11.jpg"
     ],
     "group_files": {},
     "photo_originals": [
-      "order_917CDCD1-9_p0_orig.jpg",
-      "order_917CDCD1-9_p1_orig.jpg",
-      "order_917CDCD1-9_p2_orig.jpg",
-      "order_917CDCD1-9_p3_orig.jpg",
-      "order_917CDCD1-9_p4_orig.jpg",
-      "order_917CDCD1-9_p5_orig.jpg",
-      "order_917CDCD1-9_p6_orig.jpg",
-      "order_917CDCD1-9_p7_orig.jpg",
-      "order_917CDCD1-9_p8_orig.jpg",
-      "order_917CDCD1-9_p9_orig.jpg",
-      "order_917CDCD1-9_p10_orig.jpg",
-      "order_917CDCD1-9_p11_orig.jpg"
+      "order_FCB77089-2_p0_orig.jpg",
+      "order_FCB77089-2_p1_orig.jpg",
+      "order_FCB77089-2_p2_orig.jpg",
+      "order_FCB77089-2_p3_orig.jpg",
+      "order_FCB77089-2_p4_orig.jpg",
+      "order_FCB77089-2_p5_orig.jpg",
+      "order_FCB77089-2_p6_orig.jpg",
+      "order_FCB77089-2_p7_orig.jpg",
+      "order_FCB77089-2_p8_orig.jpg",
+      "order_FCB77089-2_p9_orig.jpg",
+      "order_FCB77089-2_p10_orig.jpg",
+      "order_FCB77089-2_p11_orig.jpg"
     ],
     "photo_positions": {
       "0": {
         "offsetX": 0,
-        "offsetY": -2.507374631268439,
+        "offsetY": -8.982558694825677,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "1": {
         "offsetX": 0,
-        "offsetY": 0,
+        "offsetY": 1.9911964340965294,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "2": {
         "offsetX": 0,
-        "offsetY": 0,
+        "offsetY": -7.690209199250823,
         "scale": 100,
         "rotation": 0,
         "flipH": false
@@ -286,8 +286,8 @@
     },
     "text_values": {
       "İSİMLERİNİZ": "Emre PARSAN",
-      "ÖZEL METİN": "İyi ki doğdun",
-      "ALT METİN": "Sen de"
+      "ÖZEL METİN": "Deneme düzeltme",
+      "ALT METİN": "Denemeeeee"
     },
     "text_size_values": {
       "İSİMLERİNİZ": "100",
@@ -299,977 +299,65 @@
       "ÖZEL METİN": "#050505",
       "ALT METİN": "#050505"
     },
-    "unit_size_key": "15x21cm",
-    "a3_file": "üst İSMAIL FIRAT, sl alt EMRE PARSAN, sğ alt SEMİH YÜKSEL, 20260709_104129.jpg",
-    "a3_drive_file_id": "1Xw82BhCA3M3Mwn6bzLMrdMJU3k5z9huP"
+    "unit_size_key": "30x40cm",
+    "drive_file_id": "1HpJukZNvUprC6NKK6A7KA7TuiNpDN4AF",
+    "drive_file_name": "EMRE PARSAN, 29.7x40cm.jpg",
+    "drive_files": null
   },
   {
-    "id": "24C25E2F-C",
+    "id": "37D9E352-C",
     "template_id": "c5631138",
     "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
     "product_type": "MDF",
-    "mdf_size_key": "21x30cm",
+    "mdf_size_key": "30x40cm",
     "custom_size_key": null,
-    "size_label": "21x29.7cm",
+    "size_label": "29.7x40cm",
     "customer_name": "İSMAIL FIRAT",
-    "order_number": "9757828492648",
+    "order_number": "926481639164836",
     "phone": "05446110150",
     "bw_option": "color",
     "status": "ready",
     "output_file": null,
     "output_files": null,
-    "created_at": "2026-07-09T10:02:11.249150",
-    "folder_name": "9 TEMMUZ BASKILAR",
-    "unit_count": 1,
-    "same_design": false,
-    "units": [
-      {
-        "photo_files": [
-          "order_24C25E2F-C_p0.jpg",
-          "order_24C25E2F-C_p1.jpg",
-          "order_24C25E2F-C_p2.jpg",
-          "order_24C25E2F-C_p3.jpg",
-          "order_24C25E2F-C_p4.jpg",
-          "order_24C25E2F-C_p5.jpg",
-          "order_24C25E2F-C_p6.jpg",
-          "order_24C25E2F-C_p7.jpg",
-          "order_24C25E2F-C_p8.jpg",
-          "order_24C25E2F-C_p9.jpg",
-          "order_24C25E2F-C_p10.jpg",
-          "order_24C25E2F-C_p11.jpg"
-        ],
-        "group_files": {},
-        "photo_originals": [
-          "order_24C25E2F-C_p0_orig.jpg",
-          "order_24C25E2F-C_p1_orig.jpg",
-          "order_24C25E2F-C_p2_orig.jpg",
-          "order_24C25E2F-C_p3_orig.jpg",
-          "order_24C25E2F-C_p4_orig.jpg",
-          "order_24C25E2F-C_p5_orig.jpg",
-          "order_24C25E2F-C_p6_orig.jpg",
-          "order_24C25E2F-C_p7_orig.jpg",
-          "order_24C25E2F-C_p8_orig.jpg",
-          "order_24C25E2F-C_p9_orig.jpg",
-          "order_24C25E2F-C_p10_orig.jpg",
-          "order_24C25E2F-C_p11_orig.jpg"
-        ],
-        "photo_positions": {
-          "0": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "1": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "2": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "3": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "4": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "5": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "6": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "7": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "8": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "9": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "10": {
-            "offsetX": 0,
-            "offsetY": 3.0947054436987345,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "11": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          }
-        },
-        "selectable_choices": {},
-        "calendar_date": {
-          "day": 0,
-          "month": 0,
-          "year": 0
-        },
-        "text_values": {
-          "İSİMLERİNİZ": "İsmail Fırat",
-          "ÖZEL METİN": "İyi ki doğdun",
-          "ALT METİN": "Sen de"
-        },
-        "text_size_values": {
-          "İSİMLERİNİZ": "100",
-          "ÖZEL METİN": "100",
-          "ALT METİN": "100"
-        },
-        "text_color_values": {
-          "İSİMLERİNİZ": "#050505",
-          "ÖZEL METİN": "#050505",
-          "ALT METİN": "#050505"
-        },
-        "bw_option": "color",
-        "unit_size_key": "21x30cm",
-        "unit_num": null,
-        "staging_file": "İSMAIL FIRAT, 21x29.7cm.jpg",
-        "print_size": "A4"
-      }
-    ],
-    "photo_files": [
-      "order_24C25E2F-C_p0.jpg",
-      "order_24C25E2F-C_p1.jpg",
-      "order_24C25E2F-C_p2.jpg",
-      "order_24C25E2F-C_p3.jpg",
-      "order_24C25E2F-C_p4.jpg",
-      "order_24C25E2F-C_p5.jpg",
-      "order_24C25E2F-C_p6.jpg",
-      "order_24C25E2F-C_p7.jpg",
-      "order_24C25E2F-C_p8.jpg",
-      "order_24C25E2F-C_p9.jpg",
-      "order_24C25E2F-C_p10.jpg",
-      "order_24C25E2F-C_p11.jpg"
-    ],
-    "group_files": {},
-    "photo_originals": [
-      "order_24C25E2F-C_p0_orig.jpg",
-      "order_24C25E2F-C_p1_orig.jpg",
-      "order_24C25E2F-C_p2_orig.jpg",
-      "order_24C25E2F-C_p3_orig.jpg",
-      "order_24C25E2F-C_p4_orig.jpg",
-      "order_24C25E2F-C_p5_orig.jpg",
-      "order_24C25E2F-C_p6_orig.jpg",
-      "order_24C25E2F-C_p7_orig.jpg",
-      "order_24C25E2F-C_p8_orig.jpg",
-      "order_24C25E2F-C_p9_orig.jpg",
-      "order_24C25E2F-C_p10_orig.jpg",
-      "order_24C25E2F-C_p11_orig.jpg"
-    ],
-    "photo_positions": {
-      "0": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "1": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "2": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "3": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "4": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "5": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "6": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "7": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "8": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "9": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "10": {
-        "offsetX": 0,
-        "offsetY": 3.0947054436987345,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "11": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      }
-    },
-    "selectable_choices": {},
-    "calendar_date": {
-      "day": 0,
-      "month": 0,
-      "year": 0
-    },
-    "text_values": {
-      "İSİMLERİNİZ": "İsmail Fırat",
-      "ÖZEL METİN": "İyi ki doğdun",
-      "ALT METİN": "Sen de"
-    },
-    "text_size_values": {
-      "İSİMLERİNİZ": "100",
-      "ÖZEL METİN": "100",
-      "ALT METİN": "100"
-    },
-    "text_color_values": {
-      "İSİMLERİNİZ": "#050505",
-      "ÖZEL METİN": "#050505",
-      "ALT METİN": "#050505"
-    },
-    "unit_size_key": "21x30cm",
-    "a3_file": "üst İSMAIL FIRAT, sl alt EMRE PARSAN, sğ alt SEMİH YÜKSEL, 20260709_104129.jpg",
-    "a3_drive_file_id": "1Xw82BhCA3M3Mwn6bzLMrdMJU3k5z9huP"
-  },
-  {
-    "id": "EC148EF8-3",
-    "template_id": "c5631138",
-    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
-    "product_type": "MDF",
-    "mdf_size_key": "15x21cm",
-    "custom_size_key": null,
-    "size_label": "14.8x21cm",
-    "customer_name": "SEMİH YÜKSEL",
-    "order_number": "81649164916493",
-    "phone": "05446110150",
-    "bw_option": "color",
-    "status": "ready",
-    "output_file": null,
-    "output_files": null,
-    "created_at": "2026-07-09T10:35:22.641447",
-    "folder_name": "9 TEMMUZ BASKILAR",
-    "unit_count": 1,
-    "same_design": false,
-    "units": [
-      {
-        "photo_files": [
-          "order_EC148EF8-3_p0.jpg",
-          "order_EC148EF8-3_p1.jpg",
-          "order_EC148EF8-3_p2.jpg",
-          "order_EC148EF8-3_p3.jpg",
-          "order_EC148EF8-3_p4.jpg",
-          "order_EC148EF8-3_p5.jpg",
-          "order_EC148EF8-3_p6.jpg",
-          "order_EC148EF8-3_p7.jpg",
-          "order_EC148EF8-3_p8.jpg",
-          "order_EC148EF8-3_p9.jpg",
-          "order_EC148EF8-3_p10.jpg",
-          "order_EC148EF8-3_p11.jpg"
-        ],
-        "group_files": {},
-        "photo_originals": [
-          "order_EC148EF8-3_p0_orig.jpg",
-          "order_EC148EF8-3_p1_orig.jpg",
-          "order_EC148EF8-3_p2_orig.jpg",
-          "order_EC148EF8-3_p3_orig.jpg",
-          "order_EC148EF8-3_p4_orig.jpg",
-          "order_EC148EF8-3_p5_orig.jpg",
-          "order_EC148EF8-3_p6_orig.jpg",
-          "order_EC148EF8-3_p7_orig.jpg",
-          "order_EC148EF8-3_p8_orig.jpg",
-          "order_EC148EF8-3_p9_orig.jpg",
-          "order_EC148EF8-3_p10_orig.jpg",
-          "order_EC148EF8-3_p11_orig.jpg"
-        ],
-        "photo_positions": {
-          "0": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "1": {
-            "offsetX": 1.8038974719101124,
-            "offsetY": 0.2907986111111111,
-            "scale": 117,
-            "rotation": 0,
-            "flipH": false
-          },
-          "2": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "3": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "4": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "5": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "6": {
-            "offsetX": 0,
-            "offsetY": -8.169934640522879,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "7": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 264,
-            "rotation": 0,
-            "flipH": false
-          },
-          "8": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "9": {
-            "offsetX": 0,
-            "offsetY": 7.216488736347078,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "10": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "11": {
-            "offsetX": -11.793460220587056,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          }
-        },
-        "selectable_choices": {},
-        "calendar_date": {
-          "day": 0,
-          "month": 0,
-          "year": 0
-        },
-        "text_values": {
-          "İSİMLERİNİZ": "Semiş",
-          "ÖZEL METİN": "Yüksel",
-          "ALT METİN": "Mal"
-        },
-        "text_size_values": {
-          "İSİMLERİNİZ": "100",
-          "ÖZEL METİN": "100",
-          "ALT METİN": "100"
-        },
-        "text_color_values": {
-          "İSİMLERİNİZ": "#050505",
-          "ÖZEL METİN": "#050505",
-          "ALT METİN": "#050505"
-        },
-        "bw_option": "color",
-        "unit_size_key": "15x21cm",
-        "unit_num": null,
-        "staging_file": "SEMİH YÜKSEL, 14.8x21cm.jpg",
-        "print_size": "A5"
-      }
-    ],
-    "photo_files": [
-      "order_EC148EF8-3_p0.jpg",
-      "order_EC148EF8-3_p1.jpg",
-      "order_EC148EF8-3_p2.jpg",
-      "order_EC148EF8-3_p3.jpg",
-      "order_EC148EF8-3_p4.jpg",
-      "order_EC148EF8-3_p5.jpg",
-      "order_EC148EF8-3_p6.jpg",
-      "order_EC148EF8-3_p7.jpg",
-      "order_EC148EF8-3_p8.jpg",
-      "order_EC148EF8-3_p9.jpg",
-      "order_EC148EF8-3_p10.jpg",
-      "order_EC148EF8-3_p11.jpg"
-    ],
-    "group_files": {},
-    "photo_originals": [
-      "order_EC148EF8-3_p0_orig.jpg",
-      "order_EC148EF8-3_p1_orig.jpg",
-      "order_EC148EF8-3_p2_orig.jpg",
-      "order_EC148EF8-3_p3_orig.jpg",
-      "order_EC148EF8-3_p4_orig.jpg",
-      "order_EC148EF8-3_p5_orig.jpg",
-      "order_EC148EF8-3_p6_orig.jpg",
-      "order_EC148EF8-3_p7_orig.jpg",
-      "order_EC148EF8-3_p8_orig.jpg",
-      "order_EC148EF8-3_p9_orig.jpg",
-      "order_EC148EF8-3_p10_orig.jpg",
-      "order_EC148EF8-3_p11_orig.jpg"
-    ],
-    "photo_positions": {
-      "0": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "1": {
-        "offsetX": 1.8038974719101124,
-        "offsetY": 0.2907986111111111,
-        "scale": 117,
-        "rotation": 0,
-        "flipH": false
-      },
-      "2": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "3": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "4": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "5": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "6": {
-        "offsetX": 0,
-        "offsetY": -8.169934640522879,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "7": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 264,
-        "rotation": 0,
-        "flipH": false
-      },
-      "8": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "9": {
-        "offsetX": 0,
-        "offsetY": 7.216488736347078,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "10": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "11": {
-        "offsetX": -11.793460220587056,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      }
-    },
-    "selectable_choices": {},
-    "calendar_date": {
-      "day": 0,
-      "month": 0,
-      "year": 0
-    },
-    "text_values": {
-      "İSİMLERİNİZ": "Semiş",
-      "ÖZEL METİN": "Yüksel",
-      "ALT METİN": "Mal"
-    },
-    "text_size_values": {
-      "İSİMLERİNİZ": "100",
-      "ÖZEL METİN": "100",
-      "ALT METİN": "100"
-    },
-    "text_color_values": {
-      "İSİMLERİNİZ": "#050505",
-      "ÖZEL METİN": "#050505",
-      "ALT METİN": "#050505"
-    },
-    "unit_size_key": "15x21cm",
-    "error_message": null,
-    "a3_file": "üst İSMAIL FIRAT, sl alt EMRE PARSAN, sğ alt SEMİH YÜKSEL, 20260709_104129.jpg",
-    "a3_drive_file_id": "1Xw82BhCA3M3Mwn6bzLMrdMJU3k5z9huP"
-  },
-  {
-    "id": "39EFBDC8-7",
-    "template_id": "c5631138",
-    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
-    "product_type": "MDF",
-    "mdf_size_key": "15x21cm",
-    "custom_size_key": null,
-    "size_label": "14.8x21cm",
-    "customer_name": "FATMA ASK",
-    "order_number": "15263915838",
-    "phone": "05446110150",
-    "bw_option": "bw",
-    "status": "ready",
-    "output_file": null,
-    "output_files": null,
-    "created_at": "2026-07-09T12:48:53.036517",
-    "folder_name": "9 TEMMUZ BASKILAR",
+    "created_at": "2026-07-14T01:03:52.369350",
+    "folder_name": "14 TEMMUZ BASKILAR",
     "unit_count": 2,
-    "same_design": true,
-    "units": [
-      {
-        "photo_files": [
-          "order_39EFBDC8-7_p0.jpg",
-          "order_39EFBDC8-7_p1.jpg",
-          "order_39EFBDC8-7_p2.jpg",
-          "order_39EFBDC8-7_p3.jpg",
-          "order_39EFBDC8-7_p4.jpg",
-          "order_39EFBDC8-7_p5.jpg",
-          "order_39EFBDC8-7_p6.jpg",
-          "order_39EFBDC8-7_p7.jpg",
-          "order_39EFBDC8-7_p8.jpg",
-          "order_39EFBDC8-7_p9.jpg",
-          "order_39EFBDC8-7_p10.jpg",
-          "order_39EFBDC8-7_p11.jpg"
-        ],
-        "group_files": {},
-        "photo_originals": [
-          "order_39EFBDC8-7_p0_orig.jpg",
-          "order_39EFBDC8-7_p1_orig.jpg",
-          "order_39EFBDC8-7_p2_orig.jpg",
-          "order_39EFBDC8-7_p3_orig.jpg",
-          "order_39EFBDC8-7_p4_orig.jpg",
-          "order_39EFBDC8-7_p5_orig.jpg",
-          "order_39EFBDC8-7_p6_orig.jpg",
-          "order_39EFBDC8-7_p7_orig.jpg",
-          "order_39EFBDC8-7_p8_orig.jpg",
-          "order_39EFBDC8-7_p9_orig.jpg",
-          "order_39EFBDC8-7_p10_orig.jpg",
-          "order_39EFBDC8-7_p11_orig.jpg"
-        ],
-        "photo_positions": {
-          "0": {
-            "offsetX": 0,
-            "offsetY": -0.5358940732162626,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "1": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "2": {
-            "offsetX": 0,
-            "offsetY": 65.76727505387932,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "3": {
-            "offsetX": 0,
-            "offsetY": -34.23811926095971,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "4": {
-            "offsetX": 0,
-            "offsetY": -16.975653926028485,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "5": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "6": {
-            "offsetX": 0,
-            "offsetY": -1.8190870098039247,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "7": {
-            "offsetX": 0,
-            "offsetY": -10.931646587891969,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "8": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "9": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "10": {
-            "offsetX": 0,
-            "offsetY": -3.397750854492187,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "11": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          }
-        },
-        "selectable_choices": {},
-        "calendar_date": {
-          "day": 0,
-          "month": 0,
-          "year": 0
-        },
-        "text_values": {
-          "İSİMLERİNİZ": "Ftm dnm",
-          "ÖZEL METİN": "İyi ki doğdun",
-          "ALT METİN": "19.08.2024 deneme"
-        },
-        "text_size_values": {
-          "İSİMLERİNİZ": "100",
-          "ÖZEL METİN": "100",
-          "ALT METİN": "100"
-        },
-        "text_color_values": {
-          "İSİMLERİNİZ": "#050505",
-          "ÖZEL METİN": "#050505",
-          "ALT METİN": "#050505"
-        },
-        "bw_option": "bw",
-        "unit_size_key": "15x21cm",
-        "unit_num": null,
-        "staging_file": "FATMA ASK, 2 ADET, 14.8x21cm.jpg",
-        "print_size": "A5"
-      }
-    ],
-    "photo_files": [
-      "order_39EFBDC8-7_p0.jpg",
-      "order_39EFBDC8-7_p1.jpg",
-      "order_39EFBDC8-7_p2.jpg",
-      "order_39EFBDC8-7_p3.jpg",
-      "order_39EFBDC8-7_p4.jpg",
-      "order_39EFBDC8-7_p5.jpg",
-      "order_39EFBDC8-7_p6.jpg",
-      "order_39EFBDC8-7_p7.jpg",
-      "order_39EFBDC8-7_p8.jpg",
-      "order_39EFBDC8-7_p9.jpg",
-      "order_39EFBDC8-7_p10.jpg",
-      "order_39EFBDC8-7_p11.jpg"
-    ],
-    "group_files": {},
-    "photo_originals": [
-      "order_39EFBDC8-7_p0_orig.jpg",
-      "order_39EFBDC8-7_p1_orig.jpg",
-      "order_39EFBDC8-7_p2_orig.jpg",
-      "order_39EFBDC8-7_p3_orig.jpg",
-      "order_39EFBDC8-7_p4_orig.jpg",
-      "order_39EFBDC8-7_p5_orig.jpg",
-      "order_39EFBDC8-7_p6_orig.jpg",
-      "order_39EFBDC8-7_p7_orig.jpg",
-      "order_39EFBDC8-7_p8_orig.jpg",
-      "order_39EFBDC8-7_p9_orig.jpg",
-      "order_39EFBDC8-7_p10_orig.jpg",
-      "order_39EFBDC8-7_p11_orig.jpg"
-    ],
-    "photo_positions": {
-      "0": {
-        "offsetX": 0,
-        "offsetY": -0.5358940732162626,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "1": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "2": {
-        "offsetX": 0,
-        "offsetY": 65.76727505387932,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "3": {
-        "offsetX": 0,
-        "offsetY": -34.23811926095971,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "4": {
-        "offsetX": 0,
-        "offsetY": -16.975653926028485,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "5": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "6": {
-        "offsetX": 0,
-        "offsetY": -1.8190870098039247,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "7": {
-        "offsetX": 0,
-        "offsetY": -10.931646587891969,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "8": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "9": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "10": {
-        "offsetX": 0,
-        "offsetY": -3.397750854492187,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "11": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      }
-    },
-    "selectable_choices": {},
-    "calendar_date": {
-      "day": 0,
-      "month": 0,
-      "year": 0
-    },
-    "text_values": {
-      "İSİMLERİNİZ": "Ftm dnm",
-      "ÖZEL METİN": "İyi ki doğdun",
-      "ALT METİN": "19.08.2024 deneme"
-    },
-    "text_size_values": {
-      "İSİMLERİNİZ": "100",
-      "ÖZEL METİN": "100",
-      "ALT METİN": "100"
-    },
-    "text_color_values": {
-      "İSİMLERİNİZ": "#050505",
-      "ÖZEL METİN": "#050505",
-      "ALT METİN": "#050505"
-    },
-    "unit_size_key": "15x21cm",
-    "a3_file": "üst VEBBI BEY, alt FATMA ASK, 20260709_130235.jpg",
-    "a3_drive_file_id": "1drUL487TGQJeLtmK6358-ZJm8Ta5tn9o"
-  },
-  {
-    "id": "B17573FD-7",
-    "template_id": "c5631138",
-    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
-    "product_type": "MDF",
-    "mdf_size_key": "21x30cm",
-    "custom_size_key": null,
-    "size_label": "21x29.7cm",
-    "customer_name": "VEBBI BEY",
-    "order_number": "75938120436",
-    "phone": "05446110150",
-    "bw_option": "color",
-    "status": "ready",
-    "output_file": null,
-    "output_files": null,
-    "created_at": "2026-07-09T13:01:58.621110",
-    "folder_name": "9 TEMMUZ BASKILAR",
-    "unit_count": 1,
     "same_design": false,
     "units": [
       {
         "photo_files": [
-          "order_B17573FD-7_p0.jpg",
-          "order_B17573FD-7_p1.jpg",
-          "order_B17573FD-7_p2.jpg",
-          "order_B17573FD-7_p3.jpg",
-          "order_B17573FD-7_p4.jpg",
-          "order_B17573FD-7_p5.jpg",
-          "order_B17573FD-7_p6.jpg",
-          "order_B17573FD-7_p7.jpg",
-          "order_B17573FD-7_p8.jpg",
-          "order_B17573FD-7_p9.jpg",
-          "order_B17573FD-7_p10.jpg",
-          "order_B17573FD-7_p11.jpg"
+          "order_37D9E352-C_p0_u0.jpg",
+          "order_37D9E352-C_p1_u0.jpg",
+          "order_37D9E352-C_p2_u0.jpg",
+          "order_37D9E352-C_p3_u0.jpg",
+          "order_37D9E352-C_p4_u0.jpg",
+          "order_37D9E352-C_p5_u0.jpg",
+          "order_37D9E352-C_p6_u0.jpg",
+          "order_37D9E352-C_p7_u0.jpg",
+          "order_37D9E352-C_p8_u0.jpg",
+          "order_37D9E352-C_p9_u0.jpg",
+          "order_37D9E352-C_p10_u0.jpg",
+          "order_37D9E352-C_p11_u0.jpg"
         ],
         "group_files": {},
         "photo_originals": [
-          "order_B17573FD-7_p0_orig.jpg",
-          "order_B17573FD-7_p1_orig.jpg",
-          "order_B17573FD-7_p2_orig.jpg",
-          "order_B17573FD-7_p3_orig.jpg",
-          "order_B17573FD-7_p4_orig.jpg",
-          "order_B17573FD-7_p5_orig.jpg",
-          "order_B17573FD-7_p6_orig.jpg",
-          "order_B17573FD-7_p7_orig.jpg",
-          "order_B17573FD-7_p8_orig.jpg",
-          "order_B17573FD-7_p9_orig.jpg",
-          "order_B17573FD-7_p10_orig.jpg",
-          "order_B17573FD-7_p11_orig.jpg"
+          "order_37D9E352-C_p0_orig_u0.jpg",
+          "order_37D9E352-C_p1_orig_u0.jpg",
+          "order_37D9E352-C_p2_orig_u0.jpg",
+          "order_37D9E352-C_p3_orig_u0.jpg",
+          "order_37D9E352-C_p4_orig_u0.jpg",
+          "order_37D9E352-C_p5_orig_u0.jpg",
+          "order_37D9E352-C_p6_orig_u0.jpg",
+          "order_37D9E352-C_p7_orig_u0.jpg",
+          "order_37D9E352-C_p8_orig_u0.jpg",
+          "order_37D9E352-C_p9_orig_u0.jpg",
+          "order_37D9E352-C_p10_orig_u0.jpg",
+          "order_37D9E352-C_p11_orig_u0.jpg"
         ],
         "photo_positions": {
           "0": {
             "offsetX": 0,
-            "offsetY": 0,
+            "offsetY": -9.238798084723127,
             "scale": 100,
             "rotation": 0,
             "flipH": false
@@ -1283,14 +371,14 @@
           },
           "2": {
             "offsetX": 0,
-            "offsetY": -30.73248291015625,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "3": {
             "offsetX": 0,
-            "offsetY": 0,
+            "offsetY": 43.15232049851189,
             "scale": 100,
             "rotation": 0,
             "flipH": false
@@ -1304,48 +392,48 @@
           },
           "5": {
             "offsetX": 0,
-            "offsetY": 24.008286059202256,
+            "offsetY": -16.45944760251276,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "6": {
-            "offsetX": 0,
-            "offsetY": -8.979137515547263,
+            "offsetX": -3.089810489268785,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "7": {
             "offsetX": 0,
-            "offsetY": -3.5239650935854048,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "8": {
             "offsetX": 0,
-            "offsetY": -27.8770751953125,
+            "offsetY": -38.161959506497524,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "9": {
             "offsetX": 0,
-            "offsetY": -31.580972906403936,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "10": {
             "offsetX": 0,
-            "offsetY": 2.44321060756033,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "11": {
-            "offsetX": -4.327343156945851,
+            "offsetX": 0,
             "offsetY": 0,
             "scale": 100,
             "rotation": 0,
@@ -1359,7 +447,7 @@
           "year": 0
         },
         "text_values": {
-          "İSİMLERİNİZ": "Vebbi & Burak",
+          "İSİMLERİNİZ": "İso",
           "ÖZEL METİN": "Deneme",
           "ALT METİN": "Denemeeee"
         },
@@ -1374,40 +462,486 @@
           "ALT METİN": "#050505"
         },
         "bw_option": "color",
-        "unit_size_key": "21x30cm",
-        "unit_num": null,
-        "staging_file": "VEBBI BEY, 21x29.7cm.jpg",
-        "print_size": "A4"
+        "unit_size_key": "30x40cm",
+        "unit_num": 0,
+        "has_result": true
+      },
+      {
+        "photo_files": [
+          "order_37D9E352-C_p0_u1.jpg",
+          "order_37D9E352-C_p1_u1.jpg",
+          "order_37D9E352-C_p2_u1.jpg",
+          "order_37D9E352-C_p3_u1.jpg",
+          "order_37D9E352-C_p4_u1.jpg",
+          "order_37D9E352-C_p5_u1.jpg",
+          "order_37D9E352-C_p6_u1.jpg",
+          "order_37D9E352-C_p7_u1.jpg",
+          "order_37D9E352-C_p8_u1.jpg",
+          "order_37D9E352-C_p9_u1.jpg",
+          "order_37D9E352-C_p10_u1.jpg",
+          "order_37D9E352-C_p11_u1.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_37D9E352-C_p0_orig_u1.jpg",
+          "order_37D9E352-C_p1_orig_u1.jpg",
+          "order_37D9E352-C_p2_orig_u1.jpg",
+          "order_37D9E352-C_p3_orig_u1.jpg",
+          "order_37D9E352-C_p4_orig_u1.jpg",
+          "order_37D9E352-C_p5_orig_u1.jpg",
+          "order_37D9E352-C_p6_orig_u1.jpg",
+          "order_37D9E352-C_p7_orig_u1.jpg",
+          "order_37D9E352-C_p8_orig_u1.jpg",
+          "order_37D9E352-C_p9_orig_u1.jpg",
+          "order_37D9E352-C_p10_orig_u1.jpg",
+          "order_37D9E352-C_p11_orig_u1.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 2.740135621488764,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": -13.079039558531749,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 10.472907642326732,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 25.9614376905488,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": 9.926567702996927,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "İso 2. Deneme",
+          "ÖZEL METİN": "Dnmeee",
+          "ALT METİN": "Denemeeeee"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "bw",
+        "unit_size_key": "30x40cm",
+        "unit_num": 1,
+        "has_result": true
       }
     ],
     "photo_files": [
-      "order_B17573FD-7_p0.jpg",
-      "order_B17573FD-7_p1.jpg",
-      "order_B17573FD-7_p2.jpg",
-      "order_B17573FD-7_p3.jpg",
-      "order_B17573FD-7_p4.jpg",
-      "order_B17573FD-7_p5.jpg",
-      "order_B17573FD-7_p6.jpg",
-      "order_B17573FD-7_p7.jpg",
-      "order_B17573FD-7_p8.jpg",
-      "order_B17573FD-7_p9.jpg",
-      "order_B17573FD-7_p10.jpg",
-      "order_B17573FD-7_p11.jpg"
+      "order_37D9E352-C_p0_u0.jpg",
+      "order_37D9E352-C_p1_u0.jpg",
+      "order_37D9E352-C_p2_u0.jpg",
+      "order_37D9E352-C_p3_u0.jpg",
+      "order_37D9E352-C_p4_u0.jpg",
+      "order_37D9E352-C_p5_u0.jpg",
+      "order_37D9E352-C_p6_u0.jpg",
+      "order_37D9E352-C_p7_u0.jpg",
+      "order_37D9E352-C_p8_u0.jpg",
+      "order_37D9E352-C_p9_u0.jpg",
+      "order_37D9E352-C_p10_u0.jpg",
+      "order_37D9E352-C_p11_u0.jpg"
     ],
     "group_files": {},
     "photo_originals": [
-      "order_B17573FD-7_p0_orig.jpg",
-      "order_B17573FD-7_p1_orig.jpg",
-      "order_B17573FD-7_p2_orig.jpg",
-      "order_B17573FD-7_p3_orig.jpg",
-      "order_B17573FD-7_p4_orig.jpg",
-      "order_B17573FD-7_p5_orig.jpg",
-      "order_B17573FD-7_p6_orig.jpg",
-      "order_B17573FD-7_p7_orig.jpg",
-      "order_B17573FD-7_p8_orig.jpg",
-      "order_B17573FD-7_p9_orig.jpg",
-      "order_B17573FD-7_p10_orig.jpg",
-      "order_B17573FD-7_p11_orig.jpg"
+      "order_37D9E352-C_p0_orig_u0.jpg",
+      "order_37D9E352-C_p1_orig_u0.jpg",
+      "order_37D9E352-C_p2_orig_u0.jpg",
+      "order_37D9E352-C_p3_orig_u0.jpg",
+      "order_37D9E352-C_p4_orig_u0.jpg",
+      "order_37D9E352-C_p5_orig_u0.jpg",
+      "order_37D9E352-C_p6_orig_u0.jpg",
+      "order_37D9E352-C_p7_orig_u0.jpg",
+      "order_37D9E352-C_p8_orig_u0.jpg",
+      "order_37D9E352-C_p9_orig_u0.jpg",
+      "order_37D9E352-C_p10_orig_u0.jpg",
+      "order_37D9E352-C_p11_orig_u0.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": -9.238798084723127,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": 43.15232049851189,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": -16.45944760251276,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": -3.089810489268785,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": -38.161959506497524,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "İso",
+      "ÖZEL METİN": "Deneme",
+      "ALT METİN": "Denemeeee"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "30x40cm",
+    "drive_file_id": "1BkcwM2uwwdTLVJIIRyBh-8X-t8HLHyXh",
+    "drive_file_name": "İSMAIL FIRAT, 2 ADET.zip",
+    "drive_files": null
+  },
+  {
+    "id": "E3B1537F-9",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "15x21cm",
+    "custom_size_key": null,
+    "size_label": "14.8x21cm",
+    "customer_name": "VEBBI ABI",
+    "order_number": "153715458489",
+    "phone": "05446110150",
+    "bw_option": "bw",
+    "status": "ready",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-14T01:12:03.564724",
+    "folder_name": "14 TEMMUZ BASKILAR",
+    "unit_count": 1,
+    "same_design": false,
+    "units": [
+      {
+        "photo_files": [
+          "order_E3B1537F-9_p0.jpg",
+          "order_E3B1537F-9_p1.jpg",
+          "order_E3B1537F-9_p2.jpg",
+          "order_E3B1537F-9_p3.jpg",
+          "order_E3B1537F-9_p4.jpg",
+          "order_E3B1537F-9_p5.jpg",
+          "order_E3B1537F-9_p6.jpg",
+          "order_E3B1537F-9_p7.jpg",
+          "order_E3B1537F-9_p8.jpg",
+          "order_E3B1537F-9_p9.jpg",
+          "order_E3B1537F-9_p10.jpg",
+          "order_E3B1537F-9_p11.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_E3B1537F-9_p0_orig.jpg",
+          "order_E3B1537F-9_p1_orig.jpg",
+          "order_E3B1537F-9_p2_orig.jpg",
+          "order_E3B1537F-9_p3_orig.jpg",
+          "order_E3B1537F-9_p4_orig.jpg",
+          "order_E3B1537F-9_p5_orig.jpg",
+          "order_E3B1537F-9_p6_orig.jpg",
+          "order_E3B1537F-9_p7_orig.jpg",
+          "order_E3B1537F-9_p8_orig.jpg",
+          "order_E3B1537F-9_p9_orig.jpg",
+          "order_E3B1537F-9_p10_orig.jpg",
+          "order_E3B1537F-9_p11_orig.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": -8.45648604269294,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": 16.293450850474674,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": -2.296936378050389,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 19.331728178879313,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": -18.068776547330106,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "Eylül & Samet 7ruejeuhdgeirhrhhehehrh",
+          "ÖZEL METİN": "İyi ki doğdun canım eşim udg3y du2vyd ywyd72 yeg1g d62vyd uwyeyehe ydueteg7shwy ysyeyev 6sye 7d  7eur7e 7ui isueheh ueuejeuudud  üye",
+          "ALT METİN": "19.08.2024 hdhwgrysbevyxvei isbd7w yrgsu3 7sjwh8f 27db2 6eu2gs7 w6db3"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "bw",
+        "unit_size_key": "15x21cm",
+        "unit_num": null,
+        "staging_file": "VEBBI ABI, 14.8x21cm.jpg",
+        "print_size": "A5"
+      }
+    ],
+    "photo_files": [
+      "order_E3B1537F-9_p0.jpg",
+      "order_E3B1537F-9_p1.jpg",
+      "order_E3B1537F-9_p2.jpg",
+      "order_E3B1537F-9_p3.jpg",
+      "order_E3B1537F-9_p4.jpg",
+      "order_E3B1537F-9_p5.jpg",
+      "order_E3B1537F-9_p6.jpg",
+      "order_E3B1537F-9_p7.jpg",
+      "order_E3B1537F-9_p8.jpg",
+      "order_E3B1537F-9_p9.jpg",
+      "order_E3B1537F-9_p10.jpg",
+      "order_E3B1537F-9_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_E3B1537F-9_p0_orig.jpg",
+      "order_E3B1537F-9_p1_orig.jpg",
+      "order_E3B1537F-9_p2_orig.jpg",
+      "order_E3B1537F-9_p3_orig.jpg",
+      "order_E3B1537F-9_p4_orig.jpg",
+      "order_E3B1537F-9_p5_orig.jpg",
+      "order_E3B1537F-9_p6_orig.jpg",
+      "order_E3B1537F-9_p7_orig.jpg",
+      "order_E3B1537F-9_p8_orig.jpg",
+      "order_E3B1537F-9_p9_orig.jpg",
+      "order_E3B1537F-9_p10_orig.jpg",
+      "order_E3B1537F-9_p11_orig.jpg"
     ],
     "photo_positions": {
       "0": {
@@ -1426,7 +960,312 @@
       },
       "2": {
         "offsetX": 0,
-        "offsetY": -30.73248291015625,
+        "offsetY": -8.45648604269294,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": 16.293450850474674,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": -2.296936378050389,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": 19.331728178879313,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": -18.068776547330106,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "Eylül & Samet 7ruejeuhdgeirhrhhehehrh",
+      "ÖZEL METİN": "İyi ki doğdun canım eşim udg3y du2vyd ywyd72 yeg1g d62vyd uwyeyehe ydueteg7shwy ysyeyev 6sye 7d  7eur7e 7ui isueheh ueuejeuudud  üye",
+      "ALT METİN": "19.08.2024 hdhwgrysbevyxvei isbd7w yrgsu3 7sjwh8f 27db2 6eu2gs7 w6db3"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "15x21cm",
+    "drive_file_id": "1mN4Bj29EJBwmS6G0MRAbqRNC8NKI_C8E",
+    "drive_file_name": "VEBBI ABI, 14.8x21cm.jpg",
+    "drive_files": null
+  },
+  {
+    "id": "858A51FB-2",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "21x30cm",
+    "custom_size_key": null,
+    "size_label": "21x29.7cm",
+    "customer_name": "BURAK AKDENIZ",
+    "order_number": "1528253926",
+    "phone": "05446110150",
+    "bw_option": "color",
+    "status": "ready",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-14T01:22:35.358332",
+    "folder_name": "14 TEMMUZ BASKILAR",
+    "unit_count": 1,
+    "same_design": false,
+    "units": [
+      {
+        "photo_files": [
+          "order_858A51FB-2_p0.jpg",
+          "order_858A51FB-2_p1.jpg",
+          "order_858A51FB-2_p2.jpg",
+          "order_858A51FB-2_p3.jpg",
+          "order_858A51FB-2_p4.jpg",
+          "order_858A51FB-2_p5.jpg",
+          "order_858A51FB-2_p6.jpg",
+          "order_858A51FB-2_p7.jpg",
+          "order_858A51FB-2_p8.jpg",
+          "order_858A51FB-2_p9.jpg",
+          "order_858A51FB-2_p10.jpg",
+          "order_858A51FB-2_p11.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_858A51FB-2_p0_orig.jpg",
+          "order_858A51FB-2_p1_orig.jpg",
+          "order_858A51FB-2_p2_orig.jpg",
+          "order_858A51FB-2_p3_orig.jpg",
+          "order_858A51FB-2_p4_orig.jpg",
+          "order_858A51FB-2_p5_orig.jpg",
+          "order_858A51FB-2_p6_orig.jpg",
+          "order_858A51FB-2_p7_orig.jpg",
+          "order_858A51FB-2_p8_orig.jpg",
+          "order_858A51FB-2_p9_orig.jpg",
+          "order_858A51FB-2_p10_orig.jpg",
+          "order_858A51FB-2_p11_orig.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": -2.333076742077792,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 17.051288869121286,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": 9.430546088506716,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "Eylül & Samet",
+          "ÖZEL METİN": "İYİ Kİ DOĞDUN CANIM EŞİM",
+          "ALT METİN": "Deneme"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#00ff00"
+        },
+        "bw_option": "color",
+        "unit_size_key": "21x30cm",
+        "unit_num": null,
+        "staging_file": "BURAK AKDENIZ, 21x29.7cm.jpg",
+        "print_size": "A4"
+      }
+    ],
+    "photo_files": [
+      "order_858A51FB-2_p0.jpg",
+      "order_858A51FB-2_p1.jpg",
+      "order_858A51FB-2_p2.jpg",
+      "order_858A51FB-2_p3.jpg",
+      "order_858A51FB-2_p4.jpg",
+      "order_858A51FB-2_p5.jpg",
+      "order_858A51FB-2_p6.jpg",
+      "order_858A51FB-2_p7.jpg",
+      "order_858A51FB-2_p8.jpg",
+      "order_858A51FB-2_p9.jpg",
+      "order_858A51FB-2_p10.jpg",
+      "order_858A51FB-2_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_858A51FB-2_p0_orig.jpg",
+      "order_858A51FB-2_p1_orig.jpg",
+      "order_858A51FB-2_p2_orig.jpg",
+      "order_858A51FB-2_p3_orig.jpg",
+      "order_858A51FB-2_p4_orig.jpg",
+      "order_858A51FB-2_p5_orig.jpg",
+      "order_858A51FB-2_p6_orig.jpg",
+      "order_858A51FB-2_p7_orig.jpg",
+      "order_858A51FB-2_p8_orig.jpg",
+      "order_858A51FB-2_p9_orig.jpg",
+      "order_858A51FB-2_p10_orig.jpg",
+      "order_858A51FB-2_p11_orig.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": -2.333076742077792,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
@@ -1447,48 +1286,48 @@
       },
       "5": {
         "offsetX": 0,
-        "offsetY": 24.008286059202256,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "6": {
         "offsetX": 0,
-        "offsetY": -8.979137515547263,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "7": {
         "offsetX": 0,
-        "offsetY": -3.5239650935854048,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "8": {
         "offsetX": 0,
-        "offsetY": -27.8770751953125,
+        "offsetY": 17.051288869121286,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "9": {
         "offsetX": 0,
-        "offsetY": -31.580972906403936,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "10": {
         "offsetX": 0,
-        "offsetY": 2.44321060756033,
+        "offsetY": 9.430546088506716,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "11": {
-        "offsetX": -4.327343156945851,
+        "offsetX": 0,
         "offsetY": 0,
         "scale": 100,
         "rotation": 0,
@@ -1502,9 +1341,9 @@
       "year": 0
     },
     "text_values": {
-      "İSİMLERİNİZ": "Vebbi & Burak",
-      "ÖZEL METİN": "Deneme",
-      "ALT METİN": "Denemeeee"
+      "İSİMLERİNİZ": "Eylül & Samet",
+      "ÖZEL METİN": "İYİ Kİ DOĞDUN CANIM EŞİM",
+      "ALT METİN": "Deneme"
     },
     "text_size_values": {
       "İSİMLERİNİZ": "100",
@@ -1514,14 +1353,14 @@
     "text_color_values": {
       "İSİMLERİNİZ": "#050505",
       "ÖZEL METİN": "#050505",
-      "ALT METİN": "#050505"
+      "ALT METİN": "#00ff00"
     },
     "unit_size_key": "21x30cm",
-    "a3_file": "üst VEBBI BEY, alt FATMA ASK, 20260709_130235.jpg",
-    "a3_drive_file_id": "1drUL487TGQJeLtmK6358-ZJm8Ta5tn9o"
+    "a3_file": "üst BURAK AKDENIZ, sl alt VEBBI ABI, sğ alt BURAK AKDENIZ.jpg",
+    "a3_drive_file_id": "1_Gvun-FmujJlsNPnu-v7gjFU3VYa0g_d"
   },
   {
-    "id": "CC07C147-3",
+    "id": "FAF4D963-5",
     "template_id": "c5631138",
     "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
     "product_type": "MDF",
@@ -1529,46 +1368,46 @@
     "custom_size_key": null,
     "size_label": "14.8x21cm",
     "customer_name": "BURAK AKDENIZ",
-    "order_number": "9737491074917",
+    "order_number": "527351836823",
     "phone": "05446110150",
-    "bw_option": "bw",
+    "bw_option": "color",
     "status": "ready",
     "output_file": null,
     "output_files": null,
-    "created_at": "2026-07-09T13:11:25.302954",
-    "folder_name": "9 TEMMUZ BASKILAR",
-    "unit_count": 2,
+    "created_at": "2026-07-14T01:26:39.847096",
+    "folder_name": "14 TEMMUZ BASKILAR",
+    "unit_count": 1,
     "same_design": false,
     "units": [
       {
         "photo_files": [
-          "order_CC07C147-3_p0_u0.jpg",
-          "order_CC07C147-3_p1_u0.jpg",
-          "order_CC07C147-3_p2_u0.jpg",
-          "order_CC07C147-3_p3_u0.jpg",
-          "order_CC07C147-3_p4_u0.jpg",
-          "order_CC07C147-3_p5_u0.jpg",
-          "order_CC07C147-3_p6_u0.jpg",
-          "order_CC07C147-3_p7_u0.jpg",
-          "order_CC07C147-3_p8_u0.jpg",
-          "order_CC07C147-3_p9_u0.jpg",
-          "order_CC07C147-3_p10_u0.jpg",
-          "order_CC07C147-3_p11_u0.jpg"
+          "order_FAF4D963-5_p0.jpg",
+          "order_FAF4D963-5_p1.jpg",
+          "order_FAF4D963-5_p2.jpg",
+          "order_FAF4D963-5_p3.jpg",
+          "order_FAF4D963-5_p4.jpg",
+          "order_FAF4D963-5_p5.jpg",
+          "order_FAF4D963-5_p6.jpg",
+          "order_FAF4D963-5_p7.jpg",
+          "order_FAF4D963-5_p8.jpg",
+          "order_FAF4D963-5_p9.jpg",
+          "order_FAF4D963-5_p10.jpg",
+          "order_FAF4D963-5_p11.jpg"
         ],
         "group_files": {},
         "photo_originals": [
-          "order_CC07C147-3_p0_orig_u0.jpg",
-          "order_CC07C147-3_p1_orig_u0.jpg",
-          "order_CC07C147-3_p2_orig_u0.jpg",
-          "order_CC07C147-3_p3_orig_u0.jpg",
-          "order_CC07C147-3_p4_orig_u0.jpg",
-          "order_CC07C147-3_p5_orig_u0.jpg",
-          "order_CC07C147-3_p6_orig_u0.jpg",
-          "order_CC07C147-3_p7_orig_u0.jpg",
-          "order_CC07C147-3_p8_orig_u0.jpg",
-          "order_CC07C147-3_p9_orig_u0.jpg",
-          "order_CC07C147-3_p10_orig_u0.jpg",
-          "order_CC07C147-3_p11_orig_u0.jpg"
+          "order_FAF4D963-5_p0_orig.jpg",
+          "order_FAF4D963-5_p1_orig.jpg",
+          "order_FAF4D963-5_p2_orig.jpg",
+          "order_FAF4D963-5_p3_orig.jpg",
+          "order_FAF4D963-5_p4_orig.jpg",
+          "order_FAF4D963-5_p5_orig.jpg",
+          "order_FAF4D963-5_p6_orig.jpg",
+          "order_FAF4D963-5_p7_orig.jpg",
+          "order_FAF4D963-5_p8_orig.jpg",
+          "order_FAF4D963-5_p9_orig.jpg",
+          "order_FAF4D963-5_p10_orig.jpg",
+          "order_FAF4D963-5_p11_orig.jpg"
         ],
         "photo_positions": {
           "0": {
@@ -1580,76 +1419,76 @@
           },
           "1": {
             "offsetX": 0,
-            "offsetY": 8.556938014403293,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "2": {
             "offsetX": 0,
-            "offsetY": -31.077538100369463,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "3": {
             "offsetX": 0,
-            "offsetY": 0.7055779768957345,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "4": {
             "offsetX": 0,
-            "offsetY": 0,
+            "offsetY": -34.415406818631325,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "5": {
             "offsetX": 0,
-            "offsetY": -8.891645988420183,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "6": {
             "offsetX": 0,
-            "offsetY": 3.1698787913602953,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "7": {
             "offsetX": 0,
-            "offsetY": -2.8582034149962903,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "8": {
             "offsetX": 0,
-            "offsetY": -11.920797413793109,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "9": {
             "offsetX": 0,
-            "offsetY": -36.471646503337354,
+            "offsetY": 0,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "10": {
             "offsetX": 0,
-            "offsetY": 0,
+            "offsetY": 10.418810896116375,
             "scale": 100,
             "rotation": 0,
             "flipH": false
           },
           "11": {
-            "offsetX": 1.2293612370725555,
+            "offsetX": 0,
             "offsetY": 0,
             "scale": 100,
             "rotation": 0,
@@ -1663,9 +1502,922 @@
           "year": 0
         },
         "text_values": {
-          "İSİMLERİNİZ": "Eylül",
-          "ÖZEL METİN": "Brk",
-          "ALT METİN": "Deneme"
+          "İSİMLERİNİZ": "Burak",
+          "ÖZEL METİN": "Deneme",
+          "ALT METİN": "Deneemeeeee"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "color",
+        "unit_size_key": "15x21cm",
+        "unit_num": null,
+        "staging_file": "BURAK AKDENIZ, 14.8x21cm.jpg",
+        "print_size": "A5"
+      }
+    ],
+    "photo_files": [
+      "order_FAF4D963-5_p0.jpg",
+      "order_FAF4D963-5_p1.jpg",
+      "order_FAF4D963-5_p2.jpg",
+      "order_FAF4D963-5_p3.jpg",
+      "order_FAF4D963-5_p4.jpg",
+      "order_FAF4D963-5_p5.jpg",
+      "order_FAF4D963-5_p6.jpg",
+      "order_FAF4D963-5_p7.jpg",
+      "order_FAF4D963-5_p8.jpg",
+      "order_FAF4D963-5_p9.jpg",
+      "order_FAF4D963-5_p10.jpg",
+      "order_FAF4D963-5_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_FAF4D963-5_p0_orig.jpg",
+      "order_FAF4D963-5_p1_orig.jpg",
+      "order_FAF4D963-5_p2_orig.jpg",
+      "order_FAF4D963-5_p3_orig.jpg",
+      "order_FAF4D963-5_p4_orig.jpg",
+      "order_FAF4D963-5_p5_orig.jpg",
+      "order_FAF4D963-5_p6_orig.jpg",
+      "order_FAF4D963-5_p7_orig.jpg",
+      "order_FAF4D963-5_p8_orig.jpg",
+      "order_FAF4D963-5_p9_orig.jpg",
+      "order_FAF4D963-5_p10_orig.jpg",
+      "order_FAF4D963-5_p11_orig.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": -34.415406818631325,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": 10.418810896116375,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "Burak",
+      "ÖZEL METİN": "Deneme",
+      "ALT METİN": "Deneemeeeee"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "15x21cm",
+    "a3_file": "üst BURAK AKDENIZ, sl alt VEBBI ABI, sğ alt BURAK AKDENIZ.jpg",
+    "a3_drive_file_id": "1_Gvun-FmujJlsNPnu-v7gjFU3VYa0g_d"
+  },
+  {
+    "id": "A14E27D5-4",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "15x21cm",
+    "custom_size_key": null,
+    "size_label": "14.8x21cm",
+    "customer_name": "FATIH FAKSOY",
+    "order_number": "83649154825",
+    "phone": "05446110150",
+    "bw_option": "bw",
+    "status": "ready",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-14T01:32:54.056524",
+    "folder_name": "14 TEMMUZ BASKILAR",
+    "unit_count": 2,
+    "same_design": true,
+    "units": [
+      {
+        "photo_files": [
+          "order_A14E27D5-4_p0.jpg",
+          "order_A14E27D5-4_p1.jpg",
+          "order_A14E27D5-4_p2.jpg",
+          "order_A14E27D5-4_p3.jpg",
+          "order_A14E27D5-4_p4.jpg",
+          "order_A14E27D5-4_p5.jpg",
+          "order_A14E27D5-4_p6.jpg",
+          "order_A14E27D5-4_p7.jpg",
+          "order_A14E27D5-4_p8.jpg",
+          "order_A14E27D5-4_p9.jpg",
+          "order_A14E27D5-4_p10.jpg",
+          "order_A14E27D5-4_p11.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_A14E27D5-4_p0_orig.jpg",
+          "order_A14E27D5-4_p1_orig.jpg",
+          "order_A14E27D5-4_p2_orig.jpg",
+          "order_A14E27D5-4_p3_orig.jpg",
+          "order_A14E27D5-4_p4_orig.jpg",
+          "order_A14E27D5-4_p5_orig.jpg",
+          "order_A14E27D5-4_p6_orig.jpg",
+          "order_A14E27D5-4_p7_orig.jpg",
+          "order_A14E27D5-4_p8_orig.jpg",
+          "order_A14E27D5-4_p9_orig.jpg",
+          "order_A14E27D5-4_p10_orig.jpg",
+          "order_A14E27D5-4_p11_orig.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 62.40995260663508,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": -0.31863353291496044,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "Faksoy",
+          "ÖZEL METİN": "Deneme",
+          "ALT METİN": "Denemeee"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "bw",
+        "unit_size_key": "15x21cm",
+        "unit_num": null,
+        "staging_file": "FATIH FAKSOY, 2 ADET, 14.8x21cm.jpg",
+        "print_size": "A5"
+      }
+    ],
+    "photo_files": [
+      "order_A14E27D5-4_p0.jpg",
+      "order_A14E27D5-4_p1.jpg",
+      "order_A14E27D5-4_p2.jpg",
+      "order_A14E27D5-4_p3.jpg",
+      "order_A14E27D5-4_p4.jpg",
+      "order_A14E27D5-4_p5.jpg",
+      "order_A14E27D5-4_p6.jpg",
+      "order_A14E27D5-4_p7.jpg",
+      "order_A14E27D5-4_p8.jpg",
+      "order_A14E27D5-4_p9.jpg",
+      "order_A14E27D5-4_p10.jpg",
+      "order_A14E27D5-4_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_A14E27D5-4_p0_orig.jpg",
+      "order_A14E27D5-4_p1_orig.jpg",
+      "order_A14E27D5-4_p2_orig.jpg",
+      "order_A14E27D5-4_p3_orig.jpg",
+      "order_A14E27D5-4_p4_orig.jpg",
+      "order_A14E27D5-4_p5_orig.jpg",
+      "order_A14E27D5-4_p6_orig.jpg",
+      "order_A14E27D5-4_p7_orig.jpg",
+      "order_A14E27D5-4_p8_orig.jpg",
+      "order_A14E27D5-4_p9_orig.jpg",
+      "order_A14E27D5-4_p10_orig.jpg",
+      "order_A14E27D5-4_p11_orig.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": 62.40995260663508,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": -0.31863353291496044,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "Faksoy",
+      "ÖZEL METİN": "Deneme",
+      "ALT METİN": "Denemee  yejswr e"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "15x21cm",
+    "drive_file_id": "1-z7NFyXjbwgRIIjsYwC4-YFUuiZb4_N4",
+    "drive_file_name": "FATIH FAKSOY, 14.8x21cm.jpg",
+    "drive_files": null
+  },
+  {
+    "id": "FCF594A1-6",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "21x30cm",
+    "custom_size_key": null,
+    "size_label": "21x29.7cm",
+    "customer_name": "SEMIH YÜKSEL",
+    "order_number": "362836284u2i",
+    "phone": "05446110150",
+    "bw_option": "color",
+    "status": "ready",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-14T01:37:45.649643",
+    "folder_name": "14 TEMMUZ BASKILAR",
+    "unit_count": 1,
+    "same_design": false,
+    "units": [
+      {
+        "photo_files": [
+          "order_FCF594A1-6_p0.jpg",
+          "order_FCF594A1-6_p1.jpg",
+          "order_FCF594A1-6_p2.jpg",
+          "order_FCF594A1-6_p3.jpg",
+          "order_FCF594A1-6_p4.jpg",
+          "order_FCF594A1-6_p5.jpg",
+          "order_FCF594A1-6_p6.jpg",
+          "order_FCF594A1-6_p7.jpg",
+          "order_FCF594A1-6_p8.jpg",
+          "order_FCF594A1-6_p9.jpg",
+          "order_FCF594A1-6_p10.jpg",
+          "order_FCF594A1-6_p11.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_FCF594A1-6_p0_orig.jpg",
+          "order_FCF594A1-6_p1_orig.jpg",
+          "order_FCF594A1-6_p2_orig.jpg",
+          "order_FCF594A1-6_p3_orig.jpg",
+          "order_FCF594A1-6_p4_orig.jpg",
+          "order_FCF594A1-6_p5_orig.jpg",
+          "order_FCF594A1-6_p6_orig.jpg",
+          "order_FCF594A1-6_p7_orig.jpg",
+          "order_FCF594A1-6_p8_orig.jpg",
+          "order_FCF594A1-6_p9_orig.jpg",
+          "order_FCF594A1-6_p10_orig.jpg",
+          "order_FCF594A1-6_p11_orig.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 49.08568127320546,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "Eylül semanr3",
+          "ÖZEL METİN": "63947b bide",
+          "ALT METİN": "Hdiwgdishdb"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "color",
+        "unit_size_key": "21x30cm",
+        "unit_num": null,
+        "staging_file": "SEMIH YÜKSEL, 21x29.7cm.jpg",
+        "print_size": "A4"
+      }
+    ],
+    "photo_files": [
+      "order_FCF594A1-6_p0.jpg",
+      "order_FCF594A1-6_p1.jpg",
+      "order_FCF594A1-6_p2.jpg",
+      "order_FCF594A1-6_p3.jpg",
+      "order_FCF594A1-6_p4.jpg",
+      "order_FCF594A1-6_p5.jpg",
+      "order_FCF594A1-6_p6.jpg",
+      "order_FCF594A1-6_p7.jpg",
+      "order_FCF594A1-6_p8.jpg",
+      "order_FCF594A1-6_p9.jpg",
+      "order_FCF594A1-6_p10.jpg",
+      "order_FCF594A1-6_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_FCF594A1-6_p0_orig.jpg",
+      "order_FCF594A1-6_p1_orig.jpg",
+      "order_FCF594A1-6_p2_orig.jpg",
+      "order_FCF594A1-6_p3_orig.jpg",
+      "order_FCF594A1-6_p4_orig.jpg",
+      "order_FCF594A1-6_p5_orig.jpg",
+      "order_FCF594A1-6_p6_orig.jpg",
+      "order_FCF594A1-6_p7_orig.jpg",
+      "order_FCF594A1-6_p8_orig.jpg",
+      "order_FCF594A1-6_p9_orig.jpg",
+      "order_FCF594A1-6_p10_orig.jpg",
+      "order_FCF594A1-6_p11_orig.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 49.08568127320546,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "Eylül semanr3",
+      "ÖZEL METİN": "63947b bide",
+      "ALT METİN": "Hdiwgdishdb"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "21x30cm",
+    "a3_file": "üst SEMIH YÜKSEL, alt FATIH FAKSOY.jpg",
+    "a3_drive_file_id": "1U_3YfqpvvCjcUUKsmjmh2lbF0f18iQx5"
+  },
+  {
+    "id": "741FE860-9",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "15x21cm",
+    "custom_size_key": null,
+    "size_label": "14.8x21cm",
+    "customer_name": "SEYIT BAŞTÜRK",
+    "order_number": "586758485i",
+    "phone": "05446110150",
+    "bw_option": "bw",
+    "status": "ready",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-14T01:47:01.758526",
+    "folder_name": "14 TEMMUZ BASKILAR",
+    "unit_count": 2,
+    "same_design": false,
+    "units": [
+      {
+        "photo_files": [
+          "order_741FE860-9_p0_u0.jpg",
+          "order_741FE860-9_p1_u0.jpg",
+          "order_741FE860-9_p2_u0.jpg",
+          "order_741FE860-9_p3_u0.jpg",
+          "order_741FE860-9_p4_u0.jpg",
+          "order_741FE860-9_p5_u0.jpg",
+          "order_741FE860-9_p6_u0.jpg",
+          "order_741FE860-9_p7_u0.jpg",
+          "order_741FE860-9_p8_u0.jpg",
+          "order_741FE860-9_p9_u0.jpg",
+          "order_741FE860-9_p10_u0.jpg",
+          "order_741FE860-9_p11_u0.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_741FE860-9_p0_orig_u0.jpg",
+          "order_741FE860-9_p1_orig_u0.jpg",
+          "order_741FE860-9_p2_orig_u0.jpg",
+          "order_741FE860-9_p3_orig_u0.jpg",
+          "order_741FE860-9_p4_orig_u0.jpg",
+          "order_741FE860-9_p5_orig_u0.jpg",
+          "order_741FE860-9_p6_orig_u0.jpg",
+          "order_741FE860-9_p7_orig_u0.jpg",
+          "order_741FE860-9_p8_orig_u0.jpg",
+          "order_741FE860-9_p9_orig_u0.jpg",
+          "order_741FE860-9_p10_orig_u0.jpg",
+          "order_741FE860-9_p11_orig_u0.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": -2.825167037861916,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "Seyit deneme 1",
+          "ÖZEL METİN": "484gg uf85 yjhf7g",
+          "ALT METİN": "Rf 74fc67"
         },
         "text_size_values": {
           "İSİMLERİNİZ": "100",
@@ -1680,44 +2432,44 @@
         "bw_option": "bw",
         "unit_size_key": "15x21cm",
         "unit_num": 0,
-        "staging_file": "BURAK AKDENIZ (1), 14.8x21cm.jpg",
+        "staging_file": "SEYIT BAŞTÜRK (1), 14.8x21cm.jpg",
         "print_size": "A5"
       },
       {
         "photo_files": [
-          "order_CC07C147-3_p0_u1.jpg",
-          "order_CC07C147-3_p1_u1.jpg",
-          "order_CC07C147-3_p2_u1.jpg",
-          "order_CC07C147-3_p3_u1.jpg",
-          "order_CC07C147-3_p4_u1.jpg",
-          "order_CC07C147-3_p5_u1.jpg",
-          "order_CC07C147-3_p6_u1.jpg",
-          "order_CC07C147-3_p7_u1.jpg",
-          "order_CC07C147-3_p8_u1.jpg",
-          "order_CC07C147-3_p9_u1.jpg",
-          "order_CC07C147-3_p10_u1.jpg",
-          "order_CC07C147-3_p11_u1.jpg"
+          "order_741FE860-9_p0_u1.jpg",
+          "order_741FE860-9_p1_u1.jpg",
+          "order_741FE860-9_p2_u1.jpg",
+          "order_741FE860-9_p3_u1.jpg",
+          "order_741FE860-9_p4_u1.jpg",
+          "order_741FE860-9_p5_u1.jpg",
+          "order_741FE860-9_p6_u1.jpg",
+          "order_741FE860-9_p7_u1.jpg",
+          "order_741FE860-9_p8_u1.jpg",
+          "order_741FE860-9_p9_u1.jpg",
+          "order_741FE860-9_p10_u1.jpg",
+          "order_741FE860-9_p11_u1.jpg"
         ],
         "group_files": {},
         "photo_originals": [
-          "order_CC07C147-3_p0_orig_u1.jpg",
-          "order_CC07C147-3_p1_orig_u1.jpg",
-          "order_CC07C147-3_p2_orig_u1.jpg",
-          "order_CC07C147-3_p3_orig_u1.jpg",
-          "order_CC07C147-3_p4_orig_u1.jpg",
-          "order_CC07C147-3_p5_orig_u1.jpg",
-          "order_CC07C147-3_p6_orig_u1.jpg",
-          "order_CC07C147-3_p7_orig_u1.jpg",
-          "order_CC07C147-3_p8_orig_u1.jpg",
-          "order_CC07C147-3_p9_orig_u1.jpg",
-          "order_CC07C147-3_p10_orig_u1.jpg",
-          "order_CC07C147-3_p11_orig_u1.jpg"
+          "order_741FE860-9_p0_orig_u1.jpg",
+          "order_741FE860-9_p1_orig_u1.jpg",
+          "order_741FE860-9_p2_orig_u1.jpg",
+          "order_741FE860-9_p3_orig_u1.jpg",
+          "order_741FE860-9_p4_orig_u1.jpg",
+          "order_741FE860-9_p5_orig_u1.jpg",
+          "order_741FE860-9_p6_orig_u1.jpg",
+          "order_741FE860-9_p7_orig_u1.jpg",
+          "order_741FE860-9_p8_orig_u1.jpg",
+          "order_741FE860-9_p9_orig_u1.jpg",
+          "order_741FE860-9_p10_orig_u1.jpg",
+          "order_741FE860-9_p11_orig_u1.jpg"
         ],
         "photo_positions": {
           "0": {
             "offsetX": 0,
             "offsetY": 0,
-            "scale": 100,
+            "scale": 254,
             "rotation": 0,
             "flipH": false
           },
@@ -1793,614 +2545,6 @@
           },
           "11": {
             "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          }
-        },
-        "selectable_choices": {},
-        "calendar_date": {
-          "day": 0,
-          "month": 0,
-          "year": 0
-        },
-        "text_values": {
-          "İSİMLERİNİZ": "Deneme Burak",
-          "ÖZEL METİN": "Denemeee",
-          "ALT METİN": "Dnm"
-        },
-        "text_size_values": {
-          "İSİMLERİNİZ": "100",
-          "ÖZEL METİN": "100",
-          "ALT METİN": "100"
-        },
-        "text_color_values": {
-          "İSİMLERİNİZ": "#050505",
-          "ÖZEL METİN": "#050505",
-          "ALT METİN": "#050505"
-        },
-        "bw_option": "color",
-        "unit_size_key": "15x21cm",
-        "unit_num": 1,
-        "staging_file": "BURAK AKDENIZ (2), 14.8x21cm.jpg",
-        "print_size": "A5"
-      }
-    ],
-    "photo_files": [
-      "order_CC07C147-3_p0_u0.jpg",
-      "order_CC07C147-3_p1_u0.jpg",
-      "order_CC07C147-3_p2_u0.jpg",
-      "order_CC07C147-3_p3_u0.jpg",
-      "order_CC07C147-3_p4_u0.jpg",
-      "order_CC07C147-3_p5_u0.jpg",
-      "order_CC07C147-3_p6_u0.jpg",
-      "order_CC07C147-3_p7_u0.jpg",
-      "order_CC07C147-3_p8_u0.jpg",
-      "order_CC07C147-3_p9_u0.jpg",
-      "order_CC07C147-3_p10_u0.jpg",
-      "order_CC07C147-3_p11_u0.jpg"
-    ],
-    "group_files": {},
-    "photo_originals": [
-      "order_CC07C147-3_p0_orig_u0.jpg",
-      "order_CC07C147-3_p1_orig_u0.jpg",
-      "order_CC07C147-3_p2_orig_u0.jpg",
-      "order_CC07C147-3_p3_orig_u0.jpg",
-      "order_CC07C147-3_p4_orig_u0.jpg",
-      "order_CC07C147-3_p5_orig_u0.jpg",
-      "order_CC07C147-3_p6_orig_u0.jpg",
-      "order_CC07C147-3_p7_orig_u0.jpg",
-      "order_CC07C147-3_p8_orig_u0.jpg",
-      "order_CC07C147-3_p9_orig_u0.jpg",
-      "order_CC07C147-3_p10_orig_u0.jpg",
-      "order_CC07C147-3_p11_orig_u0.jpg"
-    ],
-    "photo_positions": {
-      "0": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "1": {
-        "offsetX": 0,
-        "offsetY": 8.556938014403293,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "2": {
-        "offsetX": 0,
-        "offsetY": -31.077538100369463,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "3": {
-        "offsetX": 0,
-        "offsetY": 0.7055779768957345,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "4": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "5": {
-        "offsetX": 0,
-        "offsetY": -8.891645988420183,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "6": {
-        "offsetX": 0,
-        "offsetY": 3.1698787913602953,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "7": {
-        "offsetX": 0,
-        "offsetY": -2.8582034149962903,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "8": {
-        "offsetX": 0,
-        "offsetY": -11.920797413793109,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "9": {
-        "offsetX": 0,
-        "offsetY": -36.471646503337354,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "10": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "11": {
-        "offsetX": 1.2293612370725555,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      }
-    },
-    "selectable_choices": {},
-    "calendar_date": {
-      "day": 0,
-      "month": 0,
-      "year": 0
-    },
-    "text_values": {
-      "İSİMLERİNİZ": "Eylül",
-      "ÖZEL METİN": "Brk",
-      "ALT METİN": "Deneme"
-    },
-    "text_size_values": {
-      "İSİMLERİNİZ": "100",
-      "ÖZEL METİN": "100",
-      "ALT METİN": "100"
-    },
-    "text_color_values": {
-      "İSİMLERİNİZ": "#050505",
-      "ÖZEL METİN": "#050505",
-      "ALT METİN": "#050505"
-    },
-    "unit_size_key": "15x21cm",
-    "a3_file": "üst BURAK AKDENIZ, sl alt AHMET BALCI, sğ alt FEMIH YKSL, 20260709_224650.jpg",
-    "a3_drive_file_id": "18rzHVaSF_RQNRca4uU_ENRXsNqIIx7lI"
-  },
-  {
-    "id": "28467AE0-0",
-    "template_id": "c5631138",
-    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
-    "product_type": "MDF",
-    "mdf_size_key": "15x21cm",
-    "custom_size_key": null,
-    "size_label": "14.8x21cm",
-    "customer_name": "FEMIH YKSL",
-    "order_number": "848941570295",
-    "phone": "05446110150",
-    "bw_option": "color",
-    "status": "ready",
-    "output_file": null,
-    "output_files": null,
-    "created_at": "2026-07-09T21:44:46.014367",
-    "folder_name": "9 TEMMUZ BASKILAR",
-    "unit_count": 1,
-    "same_design": false,
-    "units": [
-      {
-        "photo_files": [
-          "order_28467AE0-0_p0.jpg",
-          "order_28467AE0-0_p1.jpg",
-          "order_28467AE0-0_p2.jpg",
-          "order_28467AE0-0_p3.jpg",
-          "order_28467AE0-0_p4.jpg",
-          "order_28467AE0-0_p5.jpg",
-          "order_28467AE0-0_p6.jpg",
-          "order_28467AE0-0_p7.jpg",
-          "order_28467AE0-0_p8.jpg",
-          "order_28467AE0-0_p9.jpg",
-          "order_28467AE0-0_p10.jpg",
-          "order_28467AE0-0_p11.jpg"
-        ],
-        "group_files": {},
-        "photo_originals": [
-          "order_28467AE0-0_p0_orig.jpg",
-          "order_28467AE0-0_p1_orig.jpg",
-          "order_28467AE0-0_p2_orig.jpg",
-          "order_28467AE0-0_p3_orig.jpg",
-          "order_28467AE0-0_p4_orig.jpg",
-          "order_28467AE0-0_p5_orig.jpg",
-          "order_28467AE0-0_p6_orig.jpg",
-          "order_28467AE0-0_p7_orig.jpg",
-          "order_28467AE0-0_p8_orig.jpg",
-          "order_28467AE0-0_p9_orig.png",
-          "order_28467AE0-0_p10_orig.jpg",
-          "order_28467AE0-0_p11_orig.jpg"
-        ],
-        "photo_positions": {
-          "0": {
-            "offsetX": 0,
-            "offsetY": 6.218311959439307,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "1": {
-            "offsetX": 0,
-            "offsetY": 12.77960035788846,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "2": {
-            "offsetX": 0,
-            "offsetY": 61.06870229007635,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "3": {
-            "offsetX": 0,
-            "offsetY": 39.70588235294118,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "4": {
-            "offsetX": 0,
-            "offsetY": 28.606356968215174,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "5": {
-            "offsetX": 0,
-            "offsetY": -5.193110647181628,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "6": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "7": {
-            "offsetX": -0.42105263157895334,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "8": {
-            "offsetX": 0,
-            "offsetY": 35.87786259541988,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "9": {
-            "offsetX": 0,
-            "offsetY": 19.172932330827052,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "10": {
-            "offsetX": 0,
-            "offsetY": 6.665672532060844,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "11": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          }
-        },
-        "selectable_choices": {},
-        "calendar_date": {
-          "day": 0,
-          "month": 0,
-          "year": 0
-        },
-        "text_values": {
-          "İSİMLERİNİZ": "femih",
-          "ÖZEL METİN": "deneme",
-          "ALT METİN": "deneme"
-        },
-        "text_size_values": {
-          "İSİMLERİNİZ": "100",
-          "ÖZEL METİN": "100",
-          "ALT METİN": "100"
-        },
-        "text_color_values": {
-          "İSİMLERİNİZ": "#050505",
-          "ÖZEL METİN": "#050505",
-          "ALT METİN": "#ff0000"
-        },
-        "bw_option": "color",
-        "unit_size_key": "15x21cm",
-        "unit_num": null,
-        "staging_file": "FEMIH YKSL, 14.8x21cm.jpg",
-        "print_size": "A5"
-      }
-    ],
-    "photo_files": [
-      "order_28467AE0-0_p0.jpg",
-      "order_28467AE0-0_p1.jpg",
-      "order_28467AE0-0_p2.jpg",
-      "order_28467AE0-0_p3.jpg",
-      "order_28467AE0-0_p4.jpg",
-      "order_28467AE0-0_p5.jpg",
-      "order_28467AE0-0_p6.jpg",
-      "order_28467AE0-0_p7.jpg",
-      "order_28467AE0-0_p8.jpg",
-      "order_28467AE0-0_p9.jpg",
-      "order_28467AE0-0_p10.jpg",
-      "order_28467AE0-0_p11.jpg"
-    ],
-    "group_files": {},
-    "photo_originals": [
-      "order_28467AE0-0_p0_orig.jpg",
-      "order_28467AE0-0_p1_orig.jpg",
-      "order_28467AE0-0_p2_orig.jpg",
-      "order_28467AE0-0_p3_orig.jpg",
-      "order_28467AE0-0_p4_orig.jpg",
-      "order_28467AE0-0_p5_orig.jpg",
-      "order_28467AE0-0_p6_orig.jpg",
-      "order_28467AE0-0_p7_orig.jpg",
-      "order_28467AE0-0_p8_orig.jpg",
-      "order_28467AE0-0_p9_orig.png",
-      "order_28467AE0-0_p10_orig.jpg",
-      "order_28467AE0-0_p11_orig.jpg"
-    ],
-    "photo_positions": {
-      "0": {
-        "offsetX": 0,
-        "offsetY": 6.218311959439307,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "1": {
-        "offsetX": 0,
-        "offsetY": 12.77960035788846,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "2": {
-        "offsetX": 0,
-        "offsetY": 61.06870229007635,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "3": {
-        "offsetX": 0,
-        "offsetY": 39.70588235294118,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "4": {
-        "offsetX": 0,
-        "offsetY": 28.606356968215174,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "5": {
-        "offsetX": 0,
-        "offsetY": -5.193110647181628,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "6": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "7": {
-        "offsetX": -0.42105263157895334,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "8": {
-        "offsetX": 0,
-        "offsetY": 35.87786259541988,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "9": {
-        "offsetX": 0,
-        "offsetY": 19.172932330827052,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "10": {
-        "offsetX": 0,
-        "offsetY": 6.665672532060844,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "11": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      }
-    },
-    "selectable_choices": {},
-    "calendar_date": {
-      "day": 0,
-      "month": 0,
-      "year": 0
-    },
-    "text_values": {
-      "İSİMLERİNİZ": "femih",
-      "ÖZEL METİN": "deneme",
-      "ALT METİN": "deneme"
-    },
-    "text_size_values": {
-      "İSİMLERİNİZ": "100",
-      "ÖZEL METİN": "100",
-      "ALT METİN": "100"
-    },
-    "text_color_values": {
-      "İSİMLERİNİZ": "#050505",
-      "ÖZEL METİN": "#050505",
-      "ALT METİN": "#ff0000"
-    },
-    "unit_size_key": "15x21cm",
-    "a3_file": "üst BURAK AKDENIZ, sl alt AHMET BALCI, sğ alt FEMIH YKSL, 20260709_224650.jpg",
-    "a3_drive_file_id": "18rzHVaSF_RQNRca4uU_ENRXsNqIIx7lI"
-  },
-  {
-    "id": "97FE4C89-9",
-    "template_id": "c5631138",
-    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
-    "product_type": "MDF",
-    "mdf_size_key": "15x21cm",
-    "custom_size_key": null,
-    "size_label": "14.8x21cm",
-    "customer_name": "AHMET BALCI",
-    "order_number": "538153763846",
-    "phone": "05446110150",
-    "bw_option": "bw",
-    "status": "ready",
-    "output_file": null,
-    "output_files": null,
-    "created_at": "2026-07-09T22:46:32.388837",
-    "folder_name": "9 TEMMUZ BASKILAR",
-    "unit_count": 1,
-    "same_design": false,
-    "units": [
-      {
-        "photo_files": [
-          "order_97FE4C89-9_p0.jpg",
-          "order_97FE4C89-9_p1.jpg",
-          "order_97FE4C89-9_p2.jpg",
-          "order_97FE4C89-9_p3.jpg",
-          "order_97FE4C89-9_p4.jpg",
-          "order_97FE4C89-9_p5.jpg",
-          "order_97FE4C89-9_p6.jpg",
-          "order_97FE4C89-9_p7.jpg",
-          "order_97FE4C89-9_p8.jpg",
-          "order_97FE4C89-9_p9.jpg",
-          "order_97FE4C89-9_p10.jpg",
-          "order_97FE4C89-9_p11.jpg"
-        ],
-        "group_files": {},
-        "photo_originals": [
-          "order_97FE4C89-9_p0_orig.jpg",
-          "order_97FE4C89-9_p1_orig.jpg",
-          "order_97FE4C89-9_p2_orig.jpg",
-          "order_97FE4C89-9_p3_orig.jpg",
-          "order_97FE4C89-9_p4_orig.jpg",
-          "order_97FE4C89-9_p5_orig.jpg",
-          "order_97FE4C89-9_p6_orig.jpg",
-          "order_97FE4C89-9_p7_orig.jpg",
-          "order_97FE4C89-9_p8_orig.jpg",
-          "order_97FE4C89-9_p9_orig.jpg",
-          "order_97FE4C89-9_p10_orig.jpg",
-          "order_97FE4C89-9_p11_orig.jpg"
-        ],
-        "photo_positions": {
-          "0": {
-            "offsetX": 0,
-            "offsetY": -2.507374631268439,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "1": {
-            "offsetX": 0,
-            "offsetY": 8.600823045267491,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "2": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "3": {
-            "offsetX": 0,
-            "offsetY": -12.996322848785546,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "4": {
-            "offsetX": 0,
-            "offsetY": -25.105485232067515,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "5": {
-            "offsetX": 0,
-            "offsetY": -21.885298736042184,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "6": {
-            "offsetX": 0,
-            "offsetY": -8.169934640522879,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "7": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "8": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "9": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "10": {
-            "offsetX": 0,
-            "offsetY": -26.26914978027343,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "11": {
-            "offsetX": 2.4042410928694933,
             "offsetY": 0,
             "scale": 100,
             "rotation": 0,
@@ -2415,12 +2559,12 @@
         },
         "text_values": {
           "İSİMLERİNİZ": "Eylül Samet",
-          "ÖZEL METİN": "İyi ki doğdun",
-          "ALT METİN": "Sen de"
+          "ÖZEL METİN": "İyi ki doğdun canım eşim udg3y du2vyd ywyd72 yeg1g d62vyd uwyeyehe ydueteg7shwy ysyeyev 6sye 7d  7eur7e 7ui isueheh ueuejeuudud  üye",
+          "ALT METİN": "Denemeeee"
         },
         "text_size_values": {
           "İSİMLERİNİZ": "100",
-          "ÖZEL METİN": "92",
+          "ÖZEL METİN": "100",
           "ALT METİN": "100"
         },
         "text_color_values": {
@@ -2428,53 +2572,53 @@
           "ÖZEL METİN": "#050505",
           "ALT METİN": "#050505"
         },
-        "bw_option": "bw",
+        "bw_option": "color",
         "unit_size_key": "15x21cm",
-        "unit_num": null,
-        "staging_file": "AHMET BALCI, 14.8x21cm.jpg",
+        "unit_num": 1,
+        "staging_file": "SEYIT BAŞTÜRK (2), 14.8x21cm.jpg",
         "print_size": "A5"
       }
     ],
     "photo_files": [
-      "order_97FE4C89-9_p0.jpg",
-      "order_97FE4C89-9_p1.jpg",
-      "order_97FE4C89-9_p2.jpg",
-      "order_97FE4C89-9_p3.jpg",
-      "order_97FE4C89-9_p4.jpg",
-      "order_97FE4C89-9_p5.jpg",
-      "order_97FE4C89-9_p6.jpg",
-      "order_97FE4C89-9_p7.jpg",
-      "order_97FE4C89-9_p8.jpg",
-      "order_97FE4C89-9_p9.jpg",
-      "order_97FE4C89-9_p10.jpg",
-      "order_97FE4C89-9_p11.jpg"
+      "order_741FE860-9_p0_u0.jpg",
+      "order_741FE860-9_p1_u0.jpg",
+      "order_741FE860-9_p2_u0.jpg",
+      "order_741FE860-9_p3_u0.jpg",
+      "order_741FE860-9_p4_u0.jpg",
+      "order_741FE860-9_p5_u0.jpg",
+      "order_741FE860-9_p6_u0.jpg",
+      "order_741FE860-9_p7_u0.jpg",
+      "order_741FE860-9_p8_u0.jpg",
+      "order_741FE860-9_p9_u0.jpg",
+      "order_741FE860-9_p10_u0.jpg",
+      "order_741FE860-9_p11_u0.jpg"
     ],
     "group_files": {},
     "photo_originals": [
-      "order_97FE4C89-9_p0_orig.jpg",
-      "order_97FE4C89-9_p1_orig.jpg",
-      "order_97FE4C89-9_p2_orig.jpg",
-      "order_97FE4C89-9_p3_orig.jpg",
-      "order_97FE4C89-9_p4_orig.jpg",
-      "order_97FE4C89-9_p5_orig.jpg",
-      "order_97FE4C89-9_p6_orig.jpg",
-      "order_97FE4C89-9_p7_orig.jpg",
-      "order_97FE4C89-9_p8_orig.jpg",
-      "order_97FE4C89-9_p9_orig.jpg",
-      "order_97FE4C89-9_p10_orig.jpg",
-      "order_97FE4C89-9_p11_orig.jpg"
+      "order_741FE860-9_p0_orig_u0.jpg",
+      "order_741FE860-9_p1_orig_u0.jpg",
+      "order_741FE860-9_p2_orig_u0.jpg",
+      "order_741FE860-9_p3_orig_u0.jpg",
+      "order_741FE860-9_p4_orig_u0.jpg",
+      "order_741FE860-9_p5_orig_u0.jpg",
+      "order_741FE860-9_p6_orig_u0.jpg",
+      "order_741FE860-9_p7_orig_u0.jpg",
+      "order_741FE860-9_p8_orig_u0.jpg",
+      "order_741FE860-9_p9_orig_u0.jpg",
+      "order_741FE860-9_p10_orig_u0.jpg",
+      "order_741FE860-9_p11_orig_u0.jpg"
     ],
     "photo_positions": {
       "0": {
         "offsetX": 0,
-        "offsetY": -2.507374631268439,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "1": {
         "offsetX": 0,
-        "offsetY": 8.600823045267491,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
@@ -2488,28 +2632,636 @@
       },
       "3": {
         "offsetX": 0,
-        "offsetY": -12.996322848785546,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "4": {
         "offsetX": 0,
-        "offsetY": -25.105485232067515,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "5": {
         "offsetX": 0,
-        "offsetY": -21.885298736042184,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "6": {
         "offsetX": 0,
-        "offsetY": -8.169934640522879,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": -2.825167037861916,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "Seyit deneme 1",
+      "ÖZEL METİN": "484gg uf85 yjhf7g",
+      "ALT METİN": "Rf 74fc67"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "15x21cm",
+    "a3_file": "üst SEYIT BAŞTÜRK, sl alt KERIM CAKIR, sğ alt SÜLEYMAN CEYLAN.jpg",
+    "a3_drive_file_id": "1m1_GrDNMkFXpHqe5AsxVRGx6Fdsmcjfo"
+  },
+  {
+    "id": "05394641-4",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "15x21cm",
+    "custom_size_key": null,
+    "size_label": "14.8x21cm",
+    "customer_name": "KERIM CAKIR",
+    "order_number": "5747692539173",
+    "phone": "05446110150",
+    "bw_option": "color",
+    "status": "ready",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-14T09:56:56.086404",
+    "folder_name": "14 TEMMUZ BASKILAR",
+    "unit_count": 1,
+    "same_design": false,
+    "units": [
+      {
+        "photo_files": [
+          "order_05394641-4_p0.jpg",
+          "order_05394641-4_p1.jpg",
+          "order_05394641-4_p2.jpg",
+          "order_05394641-4_p3.jpg",
+          "order_05394641-4_p4.jpg",
+          "order_05394641-4_p5.jpg",
+          "order_05394641-4_p6.jpg",
+          "order_05394641-4_p7.jpg",
+          "order_05394641-4_p8.jpg",
+          "order_05394641-4_p9.jpg",
+          "order_05394641-4_p10.jpg",
+          "order_05394641-4_p11.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_05394641-4_p0_orig.jpg",
+          "order_05394641-4_p1_orig.jpg",
+          "order_05394641-4_p2_orig.jpg",
+          "order_05394641-4_p3_orig.jpg",
+          "order_05394641-4_p4_orig.jpg",
+          "order_05394641-4_p5_orig.jpg",
+          "order_05394641-4_p6_orig.jpg",
+          "order_05394641-4_p7_orig.jpg",
+          "order_05394641-4_p8_orig.jpg",
+          "order_05394641-4_p9_orig.jpg",
+          "order_05394641-4_p10_orig.jpg",
+          "order_05394641-4_p11_orig.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": -3.22702064942778,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": -8.600823045267491,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 19.660175492610826,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 73.20516143364921,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": -20.03221698835785,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 17.788350523399036,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 39.761619197512125,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": 10.299846837104099,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": -10.44569797203189,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "Fenasi",
+          "ÖZEL METİN": "Deneme",
+          "ALT METİN": "Deneme fenasii"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "color",
+        "unit_size_key": "15x21cm",
+        "unit_num": null,
+        "staging_file": "KERIM CAKIR, 14.8x21cm.jpg",
+        "print_size": "A5"
+      }
+    ],
+    "photo_files": [
+      "order_05394641-4_p0.jpg",
+      "order_05394641-4_p1.jpg",
+      "order_05394641-4_p2.jpg",
+      "order_05394641-4_p3.jpg",
+      "order_05394641-4_p4.jpg",
+      "order_05394641-4_p5.jpg",
+      "order_05394641-4_p6.jpg",
+      "order_05394641-4_p7.jpg",
+      "order_05394641-4_p8.jpg",
+      "order_05394641-4_p9.jpg",
+      "order_05394641-4_p10.jpg",
+      "order_05394641-4_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_05394641-4_p0_orig.jpg",
+      "order_05394641-4_p1_orig.jpg",
+      "order_05394641-4_p2_orig.jpg",
+      "order_05394641-4_p3_orig.jpg",
+      "order_05394641-4_p4_orig.jpg",
+      "order_05394641-4_p5_orig.jpg",
+      "order_05394641-4_p6_orig.jpg",
+      "order_05394641-4_p7_orig.jpg",
+      "order_05394641-4_p8_orig.jpg",
+      "order_05394641-4_p9_orig.jpg",
+      "order_05394641-4_p10_orig.jpg",
+      "order_05394641-4_p11_orig.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": -3.22702064942778,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": -8.600823045267491,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 19.660175492610826,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": 73.20516143364921,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 0,
+        "offsetY": -20.03221698835785,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": 17.788350523399036,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 39.761619197512125,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": 10.299846837104099,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": -10.44569797203189,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "Fenasi",
+      "ÖZEL METİN": "Deneme",
+      "ALT METİN": "Deneme fenasii"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "15x21cm",
+    "a3_file": "üst SEYIT BAŞTÜRK, sl alt KERIM CAKIR, sğ alt SÜLEYMAN CEYLAN.jpg",
+    "a3_drive_file_id": "1m1_GrDNMkFXpHqe5AsxVRGx6Fdsmcjfo"
+  },
+  {
+    "id": "D63236E2-6",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "15x21cm",
+    "custom_size_key": null,
+    "size_label": "14.8x21cm",
+    "customer_name": "SÜLEYMAN CEYLAN",
+    "order_number": "6252721899674",
+    "phone": "05446110150",
+    "bw_option": "color",
+    "status": "ready",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-14T10:03:39.388016",
+    "folder_name": "14 TEMMUZ BASKILAR",
+    "unit_count": 1,
+    "same_design": false,
+    "units": [
+      {
+        "photo_files": [
+          "order_D63236E2-6_p0.jpg",
+          "order_D63236E2-6_p1.jpg",
+          "order_D63236E2-6_p2.jpg",
+          "order_D63236E2-6_p3.jpg",
+          "order_D63236E2-6_p4.jpg",
+          "order_D63236E2-6_p5.jpg",
+          "order_D63236E2-6_p6.jpg",
+          "order_D63236E2-6_p7.jpg",
+          "order_D63236E2-6_p8.jpg",
+          "order_D63236E2-6_p9.jpg",
+          "order_D63236E2-6_p10.jpg",
+          "order_D63236E2-6_p11.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_D63236E2-6_p0_orig.jpg",
+          "order_D63236E2-6_p1_orig.jpg",
+          "order_D63236E2-6_p2_orig.jpg",
+          "order_D63236E2-6_p3_orig.jpg",
+          "order_D63236E2-6_p4_orig.jpg",
+          "order_D63236E2-6_p5_orig.jpg",
+          "order_D63236E2-6_p6_orig.jpg",
+          "order_D63236E2-6_p7_orig.jpg",
+          "order_D63236E2-6_p8_orig.jpg",
+          "order_D63236E2-6_p9_orig.jpg",
+          "order_D63236E2-6_p10_orig.jpg",
+          "order_D63236E2-6_p11_orig.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 21.92617331819581,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 24.968527843601894,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "Eylül & Samet",
+          "ÖZEL METİN": "İyi ki doğdun canım eşim",
+          "ALT METİN": "19.08.2024"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "color",
+        "unit_size_key": "15x21cm",
+        "unit_num": null,
+        "staging_file": "SÜLEYMAN CEYLAN, 14.8x21cm.jpg",
+        "print_size": "A5"
+      }
+    ],
+    "photo_files": [
+      "order_D63236E2-6_p0.jpg",
+      "order_D63236E2-6_p1.jpg",
+      "order_D63236E2-6_p2.jpg",
+      "order_D63236E2-6_p3.jpg",
+      "order_D63236E2-6_p4.jpg",
+      "order_D63236E2-6_p5.jpg",
+      "order_D63236E2-6_p6.jpg",
+      "order_D63236E2-6_p7.jpg",
+      "order_D63236E2-6_p8.jpg",
+      "order_D63236E2-6_p9.jpg",
+      "order_D63236E2-6_p10.jpg",
+      "order_D63236E2-6_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_D63236E2-6_p0_orig.jpg",
+      "order_D63236E2-6_p1_orig.jpg",
+      "order_D63236E2-6_p2_orig.jpg",
+      "order_D63236E2-6_p3_orig.jpg",
+      "order_D63236E2-6_p4_orig.jpg",
+      "order_D63236E2-6_p5_orig.jpg",
+      "order_D63236E2-6_p6_orig.jpg",
+      "order_D63236E2-6_p7_orig.jpg",
+      "order_D63236E2-6_p8_orig.jpg",
+      "order_D63236E2-6_p9_orig.jpg",
+      "order_D63236E2-6_p10_orig.jpg",
+      "order_D63236E2-6_p11_orig.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 21.92617331819581,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": 24.968527843601894,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 0,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
@@ -2537,13 +3289,317 @@
       },
       "10": {
         "offsetX": 0,
-        "offsetY": -26.26914978027343,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "11": {
-        "offsetX": 2.4042410928694933,
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      }
+    },
+    "selectable_choices": {},
+    "calendar_date": {
+      "day": 0,
+      "month": 0,
+      "year": 0
+    },
+    "text_values": {
+      "İSİMLERİNİZ": "Eylül & Samet",
+      "ÖZEL METİN": "İyi ki doğdun canım eşim",
+      "ALT METİN": "19.08.2024"
+    },
+    "text_size_values": {
+      "İSİMLERİNİZ": "100",
+      "ÖZEL METİN": "100",
+      "ALT METİN": "100"
+    },
+    "text_color_values": {
+      "İSİMLERİNİZ": "#050505",
+      "ÖZEL METİN": "#050505",
+      "ALT METİN": "#050505"
+    },
+    "unit_size_key": "15x21cm",
+    "a3_file": "üst SEYIT BAŞTÜRK, sl alt KERIM CAKIR, sğ alt SÜLEYMAN CEYLAN.jpg",
+    "a3_drive_file_id": "1m1_GrDNMkFXpHqe5AsxVRGx6Fdsmcjfo"
+  },
+  {
+    "id": "7D33BE2C-7",
+    "template_id": "c5631138",
+    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "product_type": "MDF",
+    "mdf_size_key": "15x21cm",
+    "custom_size_key": null,
+    "size_label": "14.8x21cm",
+    "customer_name": "AHMET CAN",
+    "order_number": "53815492t94",
+    "phone": "05446110150",
+    "bw_option": "bw",
+    "status": "queued",
+    "output_file": null,
+    "output_files": null,
+    "created_at": "2026-07-14T10:45:37.191077",
+    "folder_name": "14 TEMMUZ BASKILAR",
+    "unit_count": 1,
+    "same_design": false,
+    "units": [
+      {
+        "photo_files": [
+          "order_7D33BE2C-7_p0.jpg",
+          "order_7D33BE2C-7_p1.jpg",
+          "order_7D33BE2C-7_p2.jpg",
+          "order_7D33BE2C-7_p3.jpg",
+          "order_7D33BE2C-7_p4.jpg",
+          "order_7D33BE2C-7_p5.jpg",
+          "order_7D33BE2C-7_p6.jpg",
+          "order_7D33BE2C-7_p7.jpg",
+          "order_7D33BE2C-7_p8.jpg",
+          "order_7D33BE2C-7_p9.jpg",
+          "order_7D33BE2C-7_p10.jpg",
+          "order_7D33BE2C-7_p11.jpg"
+        ],
+        "group_files": {},
+        "photo_originals": [
+          "order_7D33BE2C-7_p0_orig.jpg",
+          "order_7D33BE2C-7_p1_orig.jpg",
+          "order_7D33BE2C-7_p2_orig.jpg",
+          "order_7D33BE2C-7_p3_orig.jpg",
+          "order_7D33BE2C-7_p4_orig.jpg",
+          "order_7D33BE2C-7_p5_orig.jpg",
+          "order_7D33BE2C-7_p6_orig.jpg",
+          "order_7D33BE2C-7_p7_orig.jpg",
+          "order_7D33BE2C-7_p8_orig.jpg",
+          "order_7D33BE2C-7_p9_orig.jpg",
+          "order_7D33BE2C-7_p10_orig.jpg",
+          "order_7D33BE2C-7_p11_orig.jpg"
+        ],
+        "photo_positions": {
+          "0": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "1": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "2": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "3": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "4": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "5": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "6": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "7": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "8": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "9": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "10": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          },
+          "11": {
+            "offsetX": 0,
+            "offsetY": 0,
+            "scale": 100,
+            "rotation": 0,
+            "flipH": false
+          }
+        },
+        "selectable_choices": {},
+        "calendar_date": {
+          "day": 0,
+          "month": 0,
+          "year": 0
+        },
+        "text_values": {
+          "İSİMLERİNİZ": "Eylül Samet",
+          "ÖZEL METİN": "İYİ Kİ DOĞDUN CANIM EŞİM",
+          "ALT METİN": "Denemeeee"
+        },
+        "text_size_values": {
+          "İSİMLERİNİZ": "100",
+          "ÖZEL METİN": "100",
+          "ALT METİN": "100"
+        },
+        "text_color_values": {
+          "İSİMLERİNİZ": "#050505",
+          "ÖZEL METİN": "#050505",
+          "ALT METİN": "#050505"
+        },
+        "bw_option": "bw",
+        "unit_size_key": "15x21cm",
+        "unit_num": null,
+        "staging_file": "AHMET CAN, 14.8x21cm.jpg",
+        "print_size": "A5"
+      }
+    ],
+    "photo_files": [
+      "order_7D33BE2C-7_p0.jpg",
+      "order_7D33BE2C-7_p1.jpg",
+      "order_7D33BE2C-7_p2.jpg",
+      "order_7D33BE2C-7_p3.jpg",
+      "order_7D33BE2C-7_p4.jpg",
+      "order_7D33BE2C-7_p5.jpg",
+      "order_7D33BE2C-7_p6.jpg",
+      "order_7D33BE2C-7_p7.jpg",
+      "order_7D33BE2C-7_p8.jpg",
+      "order_7D33BE2C-7_p9.jpg",
+      "order_7D33BE2C-7_p10.jpg",
+      "order_7D33BE2C-7_p11.jpg"
+    ],
+    "group_files": {},
+    "photo_originals": [
+      "order_7D33BE2C-7_p0_orig.jpg",
+      "order_7D33BE2C-7_p1_orig.jpg",
+      "order_7D33BE2C-7_p2_orig.jpg",
+      "order_7D33BE2C-7_p3_orig.jpg",
+      "order_7D33BE2C-7_p4_orig.jpg",
+      "order_7D33BE2C-7_p5_orig.jpg",
+      "order_7D33BE2C-7_p6_orig.jpg",
+      "order_7D33BE2C-7_p7_orig.jpg",
+      "order_7D33BE2C-7_p8_orig.jpg",
+      "order_7D33BE2C-7_p9_orig.jpg",
+      "order_7D33BE2C-7_p10_orig.jpg",
+      "order_7D33BE2C-7_p11_orig.jpg"
+    ],
+    "photo_positions": {
+      "0": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "1": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "2": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "3": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "4": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "5": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "6": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "7": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "8": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "9": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "10": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "scale": 100,
+        "rotation": 0,
+        "flipH": false
+      },
+      "11": {
+        "offsetX": 0,
         "offsetY": 0,
         "scale": 100,
         "rotation": 0,
@@ -2558,12 +3614,12 @@
     },
     "text_values": {
       "İSİMLERİNİZ": "Eylül Samet",
-      "ÖZEL METİN": "İyi ki doğdun",
-      "ALT METİN": "Sen de"
+      "ÖZEL METİN": "İYİ Kİ DOĞDUN CANIM EŞİM",
+      "ALT METİN": "Denemeeee"
     },
     "text_size_values": {
       "İSİMLERİNİZ": "100",
-      "ÖZEL METİN": "92",
+      "ÖZEL METİN": "100",
       "ALT METİN": "100"
     },
     "text_color_values": {
@@ -2571,208 +3627,63 @@
       "ÖZEL METİN": "#050505",
       "ALT METİN": "#050505"
     },
-    "unit_size_key": "15x21cm",
-    "a3_file": "üst BURAK AKDENIZ, sl alt AHMET BALCI, sğ alt FEMIH YKSL, 20260709_224650.jpg",
-    "a3_drive_file_id": "18rzHVaSF_RQNRca4uU_ENRXsNqIIx7lI"
+    "unit_size_key": "15x21cm"
   },
   {
-    "id": "9E3DDD0D-4",
+    "id": "8460862D-A",
     "template_id": "c5631138",
     "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
     "product_type": "MDF",
     "mdf_size_key": "15x21cm",
     "custom_size_key": null,
     "size_label": "14.8x21cm",
-    "customer_name": "DENEME",
-    "order_number": "1346262",
+    "customer_name": "ALI CAMBIK",
+    "order_number": "5292539258",
     "phone": "05446110150",
     "bw_option": "color",
     "status": "ready",
     "output_file": null,
     "output_files": null,
-    "created_at": "2026-07-09T23:15:58.352612",
-    "folder_name": "9 TEMMUZ BASKILAR",
-    "unit_count": 2,
+    "created_at": "2026-07-14T10:47:15.868800",
+    "folder_name": "14 TEMMUZ BASKILAR",
+    "unit_count": 1,
     "same_design": false,
     "units": [
       {
         "photo_files": [
-          "order_9E3DDD0D-4_p0_u0.jpg",
-          "order_9E3DDD0D-4_p1_u0.jpg",
-          "order_9E3DDD0D-4_p2_u0.jpg",
-          "order_9E3DDD0D-4_p3_u0.jpg",
-          "order_9E3DDD0D-4_p4_u0.jpg",
-          "order_9E3DDD0D-4_p5_u0.jpg",
-          "order_9E3DDD0D-4_p6_u0.jpg",
-          "order_9E3DDD0D-4_p7_u0.jpg",
-          "order_9E3DDD0D-4_p8_u0.jpg",
-          "order_9E3DDD0D-4_p9_u0.jpg",
-          "order_9E3DDD0D-4_p10_u0.jpg",
-          "order_9E3DDD0D-4_p11_u0.jpg"
+          "order_8460862D-A_p0.jpg",
+          "order_8460862D-A_p1.jpg",
+          "order_8460862D-A_p2.jpg",
+          "order_8460862D-A_p3.jpg",
+          "order_8460862D-A_p4.jpg",
+          "order_8460862D-A_p5.jpg",
+          "order_8460862D-A_p6.jpg",
+          "order_8460862D-A_p7.jpg",
+          "order_8460862D-A_p8.jpg",
+          "order_8460862D-A_p9.jpg",
+          "order_8460862D-A_p10.jpg",
+          "order_8460862D-A_p11.jpg"
         ],
         "group_files": {},
         "photo_originals": [
-          "order_9E3DDD0D-4_p0_orig_u0.jpg",
-          "order_9E3DDD0D-4_p1_orig_u0.jpg",
-          "order_9E3DDD0D-4_p2_orig_u0.jpg",
-          "order_9E3DDD0D-4_p3_orig_u0.jpg",
-          "order_9E3DDD0D-4_p4_orig_u0.jpg",
-          "order_9E3DDD0D-4_p5_orig_u0.jpg",
-          "order_9E3DDD0D-4_p6_orig_u0.jpg",
-          "order_9E3DDD0D-4_p7_orig_u0.jpg",
-          "order_9E3DDD0D-4_p8_orig_u0.jpg",
-          "order_9E3DDD0D-4_p9_orig_u0.jpg",
-          "order_9E3DDD0D-4_p10_orig_u0.jpg",
-          "order_9E3DDD0D-4_p11_orig_u0.jpg"
+          "order_8460862D-A_p0_orig.jpg",
+          "order_8460862D-A_p1_orig.jpg",
+          "order_8460862D-A_p2_orig.jpg",
+          "order_8460862D-A_p3_orig.jpg",
+          "order_8460862D-A_p4_orig.jpg",
+          "order_8460862D-A_p5_orig.jpg",
+          "order_8460862D-A_p6_orig.jpg",
+          "order_8460862D-A_p7_orig.jpg",
+          "order_8460862D-A_p8_orig.jpg",
+          "order_8460862D-A_p9_orig.jpg",
+          "order_8460862D-A_p10_orig.jpg",
+          "order_8460862D-A_p11_orig.jpg"
         ],
         "photo_positions": {
           "0": {
             "offsetX": 0,
             "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "1": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "2": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "3": {
-            "offsetX": 0,
-            "offsetY": -50.15145975266588,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "4": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "5": {
-            "offsetX": 0,
-            "offsetY": -26.985778051333753,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "6": {
-            "offsetX": 8.694895197836203,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "7": {
-            "offsetX": 0,
-            "offsetY": -2.8582034149962903,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "8": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "9": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "10": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "11": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          }
-        },
-        "selectable_choices": {},
-        "calendar_date": {
-          "day": 0,
-          "month": 0,
-          "year": 0
-        },
-        "text_values": {
-          "İSİMLERİNİZ": "Gdjdhsh",
-          "ÖZEL METİN": "Dgshdbdh",
-          "ALT METİN": "Eydhsbdbdb"
-        },
-        "text_size_values": {
-          "İSİMLERİNİZ": "100",
-          "ÖZEL METİN": "100",
-          "ALT METİN": "100"
-        },
-        "text_color_values": {
-          "İSİMLERİNİZ": "#050505",
-          "ÖZEL METİN": "#050505",
-          "ALT METİN": "#050505"
-        },
-        "bw_option": "color",
-        "unit_size_key": "15x21cm",
-        "unit_num": 0,
-        "staging_file": "DENEME (1), 14.8x21cm.jpg",
-        "print_size": "A5"
-      },
-      {
-        "photo_files": [
-          "order_9E3DDD0D-4_p0_u1.jpg",
-          "order_9E3DDD0D-4_p1_u1.jpg",
-          "order_9E3DDD0D-4_p2_u1.jpg",
-          "order_9E3DDD0D-4_p3_u1.jpg",
-          "order_9E3DDD0D-4_p4_u1.jpg",
-          "order_9E3DDD0D-4_p5_u1.jpg",
-          "order_9E3DDD0D-4_p6_u1.jpg",
-          "order_9E3DDD0D-4_p7_u1.jpg",
-          "order_9E3DDD0D-4_p8_u1.jpg",
-          "order_9E3DDD0D-4_p9_u1.jpg",
-          "order_9E3DDD0D-4_p10_u1.jpg",
-          "order_9E3DDD0D-4_p11_u1.jpg"
-        ],
-        "group_files": {},
-        "photo_originals": [
-          "order_9E3DDD0D-4_p0_orig_u1.jpg",
-          "order_9E3DDD0D-4_p1_orig_u1.jpg",
-          "order_9E3DDD0D-4_p2_orig_u1.jpg",
-          "order_9E3DDD0D-4_p3_orig_u1.jpg",
-          "order_9E3DDD0D-4_p4_orig_u1.jpg",
-          "order_9E3DDD0D-4_p5_orig_u1.jpg",
-          "order_9E3DDD0D-4_p6_orig_u1.jpg",
-          "order_9E3DDD0D-4_p7_orig_u1.jpg",
-          "order_9E3DDD0D-4_p8_orig_u1.jpg",
-          "order_9E3DDD0D-4_p9_orig_u1.jpg",
-          "order_9E3DDD0D-4_p10_orig_u1.jpg",
-          "order_9E3DDD0D-4_p11_orig_u1.jpg"
-        ],
-        "photo_positions": {
-          "0": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
+            "scale": 234,
             "rotation": 0,
             "flipH": false
           },
@@ -2847,7 +3758,7 @@
             "flipH": false
           },
           "11": {
-            "offsetX": 0,
+            "offsetX": 13.250644871445951,
             "offsetY": 0,
             "scale": 100,
             "rotation": 0,
@@ -2861,617 +3772,8 @@
           "year": 0
         },
         "text_values": {
-          "İSİMLERİNİZ": "Tiribfg",
-          "ÖZEL METİN": "Hkc8bf",
-          "ALT METİN": "Yig6t7r"
-        },
-        "text_size_values": {
-          "İSİMLERİNİZ": "100",
-          "ÖZEL METİN": "100",
-          "ALT METİN": "100"
-        },
-        "text_color_values": {
-          "İSİMLERİNİZ": "#050505",
-          "ÖZEL METİN": "#050505",
-          "ALT METİN": "#050505"
-        },
-        "bw_option": "bw",
-        "unit_size_key": "15x21cm",
-        "unit_num": 1,
-        "staging_file": "DENEME (2), 14.8x21cm.jpg",
-        "print_size": "A5"
-      }
-    ],
-    "photo_files": [
-      "order_9E3DDD0D-4_p0_u0.jpg",
-      "order_9E3DDD0D-4_p1_u0.jpg",
-      "order_9E3DDD0D-4_p2_u0.jpg",
-      "order_9E3DDD0D-4_p3_u0.jpg",
-      "order_9E3DDD0D-4_p4_u0.jpg",
-      "order_9E3DDD0D-4_p5_u0.jpg",
-      "order_9E3DDD0D-4_p6_u0.jpg",
-      "order_9E3DDD0D-4_p7_u0.jpg",
-      "order_9E3DDD0D-4_p8_u0.jpg",
-      "order_9E3DDD0D-4_p9_u0.jpg",
-      "order_9E3DDD0D-4_p10_u0.jpg",
-      "order_9E3DDD0D-4_p11_u0.jpg"
-    ],
-    "group_files": {},
-    "photo_originals": [
-      "order_9E3DDD0D-4_p0_orig_u0.jpg",
-      "order_9E3DDD0D-4_p1_orig_u0.jpg",
-      "order_9E3DDD0D-4_p2_orig_u0.jpg",
-      "order_9E3DDD0D-4_p3_orig_u0.jpg",
-      "order_9E3DDD0D-4_p4_orig_u0.jpg",
-      "order_9E3DDD0D-4_p5_orig_u0.jpg",
-      "order_9E3DDD0D-4_p6_orig_u0.jpg",
-      "order_9E3DDD0D-4_p7_orig_u0.jpg",
-      "order_9E3DDD0D-4_p8_orig_u0.jpg",
-      "order_9E3DDD0D-4_p9_orig_u0.jpg",
-      "order_9E3DDD0D-4_p10_orig_u0.jpg",
-      "order_9E3DDD0D-4_p11_orig_u0.jpg"
-    ],
-    "photo_positions": {
-      "0": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "1": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "2": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "3": {
-        "offsetX": 0,
-        "offsetY": -50.15145975266588,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "4": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "5": {
-        "offsetX": 0,
-        "offsetY": -26.985778051333753,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "6": {
-        "offsetX": 8.694895197836203,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "7": {
-        "offsetX": 0,
-        "offsetY": -2.8582034149962903,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "8": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "9": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "10": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "11": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      }
-    },
-    "selectable_choices": {},
-    "calendar_date": {
-      "day": 0,
-      "month": 0,
-      "year": 0
-    },
-    "text_values": {
-      "İSİMLERİNİZ": "Gdjdhsh",
-      "ÖZEL METİN": "Dgshdbdh",
-      "ALT METİN": "Eydhsbdbdb"
-    },
-    "text_size_values": {
-      "İSİMLERİNİZ": "100",
-      "ÖZEL METİN": "100",
-      "ALT METİN": "100"
-    },
-    "text_color_values": {
-      "İSİMLERİNİZ": "#050505",
-      "ÖZEL METİN": "#050505",
-      "ALT METİN": "#050505"
-    },
-    "unit_size_key": "15x21cm",
-    "a3_file": "üst AHMET MANYAS, alt DENEME.jpg",
-    "a3_drive_file_id": "1tviouPD8SJpJ4DGnJx5D8VG4poiU_lDT"
-  },
-  {
-    "id": "BA49D995-6",
-    "template_id": "d7329705",
-    "template_name": "12 FOTOĞRAFLI KOLAJ, PSTR",
-    "product_type": "MDF",
-    "mdf_size_key": "30x40cm",
-    "custom_size_key": null,
-    "size_label": "29.7x40cm",
-    "customer_name": "FIRATELLO FIRAT",
-    "order_number": "365916492648",
-    "phone": "05446110150",
-    "bw_option": "color",
-    "status": "ready",
-    "output_file": null,
-    "output_files": null,
-    "created_at": "2026-07-10T17:07:27.866869",
-    "folder_name": "10 TEMMUZ BASKILAR",
-    "unit_count": 2,
-    "same_design": true,
-    "units": [
-      {
-        "photo_files": [
-          "order_BA49D995-6_p0.jpg",
-          "order_BA49D995-6_p1.jpg",
-          "order_BA49D995-6_p2.jpg",
-          "order_BA49D995-6_p3.jpg",
-          "order_BA49D995-6_p4.jpg",
-          "order_BA49D995-6_p5.jpg",
-          "order_BA49D995-6_p6.jpg",
-          "order_BA49D995-6_p7.jpg",
-          "order_BA49D995-6_p8.jpg",
-          "order_BA49D995-6_p9.jpg",
-          "order_BA49D995-6_p10.jpg",
-          "order_BA49D995-6_p11.jpg"
-        ],
-        "group_files": {},
-        "photo_originals": [
-          "order_BA49D995-6_p0_orig.jpg",
-          "order_BA49D995-6_p1_orig.jpg",
-          "order_BA49D995-6_p2_orig.jpg",
-          "order_BA49D995-6_p3_orig.jpg",
-          "order_BA49D995-6_p4_orig.jpg",
-          "order_BA49D995-6_p5_orig.jpg",
-          "order_BA49D995-6_p6_orig.jpg",
-          "order_BA49D995-6_p7_orig.jpg",
-          "order_BA49D995-6_p8_orig.jpg",
-          "order_BA49D995-6_p9_orig.jpg",
-          "order_BA49D995-6_p10_orig.jpg",
-          "order_BA49D995-6_p11_orig.jpg"
-        ],
-        "photo_positions": {
-          "0": {
-            "offsetX": 0,
-            "offsetY": -2.623798965262382,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "1": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "2": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "3": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "4": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "5": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "6": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "7": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "8": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "9": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "10": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "11": {
-            "offsetX": -4.374569752177256,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          }
-        },
-        "selectable_choices": {},
-        "calendar_date": {
-          "day": 0,
-          "month": 0,
-          "year": 0
-        },
-        "text_values": {
-          "İSİMLERİNİZ": "Fıratello",
-          "ÖZEL METİN": "İyi ki doğdun",
-          "ALT METİN": "Sen de"
-        },
-        "text_size_values": {
-          "İSİMLERİNİZ": "100",
-          "ÖZEL METİN": "100",
-          "ALT METİN": "100"
-        },
-        "text_color_values": {
-          "İSİMLERİNİZ": "#050505",
-          "ÖZEL METİN": "#050505",
-          "ALT METİN": "#050505"
-        },
-        "bw_option": "color",
-        "unit_size_key": "30x40cm",
-        "unit_num": null,
-        "drive_file_id": "1OTbwRhJT3xVDBDJFTntK_h4OGo8ci3lQ",
-        "drive_file_name": "FIRATELLO FIRAT, 2 ADET, 29.7x40cm.jpg"
-      }
-    ],
-    "photo_files": [
-      "order_BA49D995-6_p0.jpg",
-      "order_BA49D995-6_p1.jpg",
-      "order_BA49D995-6_p2.jpg",
-      "order_BA49D995-6_p3.jpg",
-      "order_BA49D995-6_p4.jpg",
-      "order_BA49D995-6_p5.jpg",
-      "order_BA49D995-6_p6.jpg",
-      "order_BA49D995-6_p7.jpg",
-      "order_BA49D995-6_p8.jpg",
-      "order_BA49D995-6_p9.jpg",
-      "order_BA49D995-6_p10.jpg",
-      "order_BA49D995-6_p11.jpg"
-    ],
-    "group_files": {},
-    "photo_originals": [
-      "order_BA49D995-6_p0_orig.jpg",
-      "order_BA49D995-6_p1_orig.jpg",
-      "order_BA49D995-6_p2_orig.jpg",
-      "order_BA49D995-6_p3_orig.jpg",
-      "order_BA49D995-6_p4_orig.jpg",
-      "order_BA49D995-6_p5_orig.jpg",
-      "order_BA49D995-6_p6_orig.jpg",
-      "order_BA49D995-6_p7_orig.jpg",
-      "order_BA49D995-6_p8_orig.jpg",
-      "order_BA49D995-6_p9_orig.jpg",
-      "order_BA49D995-6_p10_orig.jpg",
-      "order_BA49D995-6_p11_orig.jpg"
-    ],
-    "photo_positions": {
-      "0": {
-        "offsetX": 0,
-        "offsetY": -2.623798965262382,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "1": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "2": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "3": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "4": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "5": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "6": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "7": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "8": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "9": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "10": {
-        "offsetX": 0,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      },
-      "11": {
-        "offsetX": -4.374569752177256,
-        "offsetY": 0,
-        "scale": 100,
-        "rotation": 0,
-        "flipH": false
-      }
-    },
-    "selectable_choices": {},
-    "calendar_date": {
-      "day": 0,
-      "month": 0,
-      "year": 0
-    },
-    "text_values": {
-      "İSİMLERİNİZ": "Fıratello",
-      "ÖZEL METİN": "İyi ki doğdun",
-      "ALT METİN": "Sen de"
-    },
-    "text_size_values": {
-      "İSİMLERİNİZ": "100",
-      "ÖZEL METİN": "100",
-      "ALT METİN": "100"
-    },
-    "text_color_values": {
-      "İSİMLERİNİZ": "#050505",
-      "ÖZEL METİN": "#050505",
-      "ALT METİN": "#050505"
-    },
-    "unit_size_key": "30x40cm",
-    "drive_file_id": "1OTbwRhJT3xVDBDJFTntK_h4OGo8ci3lQ",
-    "drive_file_name": "FIRATELLO FIRAT, 2 ADET, 29.7x40cm.jpg",
-    "drive_files": null
-  },
-  {
-    "id": "F658742B-0",
-    "template_id": "d7329705",
-    "template_name": "12 FOTOĞRAFLI KOLAJ, PSTR",
-    "product_type": "MDF",
-    "mdf_size_key": "30x40cm",
-    "custom_size_key": null,
-    "size_label": "29.7x40cm",
-    "customer_name": "İSO FIRAT",
-    "order_number": "6383u3629883",
-    "phone": "05446110150",
-    "bw_option": "color",
-    "status": "ready",
-    "output_file": null,
-    "output_files": null,
-    "created_at": "2026-07-10T17:23:19.698362",
-    "folder_name": "10 TEMMUZ BASKILAR",
-    "unit_count": 2,
-    "same_design": false,
-    "units": [
-      {
-        "photo_files": [
-          "order_F658742B-0_p0_u0.jpg",
-          "order_F658742B-0_p1_u0.jpg",
-          "order_F658742B-0_p2_u0.jpg",
-          "order_F658742B-0_p3_u0.jpg",
-          "order_F658742B-0_p4_u0.jpg",
-          "order_F658742B-0_p5_u0.jpg",
-          "order_F658742B-0_p6_u0.jpg",
-          "order_F658742B-0_p7_u0.jpg",
-          "order_F658742B-0_p8_u0.jpg",
-          "order_F658742B-0_p9_u0.jpg",
-          "order_F658742B-0_p10_u0.jpg",
-          "order_F658742B-0_p11_u0.jpg"
-        ],
-        "group_files": {},
-        "photo_originals": [
-          "order_F658742B-0_p0_orig_u0.jpg",
-          "order_F658742B-0_p1_orig_u0.jpg",
-          "order_F658742B-0_p2_orig_u0.jpg",
-          "order_F658742B-0_p3_orig_u0.jpg",
-          "order_F658742B-0_p4_orig_u0.jpg",
-          "order_F658742B-0_p5_orig_u0.jpg",
-          "order_F658742B-0_p6_orig_u0.jpg",
-          "order_F658742B-0_p7_orig_u0.jpg",
-          "order_F658742B-0_p8_orig_u0.jpg",
-          "order_F658742B-0_p9_orig_u0.jpg",
-          "order_F658742B-0_p10_orig_u0.jpg",
-          "order_F658742B-0_p11_orig_u0.jpg"
-        ],
-        "photo_positions": {
-          "0": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "1": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "2": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "3": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "4": {
-            "offsetX": 0,
-            "offsetY": -12.803896949404773,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "5": {
-            "offsetX": 0,
-            "offsetY": 1.1995078319340804,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "6": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "7": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "8": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "9": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "10": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 102,
-            "rotation": 0,
-            "flipH": false
-          },
-          "11": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          }
-        },
-        "selectable_choices": {},
-        "calendar_date": {
-          "day": 0,
-          "month": 0,
-          "year": 0
-        },
-        "text_values": {
-          "İSİMLERİNİZ": "Eylül SMT",
-          "ÖZEL METİN": "Dnm",
+          "İSİMLERİNİZ": "Cambit",
+          "ÖZEL METİN": "Deneme",
           "ALT METİN": "Denemeeee"
         },
         "text_size_values": {
@@ -3485,187 +3787,46 @@
           "ALT METİN": "#050505"
         },
         "bw_option": "color",
-        "unit_size_key": "30x40cm",
-        "unit_num": 0,
-        "has_result": true
-      },
-      {
-        "photo_files": [
-          "order_F658742B-0_p0_u1.jpg",
-          "order_F658742B-0_p1_u1.jpg",
-          "order_F658742B-0_p2_u1.jpg",
-          "order_F658742B-0_p3_u1.jpg",
-          "order_F658742B-0_p4_u1.jpg",
-          "order_F658742B-0_p5_u1.jpg",
-          "order_F658742B-0_p6_u1.jpg",
-          "order_F658742B-0_p7_u1.jpg",
-          "order_F658742B-0_p8_u1.jpg",
-          "order_F658742B-0_p9_u1.jpg",
-          "order_F658742B-0_p10_u1.jpg",
-          "order_F658742B-0_p11_u1.jpg"
-        ],
-        "group_files": {},
-        "photo_originals": [
-          "order_F658742B-0_p0_orig_u1.jpg",
-          "order_F658742B-0_p1_orig_u1.jpg",
-          "order_F658742B-0_p2_orig_u1.jpg",
-          "order_F658742B-0_p3_orig_u1.jpg",
-          "order_F658742B-0_p4_orig_u1.jpg",
-          "order_F658742B-0_p5_orig_u1.jpg",
-          "order_F658742B-0_p6_orig_u1.jpg",
-          "order_F658742B-0_p7_orig_u1.jpg",
-          "order_F658742B-0_p8_orig_u1.jpg",
-          "order_F658742B-0_p9_orig_u1.jpg",
-          "order_F658742B-0_p10_orig_u1.jpg",
-          "order_F658742B-0_p11_orig_u1.jpg"
-        ],
-        "photo_positions": {
-          "0": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 130,
-            "rotation": 0,
-            "flipH": false
-          },
-          "1": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "2": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "3": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "4": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "5": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "6": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "7": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "8": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "9": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "10": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "11": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          }
-        },
-        "selectable_choices": {},
-        "calendar_date": {
-          "day": 0,
-          "month": 0,
-          "year": 0
-        },
-        "text_values": {
-          "İSİMLERİNİZ": "Dnmeeee",
-          "ÖZEL METİN": "Fifrbiy y8fr hdhri ün eirb iihgibd ürün  7rhud ubruenurv hdhgrue urb us  8db eud88s  burbbt7dbb4ueurb4 hr7brb4uejirjrhyuf5y",
-          "ALT METİN": "57g58t 9h"
-        },
-        "text_size_values": {
-          "İSİMLERİNİZ": "100",
-          "ÖZEL METİN": "100",
-          "ALT METİN": "100"
-        },
-        "text_color_values": {
-          "İSİMLERİNİZ": "#050505",
-          "ÖZEL METİN": "#050505",
-          "ALT METİN": "#050505"
-        },
-        "bw_option": "bw",
-        "unit_size_key": "30x40cm",
-        "unit_num": 1,
-        "has_result": true
+        "unit_size_key": "15x21cm",
+        "unit_num": null,
+        "staging_file": "ALI CAMBIK, 14.8x21cm.jpg",
+        "print_size": "A5"
       }
     ],
     "photo_files": [
-      "order_F658742B-0_p0_u0.jpg",
-      "order_F658742B-0_p1_u0.jpg",
-      "order_F658742B-0_p2_u0.jpg",
-      "order_F658742B-0_p3_u0.jpg",
-      "order_F658742B-0_p4_u0.jpg",
-      "order_F658742B-0_p5_u0.jpg",
-      "order_F658742B-0_p6_u0.jpg",
-      "order_F658742B-0_p7_u0.jpg",
-      "order_F658742B-0_p8_u0.jpg",
-      "order_F658742B-0_p9_u0.jpg",
-      "order_F658742B-0_p10_u0.jpg",
-      "order_F658742B-0_p11_u0.jpg"
+      "order_8460862D-A_p0.jpg",
+      "order_8460862D-A_p1.jpg",
+      "order_8460862D-A_p2.jpg",
+      "order_8460862D-A_p3.jpg",
+      "order_8460862D-A_p4.jpg",
+      "order_8460862D-A_p5.jpg",
+      "order_8460862D-A_p6.jpg",
+      "order_8460862D-A_p7.jpg",
+      "order_8460862D-A_p8.jpg",
+      "order_8460862D-A_p9.jpg",
+      "order_8460862D-A_p10.jpg",
+      "order_8460862D-A_p11.jpg"
     ],
     "group_files": {},
     "photo_originals": [
-      "order_F658742B-0_p0_orig_u0.jpg",
-      "order_F658742B-0_p1_orig_u0.jpg",
-      "order_F658742B-0_p2_orig_u0.jpg",
-      "order_F658742B-0_p3_orig_u0.jpg",
-      "order_F658742B-0_p4_orig_u0.jpg",
-      "order_F658742B-0_p5_orig_u0.jpg",
-      "order_F658742B-0_p6_orig_u0.jpg",
-      "order_F658742B-0_p7_orig_u0.jpg",
-      "order_F658742B-0_p8_orig_u0.jpg",
-      "order_F658742B-0_p9_orig_u0.jpg",
-      "order_F658742B-0_p10_orig_u0.jpg",
-      "order_F658742B-0_p11_orig_u0.jpg"
+      "order_8460862D-A_p0_orig.jpg",
+      "order_8460862D-A_p1_orig.jpg",
+      "order_8460862D-A_p2_orig.jpg",
+      "order_8460862D-A_p3_orig.jpg",
+      "order_8460862D-A_p4_orig.jpg",
+      "order_8460862D-A_p5_orig.jpg",
+      "order_8460862D-A_p6_orig.jpg",
+      "order_8460862D-A_p7_orig.jpg",
+      "order_8460862D-A_p8_orig.jpg",
+      "order_8460862D-A_p9_orig.jpg",
+      "order_8460862D-A_p10_orig.jpg",
+      "order_8460862D-A_p11_orig.jpg"
     ],
     "photo_positions": {
       "0": {
         "offsetX": 0,
         "offsetY": 0,
-        "scale": 100,
+        "scale": 234,
         "rotation": 0,
         "flipH": false
       },
@@ -3692,14 +3853,14 @@
       },
       "4": {
         "offsetX": 0,
-        "offsetY": -12.803896949404773,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "5": {
         "offsetX": 0,
-        "offsetY": 1.1995078319340804,
+        "offsetY": 0,
         "scale": 100,
         "rotation": 0,
         "flipH": false
@@ -3735,12 +3896,12 @@
       "10": {
         "offsetX": 0,
         "offsetY": 0,
-        "scale": 102,
+        "scale": 100,
         "rotation": 0,
         "flipH": false
       },
       "11": {
-        "offsetX": 0,
+        "offsetX": 13.250644871445951,
         "offsetY": 0,
         "scale": 100,
         "rotation": 0,
@@ -3754,8 +3915,8 @@
       "year": 0
     },
     "text_values": {
-      "İSİMLERİNİZ": "Eylül SMT",
-      "ÖZEL METİN": "Dnm",
+      "İSİMLERİNİZ": "Cambit",
+      "ÖZEL METİN": "Deneme",
       "ALT METİN": "Denemeeee"
     },
     "text_size_values": {
@@ -3768,202 +3929,60 @@
       "ÖZEL METİN": "#050505",
       "ALT METİN": "#050505"
     },
-    "unit_size_key": "30x40cm",
-    "drive_file_id": "1fvAO5v-AXLNwafl4eFpuoDkRxD22UHbV",
-    "drive_file_name": "İSO FIRAT, 2 ADET.zip",
+    "unit_size_key": "15x21cm",
+    "drive_file_id": "1KEPAomsUngnWS2F9pxs2K4iMGZYB1c1H",
+    "drive_file_name": "ALI CAMBIK, 14.8x21cm.jpg",
     "drive_files": null
   },
   {
-    "id": "C732AA2C-3",
-    "template_id": "c5631138",
-    "template_name": "12 FOTOĞRAFLI KOLAJ, MDF",
+    "id": "9E970A8B-B",
+    "template_id": "addc199c",
+    "template_name": "12 FOTOĞRAFLI DENEME, PSTR",
     "product_type": "MDF",
-    "mdf_size_key": "30x40cm",
+    "mdf_size_key": "15x21cm",
     "custom_size_key": null,
-    "size_label": "29.7x40cm",
-    "customer_name": "AHMET MANYAS",
-    "order_number": "8352956194638",
+    "size_label": "14.8x21cm",
+    "customer_name": "İSO FIRAT",
+    "order_number": "8584849669",
     "phone": "05446110150",
-    "bw_option": "color",
+    "bw_option": "bw",
     "status": "ready",
     "output_file": null,
     "output_files": null,
-    "created_at": "2026-07-10T17:44:11.153162",
-    "folder_name": "10 TEMMUZ BASKILAR",
+    "created_at": "2026-07-14T10:57:45.370128",
+    "folder_name": "14 TEMMUZ BASKILAR",
     "unit_count": 2,
-    "same_design": false,
+    "same_design": true,
     "units": [
       {
         "photo_files": [
-          "order_C732AA2C-3_p0_u0.jpg",
-          "order_C732AA2C-3_p1_u0.jpg",
-          "order_C732AA2C-3_p2_u0.jpg",
-          "order_C732AA2C-3_p3_u0.jpg",
-          "order_C732AA2C-3_p4_u0.jpg",
-          "order_C732AA2C-3_p5_u0.jpg",
-          "order_C732AA2C-3_p6_u0.jpg",
-          "order_C732AA2C-3_p7_u0.jpg",
-          "order_C732AA2C-3_p8_u0.jpg",
-          "order_C732AA2C-3_p9_u0.jpg",
-          "order_C732AA2C-3_p10_u0.jpg",
-          "order_C732AA2C-3_p11_u0.jpg"
+          "order_9E970A8B-B_p0.jpg",
+          "order_9E970A8B-B_p1.jpg",
+          "order_9E970A8B-B_p2.jpg",
+          "order_9E970A8B-B_p3.jpg",
+          "order_9E970A8B-B_p4.jpg",
+          "order_9E970A8B-B_p5.jpg",
+          "order_9E970A8B-B_p6.jpg",
+          "order_9E970A8B-B_p7.jpg",
+          "order_9E970A8B-B_p8.jpg",
+          "order_9E970A8B-B_p9.jpg",
+          "order_9E970A8B-B_p10.jpg",
+          "order_9E970A8B-B_p11.jpg"
         ],
         "group_files": {},
         "photo_originals": [
-          "order_C732AA2C-3_p0_orig_u0.jpg",
-          "order_C732AA2C-3_p1_orig_u0.jpg",
-          "order_C732AA2C-3_p2_orig_u0.jpg",
-          "order_C732AA2C-3_p3_orig_u0.jpg",
-          "order_C732AA2C-3_p4_orig_u0.jpg",
-          "order_C732AA2C-3_p5_orig_u0.jpg",
-          "order_C732AA2C-3_p6_orig_u0.jpg",
-          "order_C732AA2C-3_p7_orig_u0.jpg",
-          "order_C732AA2C-3_p8_orig_u0.jpg",
-          "order_C732AA2C-3_p9_orig_u0.jpg",
-          "order_C732AA2C-3_p10_orig_u0.jpg",
-          "order_C732AA2C-3_p11_orig_u0.jpg"
-        ],
-        "photo_positions": {
-          "0": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 238,
-            "rotation": 0,
-            "flipH": false
-          },
-          "1": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "2": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "3": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "4": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "5": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "6": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "7": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "8": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "9": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "10": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          },
-          "11": {
-            "offsetX": 0,
-            "offsetY": 0,
-            "scale": 100,
-            "rotation": 0,
-            "flipH": false
-          }
-        },
-        "selectable_choices": {},
-        "calendar_date": {
-          "day": 0,
-          "month": 0,
-          "year": 0
-        },
-        "text_values": {
-          "İSİMLERİNİZ": "Ahmet",
-          "ÖZEL METİN": "Deneme",
-          "ALT METİN": "Dnmeee"
-        },
-        "text_size_values": {
-          "İSİMLERİNİZ": "100",
-          "ÖZEL METİN": "100",
-          "ALT METİN": "100"
-        },
-        "text_color_values": {
-          "İSİMLERİNİZ": "#050505",
-          "ÖZEL METİN": "#050505",
-          "ALT METİN": "#050505"
-        },
-        "bw_option": "color",
-        "unit_size_key": "30x40cm",
-        "unit_num": 0,
-        "has_result": true
-      },
-      {
-        "photo_files": [
-          "order_C732AA2C-3_p0_u1.jpg",
-          "order_C732AA2C-3_p1_u1.jpg",
-          "order_C732AA2C-3_p2_u1.jpg",
-          "order_C732AA2C-3_p3_u1.jpg",
-          "order_C732AA2C-3_p4_u1.jpg",
-          "order_C732AA2C-3_p5_u1.jpg",
-          "order_C732AA2C-3_p6_u1.jpg",
-          "order_C732AA2C-3_p7_u1.jpg",
-          "order_C732AA2C-3_p8_u1.jpg",
-          "order_C732AA2C-3_p9_u1.jpg",
-          "order_C732AA2C-3_p10_u1.jpg",
-          "order_C732AA2C-3_p11_u1.jpg"
-        ],
-        "group_files": {},
-        "photo_originals": [
-          "order_C732AA2C-3_p0_orig_u1.jpg",
-          "order_C732AA2C-3_p1_orig_u1.jpg",
-          "order_C732AA2C-3_p2_orig_u1.jpg",
-          "order_C732AA2C-3_p3_orig_u1.jpg",
-          "order_C732AA2C-3_p4_orig_u1.jpg",
-          "order_C732AA2C-3_p5_orig_u1.jpg",
-          "order_C732AA2C-3_p6_orig_u1.jpg",
-          "order_C732AA2C-3_p7_orig_u1.jpg",
-          "order_C732AA2C-3_p8_orig_u1.jpg",
-          "order_C732AA2C-3_p9_orig_u1.jpg",
-          "order_C732AA2C-3_p10_orig_u1.jpg",
-          "order_C732AA2C-3_p11_orig_u1.jpg"
+          "order_9E970A8B-B_p0_orig.jpg",
+          "order_9E970A8B-B_p1_orig.jpg",
+          "order_9E970A8B-B_p2_orig.jpg",
+          "order_9E970A8B-B_p3_orig.jpg",
+          "order_9E970A8B-B_p4_orig.jpg",
+          "order_9E970A8B-B_p5_orig.jpg",
+          "order_9E970A8B-B_p6_orig.jpg",
+          "order_9E970A8B-B_p7_orig.jpg",
+          "order_9E970A8B-B_p8_orig.jpg",
+          "order_9E970A8B-B_p9_orig.jpg",
+          "order_9E970A8B-B_p10_orig.jpg",
+          "order_9E970A8B-B_p11_orig.jpg"
         ],
         "photo_positions": {
           "0": {
@@ -4058,9 +4077,9 @@
           "year": 0
         },
         "text_values": {
-          "İSİMLERİNİZ": "Mansayaa",
-          "ÖZEL METİN": "Stayf udhshdh",
-          "ALT METİN": "Ydhabfu"
+          "İSİMLERİNİZ": "ISO",
+          "ÖZEL METİN": "9001",
+          "ALT METİN": "Deneme"
         },
         "text_size_values": {
           "İSİMLERİNİZ": "100",
@@ -4072,47 +4091,47 @@
           "ÖZEL METİN": "#050505",
           "ALT METİN": "#050505"
         },
-        "bw_option": "color",
-        "unit_size_key": "21x30cm",
-        "unit_num": 1,
-        "staging_file": "AHMET MANYAS (2), 29.7x40cm.jpg",
-        "print_size": "A4"
+        "bw_option": "bw",
+        "unit_size_key": "15x21cm",
+        "unit_num": null,
+        "drive_file_id": "1ZpnZW-hYpPVT3MFlQWL_bX-3kcbK_O28",
+        "drive_file_name": "İSO FIRAT, 2 ADET, 14.8x21cm.jpg"
       }
     ],
     "photo_files": [
-      "order_C732AA2C-3_p0_u0.jpg",
-      "order_C732AA2C-3_p1_u0.jpg",
-      "order_C732AA2C-3_p2_u0.jpg",
-      "order_C732AA2C-3_p3_u0.jpg",
-      "order_C732AA2C-3_p4_u0.jpg",
-      "order_C732AA2C-3_p5_u0.jpg",
-      "order_C732AA2C-3_p6_u0.jpg",
-      "order_C732AA2C-3_p7_u0.jpg",
-      "order_C732AA2C-3_p8_u0.jpg",
-      "order_C732AA2C-3_p9_u0.jpg",
-      "order_C732AA2C-3_p10_u0.jpg",
-      "order_C732AA2C-3_p11_u0.jpg"
+      "order_9E970A8B-B_p0.jpg",
+      "order_9E970A8B-B_p1.jpg",
+      "order_9E970A8B-B_p2.jpg",
+      "order_9E970A8B-B_p3.jpg",
+      "order_9E970A8B-B_p4.jpg",
+      "order_9E970A8B-B_p5.jpg",
+      "order_9E970A8B-B_p6.jpg",
+      "order_9E970A8B-B_p7.jpg",
+      "order_9E970A8B-B_p8.jpg",
+      "order_9E970A8B-B_p9.jpg",
+      "order_9E970A8B-B_p10.jpg",
+      "order_9E970A8B-B_p11.jpg"
     ],
     "group_files": {},
     "photo_originals": [
-      "order_C732AA2C-3_p0_orig_u0.jpg",
-      "order_C732AA2C-3_p1_orig_u0.jpg",
-      "order_C732AA2C-3_p2_orig_u0.jpg",
-      "order_C732AA2C-3_p3_orig_u0.jpg",
-      "order_C732AA2C-3_p4_orig_u0.jpg",
-      "order_C732AA2C-3_p5_orig_u0.jpg",
-      "order_C732AA2C-3_p6_orig_u0.jpg",
-      "order_C732AA2C-3_p7_orig_u0.jpg",
-      "order_C732AA2C-3_p8_orig_u0.jpg",
-      "order_C732AA2C-3_p9_orig_u0.jpg",
-      "order_C732AA2C-3_p10_orig_u0.jpg",
-      "order_C732AA2C-3_p11_orig_u0.jpg"
+      "order_9E970A8B-B_p0_orig.jpg",
+      "order_9E970A8B-B_p1_orig.jpg",
+      "order_9E970A8B-B_p2_orig.jpg",
+      "order_9E970A8B-B_p3_orig.jpg",
+      "order_9E970A8B-B_p4_orig.jpg",
+      "order_9E970A8B-B_p5_orig.jpg",
+      "order_9E970A8B-B_p6_orig.jpg",
+      "order_9E970A8B-B_p7_orig.jpg",
+      "order_9E970A8B-B_p8_orig.jpg",
+      "order_9E970A8B-B_p9_orig.jpg",
+      "order_9E970A8B-B_p10_orig.jpg",
+      "order_9E970A8B-B_p11_orig.jpg"
     ],
     "photo_positions": {
       "0": {
         "offsetX": 0,
         "offsetY": 0,
-        "scale": 238,
+        "scale": 100,
         "rotation": 0,
         "flipH": false
       },
@@ -4201,9 +4220,9 @@
       "year": 0
     },
     "text_values": {
-      "İSİMLERİNİZ": "Ahmet",
-      "ÖZEL METİN": "Deneme",
-      "ALT METİN": "Dnmeee"
+      "İSİMLERİNİZ": "ISO",
+      "ÖZEL METİN": "9001",
+      "ALT METİN": "Deneme"
     },
     "text_size_values": {
       "İSİMLERİNİZ": "100",
@@ -4215,9 +4234,9 @@
       "ÖZEL METİN": "#050505",
       "ALT METİN": "#050505"
     },
-    "unit_size_key": "30x40cm",
-    "drive_file_id": "1nququBDXEZB_xUvnAxa9egqyogqSgROi",
-    "drive_file_name": "AHMET MANYAS (1), 29.7x40cm.jpg",
+    "unit_size_key": "15x21cm",
+    "drive_file_id": "1ZpnZW-hYpPVT3MFlQWL_bX-3kcbK_O28",
+    "drive_file_name": "İSO FIRAT, 2 ADET, 14.8x21cm.jpg",
     "drive_files": null
   }
 ]
