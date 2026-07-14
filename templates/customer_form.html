@@ -860,6 +860,21 @@ STATIC_IMAGE_ZONES.forEach((zone, i) => {
   }
 });
 
+function _reloadStaticImgCache() {
+  Object.keys(staticImgCache).forEach(k => delete staticImgCache[k]);
+  const promises = [];
+  STATIC_IMAGE_ZONES.forEach((zone, i) => {
+    if (zone.image_file) {
+      const img = new Image();
+      const p = new Promise(resolve => { img.onload = img.onerror = resolve; });
+      img.src = '/static/uploads/' + zone.image_file;
+      staticImgCache[i] = img;
+      promises.push(p);
+    }
+  });
+  return Promise.all(promises);
+}
+
 // Fotoğraf zone kırpma maskeleri — Promise tabanlı önbellek
 const _maskImgCache   = {};  // zi → yüklenmiş Image
 const _maskLoadPromise = {}; // zi → Promise (çift yüklemeyi önler)
@@ -1282,12 +1297,22 @@ async function _renderPrevForUnit(u) {
   const maxW = Math.min(window.innerWidth - 40, 480);
   c.width = maxW * 2; c.height = Math.round(maxW * 2 / OUT_RATIO);
   c.style.width = maxW + 'px'; c.style.height = Math.round(maxW / OUT_RATIO) + 'px';
+  // Aktif olmayan CUSTOM_MULTI ünitesinde sabit ve seçilebilir görselleri yükle
+  const _staticReady = _needZoneSwitch ? _reloadStaticImgCache() : Promise.resolve();
+  const _seliReady = (() => {
+    const uSeli = (u === activeUnit) ? _seliSelected : (unitSeliData[u] || {});
+    return Promise.all(Object.values(uSeli).filter(Boolean).map(file => {
+      const img = _loadSeliImg(file);
+      if (!img || img.complete) return Promise.resolve();
+      return new Promise(resolve => { img.onload = img.onerror = resolve; });
+    }));
+  })();
   if (IS_MULTIPAGE) {
-    await Promise.all([...MP_PAGES.map(p => loadBg(p)), _masksReadyPromise]);
+    await Promise.all([...MP_PAGES.map(p => loadBg(p)), _masksReadyPromise, _staticReady, _seliReady]);
     prevActivePage = MP_PAGES[0] || 1;
     renderPrevPage(prevActivePage);
   } else {
-    const [bg] = await Promise.all([loadBg(), _masksReadyPromise]);
+    const [bg] = await Promise.all([loadBg(), _masksReadyPromise, _staticReady, _seliReady]);
     renderFull(c, bg);
   }
 
@@ -1321,6 +1346,7 @@ async function _renderPrevForUnit(u) {
     _vmReplaceArr(SELECTABLE_IMAGE_ZONES, _savedZones.seli);
     _vmReplaceArr(STATIC_IMAGE_ZONES,     _savedZones.staticI);
     _vmReplaceArr(STATIC_TEXT_ZONES,      _savedZones.staticT);
+    _reloadStaticImgCache(); // aktif varyantın sabit görsel cache'ini güncelle
     _rebuildTextSec();
     // Aktif ünitenin metin değerlerini yeni oluşturulan inputlara yaz
     const _aTd = unitTextData[activeUnit] || {};
@@ -1873,7 +1899,7 @@ function renderFull(canvas, bg, filterPage) {
       if(ir>zr){bh=zh;bw=zh*ir;}else{bw=zw;bh=zw/ir;}
       const sc=d.scale/100, dw=bw*sc, dh=bh*sc;
       const ox=(d.offsetX/100)*zw, oy=(d.offsetY/100)*zh;
-      const mImg=_maskImgCache[zone._i];
+      const mImg = zone.clip_mask_file ? _maskImgCache[zone._i] : null;
       if (mImg && mImg.complete && mImg.naturalWidth) {
         const ow=Math.max(1,Math.round(zw)), oh=Math.max(1,Math.round(zh));
         const off=document.createElement('canvas');
@@ -2377,6 +2403,7 @@ function _switchZonesSk(sk) {
   _rebuildTextSec();
   _rebuildCalSec();
   _rebuildSeliSec();
+  _reloadStaticImgCache();
   loadBg().then(bg => { if (bg) initMini(); });
 }
 
