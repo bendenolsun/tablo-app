@@ -3395,12 +3395,13 @@ async function saveZones() {
   const bwEnabled = document.getElementById('enable-bw-option')?.checked || false;
   try {
     if (PTYPE === 'MDF' || PTYPE === 'CUSTOM_MULTI') {
-      for (const sk in allZones) {
-        await fetch('/admin/templates/' + TMPL_ID + '/save-zones', {
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ size_key: sk, zones: orderedZones(sk), form_description: formDesc, enable_bw_option: bwEnabled })
-        });
-      }
+      // Tüm varyantları tek istekte kaydet — sıralı isteklerdeki race condition'ı önle
+      const all_variant_zones = {};
+      for (const sk in allZones) { all_variant_zones[sk] = orderedZones(sk); }
+      await fetch('/admin/templates/' + TMPL_ID + '/save-zones', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ all_variant_zones, form_description: formDesc, enable_bw_option: bwEnabled })
+      });
     } else if (PTYPE === 'MULTIPAGE') {
       for (const pk in allZones) {
         await fetch('/admin/templates/' + TMPL_ID + '/save-zones', {

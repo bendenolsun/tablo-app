@@ -359,8 +359,8 @@ input:focus,select:focus{border-color:var(--accent);}
   <!-- ── TEK SAYFA: mevcut yapı ─────────────────────────────────────────────── -->
 
   <!-- Metinler: sol editör + sağda kompakt anlık önizleme -->
-  {% if text_zones %}
-  <div class="sec">
+  {% if text_zones or is_custom_multi %}
+  <div class="sec" {% if is_custom_multi %}id="cf-text-sec"{% if not text_zones %} style="display:none"{% endif %}{% endif %}>
     <div class="stitle">✏️ Metinler</div>
     <div class="txt-layout">
       <div id="tz-editors">
@@ -429,8 +429,8 @@ input:focus,select:focus{border-color:var(--accent);}
   {% endif %}
 
   <!-- Fotoğraflar -->
-  {% if photo_zones %}
-  <div class="sec">
+  {% if photo_zones or is_custom_multi %}
+  <div class="sec" {% if is_custom_multi %}id="cf-photo-sec"{% if not photo_zones %} style="display:none"{% endif %}{% endif %}>
     <div class="stitle">📷 Fotoğraflar</div>
     <p class="hint" style="margin-bottom:14px;">Kutucuğa tıklayın → fotoğraf seçin → alanda konumlandırın.</p>
     {% set seen_groups = namespace(val=[]) %}
@@ -622,7 +622,8 @@ const EDIT_UNIT_PHOTO_POSITIONS = {{ edit_unit_photo_positions | default({}) | t
 const EDIT_UNIT_TEXT_VALUES     = {{ edit_unit_text_values     | default({}) | tojson }};
 const EDIT_UNIT_TEXT_SIZE_VALUES  = {{ edit_unit_text_size_values  | default({}) | tojson }};
 const EDIT_UNIT_TEXT_COLOR_VALUES = {{ edit_unit_text_color_values | default({}) | tojson }};
-const EDIT_UNIT_BW_OPTION = {{ edit_unit_bw_option | default({}) | tojson }};
+const EDIT_UNIT_BW_OPTION   = {{ edit_unit_bw_option   | default({}) | tojson }};
+const EDIT_UNIT_SIZE_KEYS   = {{ edit_unit_size_keys   | default({}) | tojson }};
 
 // ── Şablon verileri ───────────────────────────────────────────────────────────
 const TMPL_ID       = "{{ tmpl.id }}";
@@ -636,10 +637,13 @@ const PHOTO_ZONES        = {{ photo_zones        | tojson }};
 const TEXT_ZONES         = {{ text_zones         | tojson }};
 const STATIC_IMAGE_ZONES = {{ static_image_zones | tojson }};
 const STATIC_TEXT_ZONES  = {{ static_text_zones  | tojson }};
-const IS_MULTIPAGE     = {{ 'true' if is_multipage_tmpl else 'false' }};
-const ENABLE_BW_OPTION = {{ enable_bw_option | tojson }};
+const IS_MULTIPAGE       = {{ 'true' if is_multipage_tmpl else 'false' }};
+const IS_CUSTOM_MULTI    = {{ 'true' if is_custom_multi else 'false' }};
+const ENABLE_BW_OPTION   = {{ enable_bw_option | tojson }};
 const CALENDAR_ZONES          = {{ calendar_zones | default([]) | tojson }};
 const SELECTABLE_IMAGE_ZONES  = {{ selectable_image_zones | default([]) | tojson }};
+const ALL_VARIANT_ZONES_DATA  = {{ all_variant_zones_data | default({}) | tojson }};
+let _activeZoneSk = Object.keys(ALL_VARIANT_ZONES_DATA)[0] || '';
 const MP_PAGES      = {{ multipage_pages | tojson }};
 const BG_URLS       = {{ bg_urls | tojson }};
 
@@ -1186,6 +1190,13 @@ function switchUnit(u) {
   saveUnitState();
   activeUnit = u;
   _renderUnitTabs();
+  // CUSTOM_MULTI farklı tasarım: üniteye ait varyantın zone'larına geç
+  if (IS_CUSTOM_MULTI && designMode === 'different') {
+    const newSk = unitSizeData[u] || '';
+    if (newSk && newSk !== _activeZoneSk) {
+      _switchZonesSk(newSk);
+    }
+  }
   restoreUnitState(u);
 }
 
@@ -1888,12 +1899,19 @@ async function _buildUnitFormData(u, fd, prefix) {
   const unitBw   = ENABLE_BW_OPTION ? (unitBwData[u]   || 'color') : 'color';
   const unitSize = unitSizeData[u] || (document.getElementById('f-size')?.value || '');
 
+  // CUSTOM_MULTI: üniteye ait varyantın zone ve oranını kullan
+  const _uvd = (IS_CUSTOM_MULTI && unitSize && ALL_VARIANT_ZONES_DATA[unitSize]) ? ALL_VARIANT_ZONES_DATA[unitSize] : null;
+  const _unitPhotoZones = _uvd ? _uvd.photo_zones : PHOTO_ZONES;
+  const _unitTextZones  = _uvd ? _uvd.text_zones  : TEXT_ZONES;
+  const _unitOutRatio   = (_uvd && _uvd.out_ratio) ? _uvd.out_ratio : OUT_RATIO;
+
   const seenGrp = {};
   for (const [ziStr, d] of Object.entries(sd)) {
     const zi   = parseInt(ziStr);
-    const zone = PHOTO_ZONES[zi];
+    const zone = _unitPhotoZones[zi];
+    if (!zone) continue;
     const gname = zone.group_name || '';
-    const outW = 1200, outH = Math.round(outW / ((zone.w / zone.h) * OUT_RATIO));
+    const outW = 1200, outH = Math.round(outW / ((zone.w / zone.h) * _unitOutRatio));
     const tmp  = document.createElement('canvas');
     tmp.width  = outW; tmp.height = outH;
     const tctx = tmp.getContext('2d');
@@ -1925,7 +1943,7 @@ async function _buildUnitFormData(u, fd, prefix) {
     }));
   }
 
-  TEXT_ZONES.forEach((zone, zi) => {
+  _unitTextZones.forEach((zone, zi) => {
     let val, size, color;
     if (u === activeUnit) {
       val   = document.getElementById(`tz-text-${zi}`)?.value?.trim() || '';
@@ -1941,13 +1959,15 @@ async function _buildUnitFormData(u, fd, prefix) {
     fd.append(`${prefix}text_color_${zone.label}`, color);
   });
 
-  if (CALENDAR_ZONES.length) {
+  const _unitCalZones = _uvd ? (_uvd.calendar_zones || []) : CALENDAR_ZONES;
+  if (_unitCalZones.length) {
     fd.append(`${prefix}cal_day`,   cal.day   || '');
     fd.append(`${prefix}cal_month`, cal.month || '');
     fd.append(`${prefix}cal_year`,  cal.year  || '');
   }
 
-  SELECTABLE_IMAGE_ZONES.forEach((zone, zi) => {
+  const _unitSeliZones = _uvd ? (_uvd.selectable_image_zones || []) : SELECTABLE_IMAGE_ZONES;
+  _unitSeliZones.forEach((zone, zi) => {
     const file = sei[zi] || '';
     if (file) fd.append(`${prefix}selectable_${zone.label}`, file);
   });
@@ -2182,6 +2202,92 @@ if (CALENDAR_ZONES.length) {
 })();
 {% endif %}
 
+// ── CUSTOM_MULTI: varyant geçişi için yardımcı fonksiyonlar ─────────────────
+function _vmEsc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function _vmReplaceArr(arr, items) {
+  arr.length = 0;
+  if (items) items.forEach(z => arr.push(z));
+}
+
+function _rebuildPhotoSec() {
+  const sec = document.getElementById('cf-photo-sec');
+  if (!sec) return;
+  if (!PHOTO_ZONES.length) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+  const seenGrp = {};
+  let html = '<div class="stitle">📷 Fotoğraflar</div>';
+  html += '<p class="hint" style="margin-bottom:14px;">Kutucuğa tıklayın → fotoğraf seçin → alanda konumlandırın.</p>';
+  PHOTO_ZONES.forEach((zone, i) => {
+    const gname  = zone.group_name || '';
+    const flabel = _vmEsc(zone.form_label || zone.label || '');
+    const reqStar = zone.required ? ' <span style="color:#f44336;font-weight:700;">*</span>' : '';
+    const desc   = zone.description ? `<p style="font-size:11px;color:var(--muted);font-style:italic;margin:-4px 0 8px;">${_vmEsc(zone.description)}</p>` : '';
+    if (gname === '') {
+      html += `<div class="photo-group" id="pg-${i}"><div class="pg-header"><span class="pg-title">${flabel}${reqStar}</span><span class="pg-count" id="pgc-${i}">0/1</span></div>${desc}<div class="pg-slots" id="pgs-${i}"></div></div>`;
+    } else if (!seenGrp[gname]) {
+      const gc = PHOTO_ZONES.filter(z => (z.group_name||'') === gname).length;
+      seenGrp[gname] = gc;
+      html += `<div class="photo-group" id="pg-grp-${_vmEsc(gname)}"><div class="pg-header"><span class="pg-title">${flabel}${reqStar}</span><span class="pg-count" id="pgc-grp-${_vmEsc(gname)}">0/${gc}</span></div>${desc}<p class="hint" style="margin-bottom:10px;">${gc} fotoğraf yükleyin.</p><div class="pg-slots" id="pgs-grp-${_vmEsc(gname)}"></div></div>`;
+    }
+  });
+  sec.innerHTML = html;
+  buildSlots();
+}
+
+function _rebuildTextSec() {
+  const sec     = document.getElementById('cf-text-sec');
+  const editors = document.getElementById('tz-editors');
+  if (!editors) return;
+  if (sec) sec.style.display = TEXT_ZONES.length ? '' : 'none';
+  if (!TEXT_ZONES.length) return;
+  let html = '';
+  TEXT_ZONES.forEach((zone, zi) => {
+    const reqStar = zone.required ? ' <span style="color:#f44336;font-weight:700;">*</span>' : '';
+    const desc    = zone.description ? `<div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:2px;margin-bottom:5px;">${_vmEsc(zone.description)}</div>` : '';
+    const defText = _vmEsc(zone.default_text || '');
+    const color   = _vmEsc(zone.color || '#ffffff');
+    html += `<div class="tz-editor">
+      <div class="tz-name">${_vmEsc(zone.label)}${reqStar}</div>${desc}
+      <input type="text" id="tz-text-${zi}" placeholder="${_vmEsc(zone.label)} metnini girin" data-default="${defText}" value="${defText}"
+             onfocus="if(this.dataset.default&&this.value===this.dataset.default)this.value=''"
+             onblur="if(!this.value.trim()&&this.dataset.default)this.value=this.dataset.default;refreshMini()"
+             oninput="refreshMini()">
+      <div class="tz-row"><label>Boyut</label>
+        <input type="range" id="tz-size-${zi}" min="40" max="200" value="100"
+               oninput="document.getElementById('tz-sv-${zi}').textContent=this.value+'%';refreshMini()">
+        <span class="tz-val" id="tz-sv-${zi}">100%</span></div>
+      <div class="tz-row"><label>Renk</label>
+        <input type="color" id="tz-color-${zi}" value="${color}" oninput="refreshMini()"></div>
+    </div>`;
+  });
+  editors.innerHTML = html;
+}
+
+function _switchZonesSk(sk) {
+  if (!IS_CUSTOM_MULTI || !sk || !ALL_VARIANT_ZONES_DATA[sk] || sk === _activeZoneSk) return;
+  _activeZoneSk = sk;
+  const vd = ALL_VARIANT_ZONES_DATA[sk];
+  _vmReplaceArr(PHOTO_ZONES,            vd.photo_zones || []);
+  _vmReplaceArr(TEXT_ZONES,             vd.text_zones || []);
+  _vmReplaceArr(CALENDAR_ZONES,         vd.calendar_zones || []);
+  _vmReplaceArr(SELECTABLE_IMAGE_ZONES, vd.selectable_image_zones || []);
+  _vmReplaceArr(STATIC_IMAGE_ZONES,     vd.static_image_zones || []);
+  _vmReplaceArr(STATIC_TEXT_ZONES,      vd.static_text_zones || []);
+  Object.keys(_maskImgCache).forEach(k => delete _maskImgCache[k]);
+  Object.keys(_maskLoadPromise).forEach(k => delete _maskLoadPromise[k]);
+  if (vd.out_ratio) OUT_RATIO = vd.out_ratio;
+  if (vd.bg_url && vd.bg_url !== BG_URL) {
+    BG_URL = vd.bg_url;
+    bgImage = null;
+    bgLoading = false;
+  }
+  _rebuildPhotoSec();
+  _rebuildTextSec();
+  loadBg().then(bg => { if (bg) initMini(); });
+}
+
 // ── CUSTOM_MULTI / MDF: ebat seçince sunucudan doğru arka plan + oran al ─────
 (function() {
   const sEl = document.getElementById('f-size');
@@ -2199,6 +2305,15 @@ if (CALENDAR_ZONES.length) {
   sEl.addEventListener('change', function() {
     const sk = this.value;
     if (!sk) return;
+    unitSizeData[activeUnit] = sk;
+    // CUSTOM_MULTI: yerel veri kullan (sunucu isteği gerekmez)
+    if (IS_CUSTOM_MULTI && ALL_VARIANT_ZONES_DATA[sk]) {
+      _switchZonesSk(sk);
+      // Aktif ünite için slotData'yı sıfırla (zone yapısı değişti)
+      Object.keys(slotData).forEach(k => delete slotData[k]);
+      PHOTO_ZONES.forEach((_, zi) => { drawSlot(zi); updateCount(zi); });
+      return;
+    }
     fetch('/form/' + TMPL_ID + '/variant_info?' + SIZE_PARAM + '=' + encodeURIComponent(sk))
       .then(function(res) { return res.json(); })
       .then(function(data) {
@@ -2241,8 +2356,13 @@ if (EDIT_MODE && EDIT_UNIT_COUNT > 1 && !EDIT_SAME_DESIGN) {
     const tv  = EDIT_UNIT_TEXT_VALUES[String(u)]      || {};
     const tsv = EDIT_UNIT_TEXT_SIZE_VALUES[String(u)] || {};
     const tcv = EDIT_UNIT_TEXT_COLOR_VALUES[String(u)] || {};
+    const uSk = EDIT_UNIT_SIZE_KEYS[String(u)] || '';
+    if (uSk) unitSizeData[u] = uSk;
+    // CUSTOM_MULTI: üniteye ait varyantın zone'larını kullan
+    const uVd = (IS_CUSTOM_MULTI && uSk && ALL_VARIANT_ZONES_DATA[uSk]) ? ALL_VARIANT_ZONES_DATA[uSk] : null;
+    const uTextZones = uVd ? uVd.text_zones : TEXT_ZONES;
     const td  = {};
-    TEXT_ZONES.forEach((zone, zi) => {
+    uTextZones.forEach((zone, zi) => {
       const lbl = zone.label;
       td[zi] = {
         value: tv[lbl]  !== undefined ? tv[lbl]  : (zone.default_text || ''),
@@ -2253,6 +2373,9 @@ if (EDIT_MODE && EDIT_UNIT_COUNT > 1 && !EDIT_SAME_DESIGN) {
     unitTextData[u] = td;
     unitBwData[u] = EDIT_UNIT_BW_OPTION[String(u)] || 'color';
   }
+  // Ünite 0'ın varyantına geç (edit modunda ilk ünite için doğru zone'ları yükle)
+  const firstUnitSk = unitSizeData[0] || '';
+  if (IS_CUSTOM_MULTI && firstUnitSk) _switchZonesSk(firstUnitSk);
   restoreUnitState(0);
 }
 

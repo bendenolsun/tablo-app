@@ -562,7 +562,14 @@ def save_zones(tid):
 
     data = request.json
     ptype = tmpl.get('product_type')
-    if ptype == 'MDF':
+    # Toplu varyant zone güncelleme — tek istekte gönderilir, race condition olmaz
+    if ptype in ('MDF', 'CUSTOM_MULTI') and 'all_variant_zones' in data:
+        vkey = 'mdf_variants' if ptype == 'MDF' else 'custom_variants'
+        variants_dict = tmpl.get(vkey, {})
+        for sk, zones_list in data['all_variant_zones'].items():
+            if sk in variants_dict:
+                variants_dict[sk]['zones'] = zones_list
+    elif ptype == 'MDF':
         size_key = data.get('size_key')
         zones    = data.get('zones', [])
         if size_key and size_key in tmpl.get('mdf_variants', {}):
@@ -934,11 +941,12 @@ def customer_form(tid):
     is_custom_multi   = (ptype == 'CUSTOM_MULTI')
     is_multipage_tmpl = (ptype == 'MULTIPAGE')
 
-    multipage_pages    = []
-    page_photo_map     = {}
-    page_text_map      = {}
-    page_calendar_map  = {}
-    bg_urls            = {}
+    multipage_pages         = []
+    page_photo_map          = {}
+    page_text_map           = {}
+    page_calendar_map       = {}
+    bg_urls                 = {}
+    all_variant_zones_data  = {}
     bg_url             = ''   # müşteri formunda /static/uploads/ üzerinden (auth gerekmez)
 
     if is_mdf:
@@ -970,6 +978,21 @@ def customer_form(tid):
         }
         _bg   = first_variant.get('background', '')
         bg_url = f"/static/uploads/{_bg}" if _bg else ''
+        # Tüm varyantların zone verilerini müşteri formuna gönder (çoklu ünite zone geçişi için)
+        all_variant_zones_data = {}
+        for _sk, _sv in tmpl['custom_variants'].items():
+            _sv_zones = _sv.get('zones', [])
+            _sv_bg = _sv.get('background', '')
+            all_variant_zones_data[_sk] = {
+                'photo_zones':            [z for z in _sv_zones if z.get('type') == 'photo'],
+                'text_zones':             [z for z in _sv_zones if z.get('type') == 'text'],
+                'static_image_zones':     [z for z in _sv_zones if z.get('type') == 'static_image'],
+                'static_text_zones':      [z for z in _sv_zones if z.get('type') == 'static_text'],
+                'calendar_zones':         [z for z in _sv_zones if z.get('type') == 'calendar'],
+                'selectable_image_zones': [z for z in _sv_zones if z.get('type') == 'selectable_image'],
+                'bg_url':    f"/static/uploads/{_sv_bg}" if _sv_bg else '',
+                'out_ratio': round(_sv.get('w_cm', 1) / _sv.get('h_cm', 1), 6) if _sv.get('h_cm') else None,
+            }
     elif is_multipage_tmpl:
         pages_data = tmpl.get('pages', {})
         multipage_pages = sorted(pages_data.keys(), key=int)
@@ -1078,6 +1101,7 @@ def customer_form(tid):
                            variant_sizes=variant_sizes, MDF_SIZES=MDF_SIZES,
                            out_ratio=out_ratio, variant_ratios=variant_ratios,
                            variant_backgrounds=variant_backgrounds,
+                           all_variant_zones_data=all_variant_zones_data if is_custom_multi else {},
                            enable_bw_option=tmpl.get('enable_bw_option', False),
                            edit_mode=False, edit_order=None,
                            edit_photo_urls={}, edit_group_urls={},
@@ -1306,8 +1330,17 @@ def submit_form(tid):
         for unit_idx in range(unit_count):
             prefix   = f'u{unit_idx}_' if unit_count > 1 else ''
             unit_num = unit_idx if unit_count > 1 else None
+            # CUSTOM_MULTI / MDF: her ünite kendi varyantının zone'larını kullanır
+            if ptype == 'CUSTOM_MULTI' and unit_count > 1:
+                _u_sk = (request.form.get(f'{prefix}custom_size') or request.form.get('custom_size') or '').strip()
+                _u_zones = tmpl['custom_variants'].get(_u_sk, {}).get('zones', zones) if _u_sk else zones
+            elif ptype == 'MDF' and unit_count > 1:
+                _u_sk = (request.form.get(f'{prefix}mdf_size') or request.form.get('mdf_size') or '').strip()
+                _u_zones = tmpl['mdf_variants'].get(_u_sk, {}).get('zones', zones) if _u_sk else zones
+            else:
+                _u_zones = zones
             unit_data = _extract_unit_data(
-                request.files, request.form, prefix, order_id, zones, tmpl, unit_num
+                request.files, request.form, prefix, order_id, _u_zones, tmpl, unit_num
             )
             unit_data['unit_num'] = unit_num
             units.append(unit_data)
@@ -2336,11 +2369,12 @@ def edit_order_get(order_id):
     is_custom_multi   = (ptype == 'CUSTOM_MULTI')
     is_multipage_tmpl = (ptype == 'MULTIPAGE')
 
-    multipage_pages   = []
-    page_photo_map    = {}
-    page_text_map     = {}
-    page_calendar_map = {}
-    bg_urls         = {}
+    multipage_pages        = []
+    page_photo_map         = {}
+    page_text_map          = {}
+    page_calendar_map      = {}
+    bg_urls                = {}
+    all_variant_zones_data = {}
 
     if is_mdf:
         mdf_sk = order.get('mdf_size_key') or next(iter(tmpl['mdf_variants']), None)
@@ -2367,6 +2401,19 @@ def edit_order_get(order_id):
         zones         = variant.get('zones', [])
         variant_sizes = {k: {'label': v['label'], 'w_cm': v['w_cm'], 'h_cm': v['h_cm']}
                          for k, v in tmpl['custom_variants'].items()}
+        for _sk, _sv in tmpl['custom_variants'].items():
+            _sv_zones = _sv.get('zones', [])
+            _sv_bg = _sv.get('background', '')
+            all_variant_zones_data[_sk] = {
+                'photo_zones':            [z for z in _sv_zones if z.get('type') == 'photo'],
+                'text_zones':             [z for z in _sv_zones if z.get('type') == 'text'],
+                'static_image_zones':     [z for z in _sv_zones if z.get('type') == 'static_image'],
+                'static_text_zones':      [z for z in _sv_zones if z.get('type') == 'static_text'],
+                'calendar_zones':         [z for z in _sv_zones if z.get('type') == 'calendar'],
+                'selectable_image_zones': [z for z in _sv_zones if z.get('type') == 'selectable_image'],
+                'bg_url':    f"/static/uploads/{_sv_bg}" if _sv_bg else '',
+                'out_ratio': round(_sv.get('w_cm', 1) / _sv.get('h_cm', 1), 6) if _sv.get('h_cm') else None,
+            }
     elif is_multipage_tmpl:
         pages_data = tmpl.get('pages', {})
         multipage_pages = sorted(pages_data.keys(), key=int)
@@ -2497,7 +2544,8 @@ def edit_order_get(order_id):
     edit_unit_text_values     = {}
     edit_unit_text_size_values  = {}
     edit_unit_text_color_values = {}
-    edit_unit_bw_option = {}
+    edit_unit_bw_option  = {}
+    edit_unit_size_keys  = {}  # {str(u_idx): custom_size_key}
 
     units_data = order.get('units', [])
     if not edit_same_design and len(units_data) > 1:
@@ -2531,6 +2579,8 @@ def edit_order_get(order_id):
             edit_unit_text_size_values[str(u_idx)]  = unit.get('text_size_values', {})
             edit_unit_text_color_values[str(u_idx)] = unit.get('text_color_values', {})
             edit_unit_bw_option[str(u_idx)]       = unit.get('bw_option', 'color')
+            if is_custom_multi:
+                edit_unit_size_keys[str(u_idx)] = unit.get('unit_size_key', '')
 
     return render_template('customer_form.html', tmpl=tmpl,
                            photo_zones=photo_zones, text_zones=text_zones,
@@ -2549,6 +2599,7 @@ def edit_order_get(order_id):
                            variant_sizes=variant_sizes, MDF_SIZES=MDF_SIZES,
                            out_ratio=out_ratio, variant_ratios=variant_ratios,
                            variant_backgrounds=variant_backgrounds,
+                           all_variant_zones_data=all_variant_zones_data if is_custom_multi else {},
                            enable_bw_option=tmpl.get('enable_bw_option', False),
                            edit_mode=True, edit_order=order,
                            edit_photo_urls=edit_photo_urls,
@@ -2563,7 +2614,8 @@ def edit_order_get(order_id):
                            edit_unit_text_values=edit_unit_text_values,
                            edit_unit_text_size_values=edit_unit_text_size_values,
                            edit_unit_text_color_values=edit_unit_text_color_values,
-                           edit_unit_bw_option=edit_unit_bw_option)
+                           edit_unit_bw_option=edit_unit_bw_option,
+                           edit_unit_size_keys=edit_unit_size_keys)
 
 @app.route('/admin/orders/<order_id>/edit', methods=['POST'])
 def edit_order_post(order_id):
