@@ -1206,13 +1206,34 @@ function switchUnit(u) {
 
 // Birim u'yu geçici olarak render ederek önizleme üretir, sonra geri döner
 async function _renderPrevForUnit(u) {
-  // Mevcut DOM durumunu sakla
   const savedSlot = Object.assign({}, slotData);
   const savedSeli = Object.assign({}, _seliSelected);
   const savedTexts = {}, savedCal = {};
   let savedBwVal = null;
 
-  // Unit u'nun verilerini geçici olarak yükle
+  // CUSTOM_MULTI çoklu ünite: aktif olmayan ünitenin varyant zone'larını geçici yükle
+  const _unitSk = unitSizeData[u] || '';
+  const _needZoneSwitch = IS_CUSTOM_MULTI && u !== activeUnit && _unitSk && ALL_VARIANT_ZONES_DATA[_unitSk];
+  const _savedZones = {};
+  if (_needZoneSwitch) {
+    _savedZones.photo    = [...PHOTO_ZONES];
+    _savedZones.text     = [...TEXT_ZONES];
+    _savedZones.cal      = [...CALENDAR_ZONES];
+    _savedZones.seli     = [...SELECTABLE_IMAGE_ZONES];
+    _savedZones.staticI  = [...STATIC_IMAGE_ZONES];
+    _savedZones.staticT  = [...STATIC_TEXT_ZONES];
+    const _uvd = ALL_VARIANT_ZONES_DATA[_unitSk];
+    _vmReplaceArr(PHOTO_ZONES,            _uvd.photo_zones            || []);
+    _vmReplaceArr(TEXT_ZONES,             _uvd.text_zones             || []);
+    _vmReplaceArr(CALENDAR_ZONES,         _uvd.calendar_zones         || []);
+    _vmReplaceArr(SELECTABLE_IMAGE_ZONES, _uvd.selectable_image_zones || []);
+    _vmReplaceArr(STATIC_IMAGE_ZONES,     _uvd.static_image_zones     || []);
+    _vmReplaceArr(STATIC_TEXT_ZONES,      _uvd.static_text_zones      || []);
+    // Metin inputlarını ünitenin varyantına göre yeniden oluştur
+    _rebuildTextSec();
+  }
+
+  // Ünite verilerini DOM'a yükle
   Object.keys(slotData).forEach(k => delete slotData[k]);
   Object.assign(slotData, unitSlotData[u] || {});
   Object.keys(_seliSelected).forEach(k => delete _seliSelected[k]);
@@ -1237,19 +1258,23 @@ async function _renderPrevForUnit(u) {
   const monEl = document.getElementById('cal-month'); if (monEl) { savedCal.month = monEl.value; monEl.value   = uCal.month || ''; }
   const yrEl  = document.getElementById('cal-year');  if (yrEl)  { savedCal.year  = yrEl.value;  yrEl.value    = uCal.year  || ''; }
 
-  // Üniteye özgü arka plan + oran uygula (MDF / CUSTOM_MULTI çoklu ünite)
-  const _savedBgUrl    = BG_URL;
-  const _savedRatio    = OUT_RATIO;
-  const _savedBgImage  = bgImage;
+  // Arka plan + oran geçişi (MDF ve CUSTOM_MULTI)
+  const _savedBgUrl     = BG_URL;
+  const _savedRatio     = OUT_RATIO;
+  const _savedBgImage   = bgImage;
   const _savedBgLoading = bgLoading;
-  const _unitSk = unitSizeData[u] || '';
   if (_unitSk) {
+    // MDF
     if (VARIANT_BACKGROUNDS[_unitSk] && VARIANT_BACKGROUNDS[_unitSk] !== BG_URL) {
-      BG_URL    = VARIANT_BACKGROUNDS[_unitSk];
-      bgImage   = null;
-      bgLoading = false;
+      BG_URL = VARIANT_BACKGROUNDS[_unitSk]; bgImage = null; bgLoading = false;
     }
     if (VARIANT_RATIOS[_unitSk]) OUT_RATIO = VARIANT_RATIOS[_unitSk];
+    // CUSTOM_MULTI
+    if (_needZoneSwitch) {
+      const _uvd = ALL_VARIANT_ZONES_DATA[_unitSk];
+      if (_uvd.bg_url) { BG_URL = _uvd.bg_url; bgImage = null; bgLoading = false; }
+      if (_uvd.out_ratio) OUT_RATIO = _uvd.out_ratio;
+    }
   }
 
   // Render
@@ -1287,6 +1312,27 @@ async function _renderPrevForUnit(u) {
   OUT_RATIO = _savedRatio;
   bgImage   = _savedBgImage;
   bgLoading = _savedBgLoading;
+
+  // CUSTOM_MULTI: zone'ları ve metin bölümünü geri yükle
+  if (_needZoneSwitch) {
+    _vmReplaceArr(PHOTO_ZONES,            _savedZones.photo);
+    _vmReplaceArr(TEXT_ZONES,             _savedZones.text);
+    _vmReplaceArr(CALENDAR_ZONES,         _savedZones.cal);
+    _vmReplaceArr(SELECTABLE_IMAGE_ZONES, _savedZones.seli);
+    _vmReplaceArr(STATIC_IMAGE_ZONES,     _savedZones.staticI);
+    _vmReplaceArr(STATIC_TEXT_ZONES,      _savedZones.staticT);
+    _rebuildTextSec();
+    // Aktif ünitenin metin değerlerini yeni oluşturulan inputlara yaz
+    const _aTd = unitTextData[activeUnit] || {};
+    TEXT_ZONES.forEach((zone, zi) => {
+      const inp = document.getElementById(`tz-text-${zi}`);
+      if (inp) inp.value = _aTd[zi]?.value ?? (zone.default_text || '');
+      const sz = document.getElementById(`tz-size-${zi}`);
+      if (sz) sz.value = _aTd[zi]?.size ?? '100';
+      const cl = document.getElementById(`tz-color-${zi}`);
+      if (cl) cl.value = _aTd[zi]?.color ?? (zone.color || '#000000');
+    });
+  }
 }
 
 function makeSlot(zi,w,h) {
@@ -1619,24 +1665,29 @@ function _isImgGrayscale(img) {
 }
 
 function _validateUnitState(u) {
-  // Belirli bir ünite için verilerle validation yapar.
-  // Aktif üniteyse DOM'dan, değilse kaydedilmiş arraylerden okur.
   const sd   = (u === activeUnit) ? slotData       : (unitSlotData[u] || {});
   const td   = (u === activeUnit) ? null            : (unitTextData[u] || {});
   const sei  = (u === activeUnit) ? _seliSelected   : (unitSeliData[u] || {});
 
+  // CUSTOM_MULTI: her ünite kendi varyantının zone'larıyla doğrulanır
+  const _uSk  = IS_CUSTOM_MULTI ? (unitSizeData[u] || '') : '';
+  const _uvd  = (_uSk && ALL_VARIANT_ZONES_DATA[_uSk]) ? ALL_VARIANT_ZONES_DATA[_uSk] : null;
+  const _vPhoto = _uvd ? (_uvd.photo_zones            || []) : PHOTO_ZONES;
+  const _vText  = _uvd ? (_uvd.text_zones             || []) : TEXT_ZONES;
+  const _vSeli  = _uvd ? (_uvd.selectable_image_zones || []) : SELECTABLE_IMAGE_ZONES;
+  const _vCal   = _uvd ? (_uvd.calendar_zones         || []) : CALENDAR_ZONES;
+
   const missing = [];
 
-  PHOTO_ZONES.forEach((zone, zi) => {
+  _vPhoto.forEach((zone, zi) => {
     if (!zone.required) return;
-    const gname = zone.group_name || '';
     if (!sd[zi]) missing.push((zone.form_label || zone.label) + (unitCount > 1 ? ` (${u+1}. ürün)` : ''));
   });
-  SELECTABLE_IMAGE_ZONES.forEach((zone, zi) => {
+  _vSeli.forEach((zone, zi) => {
     if (!zone.required) return;
     if (!sei[zi]) missing.push(zone.label + (unitCount > 1 ? ` (${u+1}. ürün)` : ''));
   });
-  TEXT_ZONES.forEach((zone, zi) => {
+  _vText.forEach((zone, zi) => {
     if (!zone.required) return;
     let val;
     if (u === activeUnit) {
@@ -1647,7 +1698,7 @@ function _validateUnitState(u) {
     if (!val) missing.push(zone.label + (unitCount > 1 ? ` (${u+1}. ürün)` : ''));
   });
   // Takvim: kısmi tarih (bazı alanlar dolu bazıları boş) hata sayılır
-  if (CALENDAR_ZONES.length) {
+  if (_vCal.length) {
     let cDay, cMonth, cYear;
     if (u === activeUnit) {
       cDay   = parseInt(document.getElementById('cal-day')?.value   || '0') || 0;
@@ -1692,7 +1743,7 @@ async function openPrev() {
     const hasAny = cDay || cMonth || cYear;
     // Completely empty is OK (no custom date). Only fail on partial or out-of-range entry.
     if (hasAny && (!cDay || !cMonth || !cYear || cMonth > 12 || cDay > 31 || cYear < 1900 || cYear > 2099)) {
-      const sec = document.getElementById('cal-date-sec');
+      const sec = document.getElementById('cf-cal-sec');
       if (sec) { sec.style.outline='2px solid #f44336'; sec.style.borderRadius='8px'; sec.scrollIntoView({behavior:'smooth',block:'center'}); }
       alert('Lütfen geçerli bir tarih girin (Gün / Ay / Yıl).');
       return;
@@ -2185,7 +2236,7 @@ if (CALENDAR_ZONES.length) {
   ['cal-day','cal-month','cal-year'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', () => {
-      const sec = document.getElementById('cal-date-sec');
+      const sec = document.getElementById('cf-cal-sec');
       if (sec) sec.style.outline = '';
     });
   });
