@@ -255,33 +255,41 @@ input:focus,select:focus{border-color:var(--accent);}
     {% if page_text_map.get(pg_num) %}
     <div style="margin-bottom:14px;">
       <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px;">✏️ Metinler</div>
-      {% for zi, zone in page_text_map[pg_num] %}
-      <div class="tz-editor">
-        <div class="tz-name">{{ zone.label }}{% if zone.required is defined and zone.required %} <span style="color:#f44336;font-weight:700;">*</span>{% endif %}</div>
-        {% if zone.description is defined and zone.description %}<div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:2px;margin-bottom:5px;">{{ zone.description }}</div>{% endif %}
-        <input type="text" id="tz-text-{{ zi }}"
-               placeholder="{{ zone.label }} metnini girin"
-               data-default="{{ zone.default_text or '' }}"
-               value="{{ edit_order.text_values.get(zone.label, zone.default_text or '') if edit_mode else (zone.default_text or '') }}"
-               onfocus="if(this.dataset.default&&this.value===this.dataset.default)this.value=''"
-               onblur="if(!this.value.trim()&&this.dataset.default)this.value=this.dataset.default;refreshMini({{ pg_num }})"
-               oninput="refreshMini({{ pg_num }})">
-        {% set _sz = edit_order.text_size_values.get(zone.label,'100') if edit_mode else '100' %}
-        <div class="tz-row">
-          <label>Boyut</label>
-          <input type="range" id="tz-size-{{ zi }}" min="40" max="200" value="{{ _sz }}"
-                 oninput="document.getElementById('tz-sv-{{ zi }}').textContent=this.value+'%';refreshMini({{ pg_num }})">
-          <span class="tz-val" id="tz-sv-{{ zi }}">{{ _sz }}%</span>
+      <div class="txt-layout">
+        <div>
+          {% for zi, zone in page_text_map[pg_num] %}
+          <div class="tz-editor">
+            <div class="tz-name">{{ zone.label }}{% if zone.required is defined and zone.required %} <span style="color:#f44336;font-weight:700;">*</span>{% endif %}</div>
+            {% if zone.description is defined and zone.description %}<div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:2px;margin-bottom:5px;">{{ zone.description }}</div>{% endif %}
+            <input type="text" id="tz-text-{{ zi }}"
+                   placeholder="{{ zone.label }} metnini girin"
+                   data-default="{{ zone.default_text or '' }}"
+                   value="{{ edit_order.text_values.get(zone.label, zone.default_text or '') if edit_mode else (zone.default_text or '') }}"
+                   onfocus="if(this.dataset.default&&this.value===this.dataset.default)this.value=''"
+                   onblur="if(!this.value.trim()&&this.dataset.default)this.value=this.dataset.default;refreshMini({{ pg_num }})"
+                   oninput="refreshMini({{ pg_num }})">
+            {% set _sz = edit_order.text_size_values.get(zone.label,'100') if edit_mode else '100' %}
+            <div class="tz-row">
+              <label>Boyut</label>
+              <input type="range" id="tz-size-{{ zi }}" min="40" max="200" value="{{ _sz }}"
+                     oninput="document.getElementById('tz-sv-{{ zi }}').textContent=this.value+'%';refreshMini({{ pg_num }})">
+              <span class="tz-val" id="tz-sv-{{ zi }}">{{ _sz }}%</span>
+            </div>
+            {% set _cl = edit_order.text_color_values.get(zone.label, zone.color or '#ffffff') if edit_mode else (zone.color or '#ffffff') %}
+            <div class="tz-row">
+              <label>Renk</label>
+              <input type="color" id="tz-color-{{ zi }}"
+                     value="{{ _cl }}"
+                     oninput="refreshMini({{ pg_num }})">
+            </div>
+          </div>
+          {% endfor %}
         </div>
-        {% set _cl = edit_order.text_color_values.get(zone.label, zone.color or '#ffffff') if edit_mode else (zone.color or '#ffffff') %}
-        <div class="tz-row">
-          <label>Renk</label>
-          <input type="color" id="tz-color-{{ zi }}"
-                 value="{{ _cl }}"
-                 oninput="refreshMini({{ pg_num }})">
+        <div class="txt-mini-wrap" id="miniWrap-{{ pg_num }}">
+          <canvas id="miniC-{{ pg_num }}"></canvas>
+          <div class="txt-mini-lbl">Önizleme</div>
         </div>
       </div>
-      {% endfor %}
     </div>
     {% endif %}
 
@@ -643,10 +651,12 @@ const STATIC_IMAGE_ZONES = {{ static_image_zones | tojson }};
 const STATIC_TEXT_ZONES  = {{ static_text_zones  | tojson }};
 const IS_MULTIPAGE       = {{ 'true' if is_multipage_tmpl else 'false' }};
 const IS_CUSTOM_MULTI    = {{ 'true' if is_custom_multi else 'false' }};
+const IS_MDF             = {{ 'true' if is_mdf else 'false' }};
 const ENABLE_BW_OPTION   = {{ enable_bw_option | tojson }};
 const CALENDAR_ZONES          = {{ calendar_zones | default([]) | tojson }};
 const SELECTABLE_IMAGE_ZONES  = {{ selectable_image_zones | default([]) | tojson }};
 const ALL_VARIANT_ZONES_DATA  = {{ all_variant_zones_data | default({}) | tojson }};
+const ALL_MDF_VARIANT_ZONES   = {{ all_mdf_variant_zones | default({}) | tojson }};
 let _activeZoneSk = Object.keys(ALL_VARIANT_ZONES_DATA)[0] || '';
 const MP_PAGES      = {{ multipage_pages | tojson }};
 const BG_URLS       = {{ bg_urls | tojson }};
@@ -1226,9 +1236,11 @@ async function _renderPrevForUnit(u) {
   const savedTexts = {}, savedCal = {};
   let savedBwVal = null;
 
-  // CUSTOM_MULTI çoklu ünite: aktif olmayan ünitenin varyant zone'larını geçici yükle
+  // Çoklu ünite: doğru varyantın zone'larını geçici yükle (CUSTOM_MULTI aktif olmayan + MDF tüm üniteler)
   const _unitSk = unitSizeData[u] || '';
-  const _needZoneSwitch = IS_CUSTOM_MULTI && u !== activeUnit && _unitSk && ALL_VARIANT_ZONES_DATA[_unitSk];
+  const _needZoneSwitch =
+    (IS_CUSTOM_MULTI && u !== activeUnit && _unitSk && ALL_VARIANT_ZONES_DATA[_unitSk]) ||
+    (IS_MDF && _unitSk && ALL_MDF_VARIANT_ZONES[_unitSk]);
   const _savedZones = {};
   if (_needZoneSwitch) {
     _savedZones.photo    = [...PHOTO_ZONES];
@@ -1237,7 +1249,7 @@ async function _renderPrevForUnit(u) {
     _savedZones.seli     = [...SELECTABLE_IMAGE_ZONES];
     _savedZones.staticI  = [...STATIC_IMAGE_ZONES];
     _savedZones.staticT  = [...STATIC_TEXT_ZONES];
-    const _uvd = ALL_VARIANT_ZONES_DATA[_unitSk];
+    const _uvd = IS_MDF ? ALL_MDF_VARIANT_ZONES[_unitSk] : ALL_VARIANT_ZONES_DATA[_unitSk];
     _vmReplaceArr(PHOTO_ZONES,            _uvd.photo_zones            || []);
     _vmReplaceArr(TEXT_ZONES,             _uvd.text_zones             || []);
     _vmReplaceArr(CALENDAR_ZONES,         _uvd.calendar_zones         || []);
@@ -1284,8 +1296,8 @@ async function _renderPrevForUnit(u) {
       BG_URL = VARIANT_BACKGROUNDS[_unitSk]; bgImage = null; bgLoading = false;
     }
     if (VARIANT_RATIOS[_unitSk]) OUT_RATIO = VARIANT_RATIOS[_unitSk];
-    // CUSTOM_MULTI
-    if (_needZoneSwitch) {
+    // CUSTOM_MULTI: zone verisinden arka plan ve oran al (MDF zaten VARIANT_BACKGROUNDS/RATIOS ile işlendi)
+    if (_needZoneSwitch && IS_CUSTOM_MULTI) {
       const _uvd = ALL_VARIANT_ZONES_DATA[_unitSk];
       if (_uvd.bg_url) { BG_URL = _uvd.bg_url; bgImage = null; bgLoading = false; }
       if (_uvd.out_ratio) OUT_RATIO = _uvd.out_ratio;
@@ -1294,7 +1306,13 @@ async function _renderPrevForUnit(u) {
 
   // Render
   const c = document.getElementById('prevC');
-  const maxW = Math.min(window.innerWidth - 40, 480);
+  let maxW = Math.min(window.innerWidth - 40, 480);
+  // Mobilde canvas yüksekliği modal içine kaydırma gerektirmeden sığsın
+  if (window.innerWidth < 600) {
+    const _tabsH = (unitCount > 1 && designMode === 'different') ? 50 : 0;
+    const _avail = Math.max(200, window.innerHeight * 0.92 - 290 - _tabsH);
+    maxW = Math.min(maxW, Math.max(180, Math.floor(_avail * OUT_RATIO)));
+  }
   c.width = maxW * 2; c.height = Math.round(maxW * 2 / OUT_RATIO);
   c.style.width = maxW + 'px'; c.style.height = Math.round(maxW / OUT_RATIO) + 'px';
   // Aktif olmayan CUSTOM_MULTI ünitesinde sabit ve seçilebilir görselleri yükle
@@ -1594,7 +1612,18 @@ const miniReadyMap={};
 
 async function initMini() {
   if (IS_MULTIPAGE) {
-    // Çoklu sayfada mini önizleme yok (her sayfanın kendi alanı var)
+    await Promise.all(MP_PAGES.map(p => loadBg(p)));
+    for (const pg of MP_PAGES) {
+      if (!TEXT_ZONES.some(z => z.page_num === pg)) continue;
+      const wrap = document.getElementById(`miniWrap-${pg}`);
+      const c    = document.getElementById(`miniC-${pg}`);
+      if (!wrap || !c) continue;
+      const w = wrap.clientWidth || 120;
+      c.width = w*2; c.height = Math.round(w*2/OUT_RATIO);
+      c.style.width = w+'px'; c.style.height = Math.round(w/OUT_RATIO)+'px';
+      miniReadyMap[`pg_${pg}`] = true;
+      refreshMini(pg);
+    }
     return;
   }
   if (!TEXT_ZONES.length) return;
@@ -1612,7 +1641,69 @@ async function initMini() {
 }
 
 function refreshMini(pageNum) {
-  if (IS_MULTIPAGE) return; // çoklu sayfada mini önizleme devre dışı
+  if (IS_MULTIPAGE) {
+    if (pageNum === undefined) return;
+    if (!miniReadyMap[`pg_${pageNum}`]) return;
+    const c = document.getElementById(`miniC-${pageNum}`);
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    const cw = c.width, ch = c.height;
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.fillStyle = '#f5f0e8'; ctx.fillRect(0, 0, cw, ch);
+    const bg = bgImages[pageNum];
+    if (bg) ctx.drawImage(bg, 0, 0, cw, ch);
+    STATIC_IMAGE_ZONES.forEach((zone, i) => {
+      if (zone.page_num !== pageNum) return;
+      const img = staticImgCache[i];
+      if (!img || !img.complete || !img.naturalWidth) return;
+      const zx = zone.x/100*cw, zy = zone.y/100*ch;
+      const zw = zone.w/100*cw, zh = zone.h/100*ch;
+      ctx.save(); ctx.beginPath(); ctx.rect(zx, zy, zw, zh); ctx.clip();
+      ctx.drawImage(img, zx, zy, zw, zh); ctx.restore();
+    });
+    TEXT_ZONES.forEach((zone, zi) => {
+      if (zone.page_num !== pageNum) return;
+      const inp = document.getElementById(`tz-text-${zi}`);
+      const val = (inp?.value?.trim() || zone.default_text || '');
+      if (!val) return;
+      const zx = zone.x/100*cw, zy = zone.y/100*ch;
+      const zw = zone.w/100*cw, zh = zone.h/100*ch;
+      const mult = (parseInt(document.getElementById(`tz-size-${zi}`)?.value) || 100) / 100;
+      const colorOv = document.getElementById(`tz-color-${zi}`)?.value;
+      const z2 = colorOv ? {...zone, color: colorOv} : zone;
+      _renderTextCanvas(ctx, val, z2, zx, zy, zw, zh, ch, mult);
+    });
+    STATIC_TEXT_ZONES.forEach(zone => {
+      if (zone.page_num !== pageNum) return;
+      const val = zone.text; if (!val) return;
+      const zx = zone.x/100*cw, zy = zone.y/100*ch;
+      const zw = zone.w/100*cw, zh = zone.h/100*ch;
+      _renderTextCanvas(ctx, val, zone, zx, zy, zw, zh, ch, 1);
+    });
+    if (CALENDAR_ZONES.some(z => z.page_num === pageNum)) {
+      const calDay   = parseInt(document.getElementById('cal-day')?.value   || '0') || null;
+      const calMonth = parseInt(document.getElementById('cal-month')?.value || '0') || new Date().getMonth()+1;
+      const calYear  = parseInt(document.getElementById('cal-year')?.value  || '0') || new Date().getFullYear();
+      CALENDAR_ZONES.forEach(zone => {
+        if (zone.page_num !== pageNum) return;
+        const zx = zone.x/100*cw, zy = zone.y/100*ch;
+        const zw = zone.w/100*cw, zh = zone.h/100*ch;
+        _drawCalendar(ctx, calDay, calMonth, calYear, zx, zy, zw, zh);
+      });
+    }
+    SELECTABLE_IMAGE_ZONES.forEach((zone, zi) => {
+      if (zone.page_num !== pageNum) return;
+      const file = _seliSelected[zi];
+      if (!file) return;
+      const img = _seliCache[file];
+      if (!img || !img.complete || !img.naturalWidth) return;
+      const zx = zone.x/100*cw, zy = zone.y/100*ch;
+      const zw = zone.w/100*cw, zh = zone.h/100*ch;
+      ctx.save(); ctx.beginPath(); ctx.rect(zx, zy, zw, zh); ctx.clip();
+      ctx.drawImage(img, zx, zy, zw, zh); ctx.restore();
+    });
+    return;
+  }
   if (!miniReadyMap['__single']) return;
   const c=document.getElementById('miniC');
   if (!c) return;
@@ -1863,7 +1954,11 @@ async function renderPrevPage(pgNum) {
   });
   const bg = bgImages[pgNum] || null;
   const c  = document.getElementById('prevC');
-  const maxW = Math.min(window.innerWidth-40,480);
+  let maxW = Math.min(window.innerWidth - 40, 480);
+  if (window.innerWidth < 600) {
+    const _avail = Math.max(200, window.innerHeight * 0.92 - 290);
+    maxW = Math.min(maxW, Math.max(180, Math.floor(_avail * OUT_RATIO)));
+  }
   c.width=maxW*2; c.height=Math.round(maxW*2/OUT_RATIO);
   c.style.width=maxW+'px'; c.style.height=Math.round(maxW/OUT_RATIO)+'px';
   // Sadece bu sayfanın zone'larını çiz
@@ -2502,7 +2597,7 @@ if (EDIT_MODE && EDIT_UNIT_COUNT > 1 && !EDIT_SAME_DESIGN) {
 saveUnitState(); // ünite 0'ın başlangıç durumunu kaydet
 if (EDIT_MODE) preloadEditPhotos();
 if (IS_MULTIPAGE) {
-  MP_PAGES.forEach(p => loadBg(p));
+  initMini(); // arka planları yükle ve sayfa başına mini canvas kur
 } else {
   loadBg().then(()=>initMini());
 }

@@ -889,6 +889,33 @@ const canvasInner = document.getElementById('canvas-inner');
 const bgImg       = document.getElementById('bg-img');
 const selBox      = document.getElementById('sel-box');
 
+// Sabitleri init bloğundan önce tanımla (TDZ hatalarını önlemek için)
+const TMPL_DIMS = {
+{% if tmpl.product_type == 'CUSTOM' %}
+  w_cm: {{ tmpl.w_cm | default(0) }}, h_cm: {{ tmpl.h_cm | default(0) }},
+  label: {{ tmpl.size_label | default('') | tojson }}
+{% elif tmpl.product_type == 'MULTIPAGE' %}
+  w_cm: {{ tmpl.w_cm | default(0) }}, h_cm: {{ tmpl.h_cm | default(0) }}
+{% elif tmpl.product_type == 'PSTR' %}
+  w_cm: {{ tmpl.w_cm | default(29.7) }}, h_cm: {{ tmpl.h_cm | default(40.0) }}
+{% elif tmpl.product_type == 'A3' %}
+  w_cm: {{ tmpl.w_cm | default(29.7) }}, h_cm: {{ tmpl.h_cm | default(42.0) }}
+{% else %}
+  w_cm: 0, h_cm: 0
+{% endif %}
+};
+
+const _RESIZE_HANDLES = [
+  { id:'nw', lp:0,   tp:0,   cur:'nw-resize' },
+  { id:'n',  lp:50,  tp:0,   cur:'n-resize'  },
+  { id:'ne', lp:100, tp:0,   cur:'ne-resize' },
+  { id:'w',  lp:0,   tp:50,  cur:'w-resize'  },
+  { id:'e',  lp:100, tp:50,  cur:'e-resize'  },
+  { id:'sw', lp:0,   tp:100, cur:'sw-resize' },
+  { id:'s',  lp:50,  tp:100, cur:'s-resize'  },
+  { id:'se', lp:100, tp:100, cur:'se-resize' },
+];
+
 // Init tabs/zones
 if (PTYPE === 'MDF' || PTYPE === 'CUSTOM_MULTI') {
   const variantData = PTYPE === 'MDF' ? MDF_VARS : CUSTOM_VARS;
@@ -2895,17 +2922,6 @@ function computeBBox() {
            cx: (minX + maxX) / 2, cy: (minY + maxY) / 2 };
 }
 
-const _RESIZE_HANDLES = [
-  { id:'nw', lp:0,   tp:0,   cur:'nw-resize' },
-  { id:'n',  lp:50,  tp:0,   cur:'n-resize'  },
-  { id:'ne', lp:100, tp:0,   cur:'ne-resize' },
-  { id:'w',  lp:0,   tp:50,  cur:'w-resize'  },
-  { id:'e',  lp:100, tp:50,  cur:'e-resize'  },
-  { id:'sw', lp:0,   tp:100, cur:'sw-resize' },
-  { id:'s',  lp:50,  tp:100, cur:'s-resize'  },
-  { id:'se', lp:100, tp:100, cur:'se-resize' },
-];
-
 function updateSelectionBox() {
   if (!selBoxEl) return;
   selBoxEl.innerHTML = '';
@@ -3467,21 +3483,6 @@ async function uploadNewBackground(input) {
 }
 
 // ── Boyutlar ─────────────────────────────────────────────────────────────────
-const TMPL_DIMS = {
-{% if tmpl.product_type == 'CUSTOM' %}
-  w_cm: {{ tmpl.w_cm | default(0) }}, h_cm: {{ tmpl.h_cm | default(0) }},
-  label: {{ tmpl.size_label | default('') | tojson }}
-{% elif tmpl.product_type == 'MULTIPAGE' %}
-  w_cm: {{ tmpl.w_cm | default(0) }}, h_cm: {{ tmpl.h_cm | default(0) }}
-{% elif tmpl.product_type == 'PSTR' %}
-  w_cm: {{ tmpl.w_cm | default(29.7) }}, h_cm: {{ tmpl.h_cm | default(40.0) }}
-{% elif tmpl.product_type == 'A3' %}
-  w_cm: {{ tmpl.w_cm | default(29.7) }}, h_cm: {{ tmpl.h_cm | default(42.0) }}
-{% else %}
-  w_cm: 0, h_cm: 0
-{% endif %}
-};
-
 // Aktif varyanta göre boyut inputlarını doldur
 function _syncDimsInputs() {
   const wEl = document.getElementById('dim-w');

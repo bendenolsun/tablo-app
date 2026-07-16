@@ -79,6 +79,11 @@
                  target="_blank" class="btn btn-secondary btn-sm">Görüntüle</a>
               <a href="/admin/print-queue/{{ it.jpg_file | urlencode }}/download"
                  class="btn btn-secondary btn-sm">İndir</a>
+              <button onclick="removeQueueItem('{{ it.jpg_file }}')"
+                      class="btn btn-sm"
+                      style="background:#3a1a1a;color:#f87171;border:1px solid #7f1d1d;">
+                Kuyruktan Çıkar
+              </button>
             </div>
           </td>
         </tr>
@@ -169,7 +174,7 @@
           <td data-label="Şablon">
             <div style="display:flex;align-items:center;gap:12px;">
               {% if t.preview %}
-              <img src="/static/uploads/preview_thumb_{{ t.id }}.jpg"
+              <img src="/static/uploads/preview_thumb_{{ t.id }}.jpg?v={{ t.get('preview_updated_at', '') }}"
                    style="width:44px;height:56px;object-fit:cover;border-radius:5px;
                           border:1px solid var(--border);flex-shrink:0;"
                    alt="önizleme">
@@ -251,5 +256,19 @@
   input.addEventListener('focus', function () { this.style.borderColor = 'var(--accent)'; });
   input.addEventListener('blur',  function () { this.style.borderColor = 'var(--border)'; });
 })();
+
+function removeQueueItem(jpgFile) {
+  if (!confirm('Bu sipariş kuyruktan çıkarılacak. Devam edilsin mi?')) return;
+  fetch('/admin/print-queue/' + encodeURIComponent(jpgFile) + '/remove', { method: 'POST' })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.ok) {
+        location.reload();
+      } else {
+        alert('Hata: ' + (d.error || 'Bilinmeyen hata'));
+      }
+    })
+    .catch(function() { alert('Sunucu hatası.'); });
+}
 </script>
 {% endblock %}
