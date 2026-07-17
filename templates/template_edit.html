@@ -378,6 +378,19 @@ html, body { height:100%; overflow:hidden; }
             <input class="inline-inp" id="edit-default-text" placeholder="Müşteri boş bırakırsa kullanılır" oninput="liveUpdatePreview()">
             <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:3px;margin-top:6px;">Örnek metin önizleme</div>
             <input class="inline-inp" id="edit-preview-text" placeholder="Önizleme metni (kaydedilmez)" oninput="liveUpdatePreview()">
+            <div style="display:flex;gap:8px;align-items:center;margin-top:8px;margin-bottom:6px;">
+              <label style="font-size:11px;color:var(--text-muted);min-width:70px;">Harf aralığı</label>
+              <input id="edit-letter-spacing" type="number" min="0" max="50" step="1" value="0" class="inline-inp" style="margin-bottom:0;width:60px;" oninput="liveUpdatePreview()">
+              <span style="font-size:10px;color:var(--text-dim);">%</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+              <label style="font-size:11px;color:var(--text-muted);min-width:70px;">Satır aralığı</label>
+              <input id="edit-line-spacing" type="number" min="0.8" max="3" step="0.1" value="1.2" class="inline-inp" style="margin-bottom:0;width:60px;" oninput="liveUpdatePreview()">
+            </div>
+            <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);margin-bottom:8px;cursor:pointer;">
+              <input type="checkbox" id="edit-is-bullet" style="width:14px;height:14px;accent-color:var(--accent);flex-shrink:0;" onchange="liveUpdatePreview()">
+              <span>Madde listesi (• her satır madde)</span>
+            </label>
           </div>
           <div id="edit-static-img-opts" style="display:none;">
             <div style="font-size:11px;color:#4ade80;font-weight:700;margin-bottom:6px;">🖼 Sabit Görsel</div>
@@ -446,6 +459,19 @@ html, body { height:100%; overflow:hidden; }
               <button class="align-btn"              data-align="right"  id="edit-stxt-align-right"  onclick="setAlignBtn('stxt','right')"  title="Sağa">▶</button>
               <input type="hidden" id="edit-stxt-align" value="center">
             </div>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:8px;margin-bottom:6px;">
+              <label style="font-size:11px;color:var(--text-muted);min-width:70px;">Harf aralığı</label>
+              <input id="edit-stxt-letter-spacing" type="number" min="0" max="50" step="1" value="0" class="inline-inp" style="margin-bottom:0;width:60px;" oninput="liveUpdatePreview()">
+              <span style="font-size:10px;color:var(--text-dim);">%</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+              <label style="font-size:11px;color:var(--text-muted);min-width:70px;">Satır aralığı</label>
+              <input id="edit-stxt-line-spacing" type="number" min="0.8" max="3" step="0.1" value="1.2" class="inline-inp" style="margin-bottom:0;width:60px;" oninput="liveUpdatePreview()">
+            </div>
+            <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);margin-bottom:8px;cursor:pointer;">
+              <input type="checkbox" id="edit-stxt-is-bullet" style="width:14px;height:14px;accent-color:var(--accent);flex-shrink:0;" onchange="liveUpdatePreview()">
+              <span>Madde listesi (• her satır madde)</span>
+            </label>
           </div>
           <div id="edit-cal-opts" style="display:none;">
             <div style="font-size:11px;color:#f472b6;font-weight:700;margin-bottom:6px;">📅 Takvim Ayarı</div>
@@ -560,6 +586,19 @@ html, body { height:100%; overflow:hidden; }
               </div>
               <div style="font-size:11px;color:var(--text-muted);margin-bottom:3px;">Varsayılan Metin</div>
               <input class="inline-inp" id="zadd-default-text" placeholder="Müşteri boş bırakırsa kullanılır" oninput="renderGhostPreview()">
+              <div style="display:flex;gap:8px;align-items:center;margin-top:8px;margin-bottom:6px;">
+                <label style="font-size:11px;color:var(--text-muted);min-width:70px;">Harf aralığı</label>
+                <input id="zadd-letter-spacing" type="number" min="0" max="50" step="1" value="0" class="inline-inp" style="margin-bottom:0;width:60px;" oninput="renderGhostPreview()">
+                <span style="font-size:10px;color:var(--text-dim);">%</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+                <label style="font-size:11px;color:var(--text-muted);min-width:70px;">Satır aralığı</label>
+                <input id="zadd-line-spacing" type="number" min="0.8" max="3" step="0.1" value="1.2" class="inline-inp" style="margin-bottom:0;width:60px;" oninput="renderGhostPreview()">
+              </div>
+              <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);margin-bottom:8px;cursor:pointer;">
+                <input type="checkbox" id="zadd-is-bullet" style="width:14px;height:14px;accent-color:var(--accent);flex-shrink:0;" onchange="renderGhostPreview()">
+                <span>Madde listesi (• her satır madde)</span>
+              </label>
             </div>
             <div id="static-img-opts" style="display:none;margin-bottom:8px;">
               <div style="font-size:11px;color:#4ade80;font-weight:700;margin-bottom:6px;">🖼 Sabit Görsel Ayarı</div>
@@ -622,6 +661,19 @@ html, body { height:100%; overflow:hidden; }
                 <button class="align-btn"              data-align="right"  id="zadd-stxt-align-right"  onclick="setAlignBtn('zadd-stxt','right')"  title="Sağa">▶</button>
                 <input type="hidden" id="zadd-stxt-align" value="center">
               </div>
+              <div style="display:flex;gap:8px;align-items:center;margin-top:8px;margin-bottom:6px;">
+                <label style="font-size:11px;color:var(--text-muted);min-width:70px;">Harf aralığı</label>
+                <input id="zadd-stxt-letter-spacing" type="number" min="0" max="50" step="1" value="0" class="inline-inp" style="margin-bottom:0;width:60px;" oninput="renderGhostPreview()">
+                <span style="font-size:10px;color:var(--text-dim);">%</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+                <label style="font-size:11px;color:var(--text-muted);min-width:70px;">Satır aralığı</label>
+                <input id="zadd-stxt-line-spacing" type="number" min="0.8" max="3" step="0.1" value="1.2" class="inline-inp" style="margin-bottom:0;width:60px;" oninput="renderGhostPreview()">
+              </div>
+              <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);margin-bottom:8px;cursor:pointer;">
+                <input type="checkbox" id="zadd-stxt-is-bullet" style="width:14px;height:14px;accent-color:var(--accent);flex-shrink:0;" onchange="renderGhostPreview()">
+                <span>Madde listesi (• her satır madde)</span>
+              </label>
             </div>
             <div id="cal-opts" style="display:none;margin-bottom:8px;">
               <div style="font-size:11px;color:#f472b6;font-weight:700;margin-bottom:6px;">📅 Takvim Zone</div>
@@ -1475,8 +1527,11 @@ async function confirmZone() {
     zone.stroke_color = document.getElementById('zstroke-color').value   || null;
     zone.stroke_width = parseFloat(document.getElementById('zstroke-width').value) || 0;
     zone.skew_angle   = parseFloat(document.getElementById('zskew').value) || 0;
-    zone.text_align   = document.getElementById('zadd-txt-align')?.value || 'center';
-    zone.default_text = document.getElementById('zadd-default-text')?.value.trim() || null;
+    zone.text_align      = document.getElementById('zadd-txt-align')?.value || 'center';
+    zone.default_text    = document.getElementById('zadd-default-text')?.value.trim() || null;
+    zone.letter_spacing  = parseFloat(document.getElementById('zadd-letter-spacing')?.value) || 0;
+    zone.line_spacing    = parseFloat(document.getElementById('zadd-line-spacing')?.value) || 1.2;
+    zone.is_bullet_list  = document.getElementById('zadd-is-bullet')?.checked || false;
   }
   if (currentTool === 'photo') {
     const groupName = document.getElementById('zgroup_name').value.trim();
@@ -1505,8 +1560,11 @@ async function confirmZone() {
     zone.italic       = document.getElementById('zstatic_italic').checked        || false;
     zone.stroke_color = document.getElementById('zstatic_stroke_color').value    || null;
     zone.stroke_width = parseFloat(document.getElementById('zstatic_stroke_width').value) || 0;
-    zone.skew_angle   = parseFloat(document.getElementById('zstatic_skew').value) || 0;
-    zone.text_align   = document.getElementById('zadd-stxt-align')?.value || 'center';
+    zone.skew_angle      = parseFloat(document.getElementById('zstatic_skew').value) || 0;
+    zone.text_align      = document.getElementById('zadd-stxt-align')?.value || 'center';
+    zone.letter_spacing  = parseFloat(document.getElementById('zadd-stxt-letter-spacing')?.value) || 0;
+    zone.line_spacing    = parseFloat(document.getElementById('zadd-stxt-line-spacing')?.value) || 1.2;
+    zone.is_bullet_list  = document.getElementById('zadd-stxt-is-bullet')?.checked || false;
   }
   if (currentTool === 'calendar') {
     zone.color = document.getElementById('zcal-color')?.value || '#ffffff';
@@ -1561,29 +1619,35 @@ async function renderGhostPreview() {
   if (z.rotation) el.style.transform = `rotate(${z.rotation.toFixed(1)}deg)`;
   else el.style.transform = '';
   el.innerHTML = '';
-  let displayText, color, fontFile, bold, italic, strokeColor, strokeWidth, skewAngle, textAlign, fontSize;
+  let displayText, color, fontFile, bold, italic, strokeColor, strokeWidth, skewAngle, textAlign, fontSize, lineSpacing, letterSpacing, isBullet;
   if (currentTool === 'text') {
-    displayText = document.getElementById('zadd-default-text')?.value.trim() || document.getElementById('zlabel')?.value.trim() || '';
-    color       = document.getElementById('zcolor')?.value || '#ffffff';
-    fontFile    = document.getElementById('zfont')?.value || 'Roboto-Regular.ttf';
-    bold        = document.getElementById('zbold')?.checked || false;
-    italic      = document.getElementById('zitalic')?.checked || false;
-    strokeColor = document.getElementById('zstroke-color')?.value || null;
-    strokeWidth = parseFloat(document.getElementById('zstroke-width')?.value) || 0;
-    skewAngle   = parseFloat(document.getElementById('zskew')?.value) || 0;
-    textAlign   = document.getElementById('zadd-txt-align')?.value || 'center';
-    fontSize    = parseFloat(document.getElementById('zfsize')?.value) || 3;
+    displayText   = document.getElementById('zadd-default-text')?.value.trim() || document.getElementById('zlabel')?.value.trim() || '';
+    color         = document.getElementById('zcolor')?.value || '#ffffff';
+    fontFile      = document.getElementById('zfont')?.value || 'Roboto-Regular.ttf';
+    bold          = document.getElementById('zbold')?.checked || false;
+    italic        = document.getElementById('zitalic')?.checked || false;
+    strokeColor   = document.getElementById('zstroke-color')?.value || null;
+    strokeWidth   = parseFloat(document.getElementById('zstroke-width')?.value) || 0;
+    skewAngle     = parseFloat(document.getElementById('zskew')?.value) || 0;
+    textAlign     = document.getElementById('zadd-txt-align')?.value || 'center';
+    fontSize      = parseFloat(document.getElementById('zfsize')?.value) || 3;
+    lineSpacing   = parseFloat(document.getElementById('zadd-line-spacing')?.value) || 1.2;
+    letterSpacing = parseFloat(document.getElementById('zadd-letter-spacing')?.value) || 0;
+    isBullet      = document.getElementById('zadd-is-bullet')?.checked || false;
   } else {
-    displayText = document.getElementById('zstatic_content')?.value.trim() || document.getElementById('zlabel')?.value.trim() || '';
-    color       = document.getElementById('zstatic_color')?.value || '#ffffff';
-    fontFile    = document.getElementById('zstatic_font')?.value || 'Roboto-Regular.ttf';
-    bold        = document.getElementById('zstatic_bold')?.checked || false;
-    italic      = document.getElementById('zstatic_italic')?.checked || false;
-    strokeColor = document.getElementById('zstatic_stroke_color')?.value || null;
-    strokeWidth = parseFloat(document.getElementById('zstatic_stroke_width')?.value) || 0;
-    skewAngle   = parseFloat(document.getElementById('zstatic_skew')?.value) || 0;
-    textAlign   = document.getElementById('zadd-stxt-align')?.value || 'center';
-    fontSize    = parseFloat(document.getElementById('zstatic_fsize')?.value) || 3;
+    displayText   = document.getElementById('zstatic_content')?.value.trim() || document.getElementById('zlabel')?.value.trim() || '';
+    color         = document.getElementById('zstatic_color')?.value || '#ffffff';
+    fontFile      = document.getElementById('zstatic_font')?.value || 'Roboto-Regular.ttf';
+    bold          = document.getElementById('zstatic_bold')?.checked || false;
+    italic        = document.getElementById('zstatic_italic')?.checked || false;
+    strokeColor   = document.getElementById('zstatic_stroke_color')?.value || null;
+    strokeWidth   = parseFloat(document.getElementById('zstatic_stroke_width')?.value) || 0;
+    skewAngle     = parseFloat(document.getElementById('zstatic_skew')?.value) || 0;
+    textAlign     = document.getElementById('zadd-stxt-align')?.value || 'center';
+    fontSize      = parseFloat(document.getElementById('zstatic_fsize')?.value) || 3;
+    lineSpacing   = parseFloat(document.getElementById('zadd-stxt-line-spacing')?.value) || 1.2;
+    letterSpacing = parseFloat(document.getElementById('zadd-stxt-letter-spacing')?.value) || 0;
+    isBullet      = document.getElementById('zadd-stxt-is-bullet')?.checked || false;
   }
   if (!displayText) {
     const ph = document.createElement('div');
@@ -1598,17 +1662,18 @@ async function renderGhostPreview() {
   const zwPx  = Math.max(4, z.w / 100 * cw - 8);
   const zhPx  = Math.max(4, z.h / 100 * ch - 8);
   const startFs = Math.max(4, fontSize / 100 * ch);
-  const fsPx  = _editorFitFontSize(displayText, fontFile, bold, italic, startFs, zwPx, zhPx);
+  const fsPx  = _editorFitFontSize(displayText, fontFile, bold, italic, startFs, zwPx, zhPx, lineSpacing);
   const jc    = textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center';
   const wrapper = document.createElement('div');
   wrapper.style.cssText = `position:absolute;inset:0;display:flex;align-items:center;justify-content:${jc};pointer-events:none;overflow:hidden;padding:2px;`;
   const sp = document.createElement('span');
-  let sty = `font-size:${fsPx}px;font-family:${_fontFamilyCss(fontFile)};color:${color};text-align:${textAlign};word-break:break-word;overflow-wrap:break-word;max-width:100%;line-height:1.2;`;
+  const ghostDisplayText = isBullet ? displayText.split('\n').map(l => '• ' + l).join('\n') : displayText;
+  let sty = `font-size:${fsPx}px;font-family:${_fontFamilyCss(fontFile)};color:${color};text-align:${textAlign};word-break:break-word;overflow-wrap:break-word;max-width:100%;line-height:${lineSpacing};letter-spacing:${((letterSpacing/100)*fsPx).toFixed(2)}px;white-space:pre-wrap;`;
   if (bold) sty += 'font-weight:700;';
   if (italic) sty += 'font-style:italic;';
   if (strokeColor && strokeWidth > 0) sty += `-webkit-text-stroke:${strokeWidth}px ${strokeColor};paint-order:stroke fill;`;
   if (skewAngle) sty += `display:inline-block;transform:skewX(${-skewAngle}deg);`;
-  sp.style.cssText = sty; sp.textContent = displayText;
+  sp.style.cssText = sty; sp.textContent = ghostDisplayText;
   wrapper.appendChild(sp); el.appendChild(wrapper);
   // Post-render DOM correction: canvas metrics differ from CSS; shrink until wrapper fits
   let _adjFs = fsPx;
@@ -2021,19 +2086,23 @@ function renderZones() {
         const zwPx = z.w / 100 * cw2 - 4;
         const zhPx = z.h / 100 * ch  - 4;
         const startFs = stxtFsPct / 100 * ch;
-        const fsPx = _editorFitFontSize(stxtVal, stxtFf, stxtBold, stxtItal, startFs, zwPx, zhPx);
+        const stxtLineSp   = isLiveS ? (parseFloat(document.getElementById('edit-stxt-line-spacing')?.value) || z.line_spacing || 1.2) : (z.line_spacing || 1.2);
+        const stxtLetterSp = isLiveS ? (parseFloat(document.getElementById('edit-stxt-letter-spacing')?.value) || z.letter_spacing || 0) : (z.letter_spacing || 0);
+        const stxtIsBullet = isLiveS ? (document.getElementById('edit-stxt-is-bullet')?.checked || false) : (z.is_bullet_list || false);
+        const fsPx = _editorFitFontSize(stxtVal, stxtFf, stxtBold, stxtItal, startFs, zwPx, zhPx, stxtLineSp);
         const jc   = stxtAlign === 'left' ? 'flex-start' : stxtAlign === 'right' ? 'flex-end' : 'center';
         const el = document.createElement('div');
         el.style.cssText = `position:absolute;inset:0;display:flex;align-items:center;justify-content:${jc};pointer-events:none;overflow:hidden;padding:2px;`;
         el.dataset.twrap = '1';
         const sp = document.createElement('span');
-        let sty = `font-size:${fsPx}px;font-family:${_fontFamilyCss(stxtFf)};color:${stxtColor};text-align:${stxtAlign};word-break:break-word;overflow-wrap:break-word;max-width:100%;line-height:1.2;`;
+        const stxtDisplayVal = stxtIsBullet ? stxtVal.split('\n').map(l => '• ' + l).join('\n') : stxtVal;
+        let sty = `font-size:${fsPx}px;font-family:${_fontFamilyCss(stxtFf)};color:${stxtColor};text-align:${stxtAlign};word-break:break-word;overflow-wrap:break-word;max-width:100%;line-height:${stxtLineSp};letter-spacing:${((stxtLetterSp/100)*fsPx).toFixed(2)}px;white-space:pre-wrap;`;
         if (stxtBold) sty += 'font-weight:700;';
         if (stxtItal) sty += 'font-style:italic;';
         if (stxtStrkC && stxtStrkW > 0) sty += `-webkit-text-stroke:${stxtStrkW}px ${stxtStrkC};paint-order:stroke fill;`;
         if (stxtSkew) sty += `display:inline-block;transform:skewX(${-stxtSkew}deg);`;
         sp.style.cssText = sty;
-        sp.textContent = stxtVal;
+        sp.textContent = stxtDisplayVal;
         el.appendChild(sp); div.appendChild(el);
         const corner = document.createElement('div');
         corner.style.cssText = 'position:absolute;top:2px;left:3px;font-size:9px;color:#a78bfa;pointer-events:none;text-shadow:0 1px 2px #000;';
@@ -2084,19 +2153,23 @@ function renderZones() {
       const zwPx2 = z.w / 100 * cw3 - 4;
       const zhPx2 = z.h / 100 * ch  - 4;
       const startFs2 = txtFsPct / 100 * ch;
-      const fsPx = _editorFitFontSize(displayT, txtFf, txtBold, txtItal, startFs2, zwPx2, zhPx2);
+      const txtLineSp   = isLiveT ? (parseFloat(document.getElementById('edit-line-spacing')?.value) || z.line_spacing || 1.2) : (z.line_spacing || 1.2);
+      const txtLetterSp = isLiveT ? (parseFloat(document.getElementById('edit-letter-spacing')?.value) || z.letter_spacing || 0) : (z.letter_spacing || 0);
+      const txtIsBullet = isLiveT ? (document.getElementById('edit-is-bullet')?.checked || false) : (z.is_bullet_list || false);
+      const fsPx = _editorFitFontSize(displayT, txtFf, txtBold, txtItal, startFs2, zwPx2, zhPx2, txtLineSp);
       const jc2  = txtAlign === 'left' ? 'flex-start' : txtAlign === 'right' ? 'flex-end' : 'center';
       const el = document.createElement('div');
       el.style.cssText = `position:absolute;inset:0;display:flex;align-items:center;justify-content:${jc2};pointer-events:none;overflow:hidden;padding:2px;`;
       el.dataset.twrap = '1';
       const sp = document.createElement('span');
-      let sty = `font-size:${fsPx}px;font-family:${_fontFamilyCss(txtFf)};color:${txtColor};text-align:${txtAlign};word-break:break-word;overflow-wrap:break-word;max-width:100%;line-height:1.2;`;
+      const txtDisplayT = txtIsBullet ? displayT.split('\n').map(l => '• ' + l).join('\n') : displayT;
+      let sty = `font-size:${fsPx}px;font-family:${_fontFamilyCss(txtFf)};color:${txtColor};text-align:${txtAlign};word-break:break-word;overflow-wrap:break-word;max-width:100%;line-height:${txtLineSp};letter-spacing:${((txtLetterSp/100)*fsPx).toFixed(2)}px;white-space:pre-wrap;`;
       if (txtBold) sty += 'font-weight:700;';
       if (txtItal) sty += 'font-style:italic;';
       if (txtStrkC && txtStrkW > 0) sty += `-webkit-text-stroke:${txtStrkW}px ${txtStrkC};paint-order:stroke fill;`;
       if (txtSkew) sty += `display:inline-block;transform:skewX(${-txtSkew}deg);`;
       sp.style.cssText = sty;
-      sp.textContent = displayT;
+      sp.textContent = txtDisplayT;
       el.appendChild(sp); div.appendChild(el);
       const corner = document.createElement('div');
       corner.style.cssText = 'position:absolute;top:2px;left:3px;font-size:9px;color:#60a5fa;pointer-events:none;text-shadow:0 1px 2px #000;';
@@ -2307,16 +2380,17 @@ function _editorWrapLines(text, fontCss, maxPx) {
   return result.length ? result : [text || ''];
 }
 
-function _editorFitFontSize(text, fontFile, bold, italic, startFsPx, zoneWPx, zoneHPx) {
+function _editorFitFontSize(text, fontFile, bold, italic, startFsPx, zoneWPx, zoneHPx, lineSpacing) {
   // Priority: (1) word-wrap at current font size, (2) check total HEIGHT of all
   // wrapped lines against zone height, (3) only if height overflows → shrink font
   // and repeat. Single words wider than zoneWPx are NOT shrunk here — CSS
   // word-break:break-word handles that visually.
+  const lineSp = lineSpacing || 1.2;
   let fs = Math.max(_TE_MIN_FS, Math.round(startFsPx));
   while (true) {
     const fc        = _fontFullCss(fontFile, bold, italic, fs);
     const lines     = _editorWrapLines(text, fc, zoneWPx);
-    const lineHeight = fs * 1.2;
+    const lineHeight = fs * lineSp;
     const totalHeight = lines.length * lineHeight;
     const fits = totalHeight <= zoneHPx;
     console.log(`[fitFont] fs=${fs} lines=${lines.length} lineH=${lineHeight.toFixed(1)} totalH=${totalHeight.toFixed(1)} zoneH=${zoneHPx.toFixed(1)} fits=${fits}`);
@@ -2577,6 +2651,9 @@ function showZoneEditPanel(idx) {
     document.getElementById('edit-default-text').value = z.default_text || '';
     document.getElementById('edit-preview-text').value = '';
     _restoreAlignBtns('edit', z.text_align || 'center');
+    document.getElementById('edit-letter-spacing').value = z.letter_spacing != null ? z.letter_spacing : 0;
+    document.getElementById('edit-line-spacing').value   = z.line_spacing   != null ? z.line_spacing   : 1.2;
+    document.getElementById('edit-is-bullet').checked    = z.is_bullet_list || false;
     livePreviewIdx = idx;
   } else if (z.type === 'static_image') {
     if (badge) { badge.textContent = 'sabit görsel'; badge.style.color = '#4ade80'; }
@@ -2603,6 +2680,9 @@ function showZoneEditPanel(idx) {
       document.getElementById('edit-stxt-skew').value        = ssv;
       document.getElementById('edit-stxt-skew-val').textContent = ssv + '°';
       _restoreAlignBtns('stxt', z.text_align || 'center');
+      document.getElementById('edit-stxt-letter-spacing').value = z.letter_spacing != null ? z.letter_spacing : 0;
+      document.getElementById('edit-stxt-line-spacing').value   = z.line_spacing   != null ? z.line_spacing   : 1.2;
+      document.getElementById('edit-stxt-is-bullet').checked    = z.is_bullet_list || false;
       livePreviewIdx = idx;
     }
   } else if (z.type === 'calendar') {
@@ -2662,8 +2742,11 @@ async function applyZoneEdit() {
     z.stroke_color = document.getElementById('edit-stroke-color').value || null;
     z.stroke_width = parseFloat(document.getElementById('edit-stroke-width').value) || 0;
     z.skew_angle   = parseFloat(document.getElementById('edit-skew').value) || 0;
-    z.text_align   = document.getElementById('edit-text-align')?.value || 'center';
-    z.default_text = document.getElementById('edit-default-text')?.value.trim() || null;
+    z.text_align      = document.getElementById('edit-text-align')?.value || 'center';
+    z.default_text    = document.getElementById('edit-default-text')?.value.trim() || null;
+    z.letter_spacing  = parseFloat(document.getElementById('edit-letter-spacing')?.value) || 0;
+    z.line_spacing    = parseFloat(document.getElementById('edit-line-spacing')?.value) || 1.2;
+    z.is_bullet_list  = document.getElementById('edit-is-bullet')?.checked || false;
   } else if (z.type === 'static_image') {
     const fi = document.getElementById('edit-simg-file');
     if (fi && fi.files[0]) {
@@ -2685,8 +2768,11 @@ async function applyZoneEdit() {
     z.italic       = document.getElementById('edit-stxt-italic').checked        || false;
     z.stroke_color = document.getElementById('edit-stxt-stroke-color').value    || null;
     z.stroke_width = parseFloat(document.getElementById('edit-stxt-stroke-width').value) || 0;
-    z.skew_angle   = parseFloat(document.getElementById('edit-stxt-skew').value) || 0;
-    z.text_align   = document.getElementById('edit-stxt-align')?.value || 'center';
+    z.skew_angle      = parseFloat(document.getElementById('edit-stxt-skew').value) || 0;
+    z.text_align      = document.getElementById('edit-stxt-align')?.value || 'center';
+    z.letter_spacing  = parseFloat(document.getElementById('edit-stxt-letter-spacing')?.value) || 0;
+    z.line_spacing    = parseFloat(document.getElementById('edit-stxt-line-spacing')?.value) || 1.2;
+    z.is_bullet_list  = document.getElementById('edit-stxt-is-bullet')?.checked || false;
   } else if (z.type === 'calendar') {
     z.color = document.getElementById('edit-cal-color')?.value || '#ffffff';
   } else if (z.type === 'selectable_image') {

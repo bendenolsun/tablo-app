@@ -1710,15 +1710,42 @@ def _apply_photo_crop(img, zw, zh, pos=None):
 _MIN_FONT_SIZE = 6
 
 
-def _wrap_text(draw, text, font, max_width):
+def _text_width(draw, text, font, letter_sp_px=0):
+    """Measure width of text with optional per-character letter spacing."""
+    if letter_sp_px == 0:
+        bb = draw.textbbox((0, 0), text, font=font)
+        return bb[2] - bb[0]
+    total = 0
+    for ch in text:
+        bb = draw.textbbox((0, 0), ch, font=font)
+        total += (bb[2] - bb[0]) + letter_sp_px
+    # Remove trailing extra spacing from last character
+    if text:
+        total -= letter_sp_px
+    return max(0, total)
+
+
+def _draw_text_ls(draw, pos, text, font, fill, letter_sp_px, stroke_fill=None, stroke_width=0):
+    """Draw text character by character with letter spacing."""
+    x, y = pos
+    for ch in text:
+        kw = {'font': font, 'fill': fill}
+        if stroke_fill and stroke_width > 0:
+            kw['stroke_fill'] = stroke_fill
+            kw['stroke_width'] = stroke_width
+        draw.text((x, y), ch, **kw)
+        bb = draw.textbbox((0, 0), ch, font=font)
+        x += (bb[2] - bb[0]) + letter_sp_px
+
+
+def _wrap_text(draw, text, font, max_width, letter_sp_px=0):
     """Word-wrap respecting explicit \\n and space-split; each returned line fits max_width."""
     result = []
     for para in (text or '').split('\n'):
         lines_p, cur = [], ''
         for w in para.split():
             test = (cur + ' ' + w) if cur else w
-            bb   = draw.textbbox((0, 0), test, font=font)
-            if (bb[2] - bb[0]) > max_width and cur:
+            if _text_width(draw, test, font, letter_sp_px) > max_width and cur:
                 lines_p.append(cur)
                 cur = w
             else:
@@ -1729,10 +1756,10 @@ def _wrap_text(draw, text, font, max_width):
     return result or [text or '']
 
 
-def _line_height(draw, font):
+def _line_height(draw, font, line_sp=1.2):
     """Return actual line height in pixels for the given font."""
     bb = draw.textbbox((0, 0), 'Ay', font=font)
-    return max(1, int((bb[3] - bb[1]) * 1.2))
+    return max(1, int((bb[3] - bb[1]) * line_sp))
 
 
 def _fit_font_size(draw, value, zone, zw, zh, out_h, size_pct=1.0):
@@ -1747,8 +1774,11 @@ def _fit_font_size(draw, value, zone, zw, zh, out_h, size_pct=1.0):
     NOTE: Algorithm must stay in sync with _editorFitFontSize (template_edit.html)
           and _cfFitFontSizePx (customer_form.html).
     """
-    font_path = os.path.join(FONTS_DIR, zone.get('font_file', 'Roboto-Regular.ttf'))
-    start_fs  = max(_MIN_FONT_SIZE, int(zone.get('font_size', 3) * out_h / 100 * size_pct))
+    font_path    = os.path.join(FONTS_DIR, zone.get('font_file', 'Roboto-Regular.ttf'))
+    start_fs     = max(_MIN_FONT_SIZE, int(zone.get('font_size', 3) * out_h / 100 * size_pct))
+    line_sp      = zone.get('line_spacing', 1.2) or 1.2
+    letter_sp_fr = (zone.get('letter_spacing', 0) or 0) / 100
+    is_bullet    = zone.get('is_bullet_list', False)
 
     def load_font(fs):
         try:
@@ -1756,28 +1786,57 @@ def _fit_font_size(draw, value, zone, zw, zh, out_h, size_pct=1.0):
         except Exception:
             return ImageFont.load_default()
 
-    # Hızlı kontrol: start_fs zaten sığıyor mu?
-    font  = load_font(start_fs)
-    lines = _wrap_text(draw, value, font, zw)
-    lh    = _line_height(draw, font)
-    if len(lines) * lh <= zh or start_fs <= _MIN_FONT_SIZE:
+    def total_height_for(fs, font):
+        letter_sp_px = int(letter_sp_fr * fs)
+        lh = _line_height(draw, font, line_sp)
+        if is_bullet:
+            bullet_w = _text_width(draw, '• ', font, letter_sp_px)
+            items = (value or '').split('\n')
+            total_lines = 0
+            for item in items:
+                item_lines = _wrap_text(draw, item, font, max(1, zw - bullet_w), letter_sp_px)
+                total_lines += len(item_lines)
+            # Extra 0.5*lh gap between items (not after last)
+            total_h = total_lines * lh + max(0, len(items) - 1) * int(lh * 0.5)
+        else:
+            lines = _wrap_text(draw, value, font, zw, letter_sp_px)
+            total_h = len(lines) * lh
+        return total_h, lh
+
+    def wrap_for(fs, font):
+        letter_sp_px = int(letter_sp_fr * fs)
+        if is_bullet:
+            bullet_w = _text_width(draw, '• ', font, letter_sp_px)
+            items = (value or '').split('\n')
+            result = []
+            for item in items:
+                item_lines = _wrap_text(draw, item, font, max(1, zw - bullet_w), letter_sp_px)
+                result.append(item_lines)
+            return result  # list of lists
+        else:
+            return _wrap_text(draw, value, font, zw, letter_sp_px)
+
+    # Quick check: start_fs already fits?
+    font = load_font(start_fs)
+    total_h, lh = total_height_for(start_fs, font)
+    if total_h <= zh or start_fs <= _MIN_FONT_SIZE:
+        lines = wrap_for(start_fs, font)
         return start_fs, font, lines, lh
 
-    # Binary search: zone yüksekliğine sığan en büyük font boyutunu bul
+    # Binary search: find largest font size that fits zone height
     lo, hi = _MIN_FONT_SIZE, start_fs
     while lo < hi - 1:
-        mid   = (lo + hi) // 2
-        font  = load_font(mid)
-        lines = _wrap_text(draw, value, font, zw)
-        lh    = _line_height(draw, font)
-        if len(lines) * lh <= zh:
+        mid = (lo + hi) // 2
+        font = load_font(mid)
+        total_h, lh = total_height_for(mid, font)
+        if total_h <= zh:
             lo = mid
         else:
             hi = mid
 
-    font  = load_font(lo)
-    lines = _wrap_text(draw, value, font, zw)
-    lh    = _line_height(draw, font)
+    font = load_font(lo)
+    _total_h, lh = total_height_for(lo, font)
+    lines = wrap_for(lo, font)
     return lo, font, lines, lh
 
 
@@ -1787,16 +1846,19 @@ def _render_text_in_zone(draw, canvas, value, zone, zx, zy, zw, zh, out_h, size_
     if not value:
         return
 
-    color      = zone.get('color', '#000000')
-    bold       = zone.get('bold', False)
-    italic     = zone.get('italic', False)
-    stroke_col = zone.get('stroke_color') or None
-    stroke_w   = int(zone.get('stroke_width', 0) or 0)
-    skew_angle = float(zone.get('skew_angle', 0) or 0)
-    text_align = zone.get('text_align', 'center') or 'center'
+    color        = zone.get('color', '#000000')
+    bold         = zone.get('bold', False)
+    italic       = zone.get('italic', False)
+    stroke_col   = zone.get('stroke_color') or None
+    stroke_w     = int(zone.get('stroke_width', 0) or 0)
+    skew_angle   = float(zone.get('skew_angle', 0) or 0)
+    text_align   = zone.get('text_align', 'center') or 'center'
+    line_sp      = zone.get('line_spacing', 1.2) or 1.2
+    letter_sp_fr = (zone.get('letter_spacing', 0) or 0) / 100
+    is_bullet    = zone.get('is_bullet_list', False)
 
     _fs, font, lines, lh = _fit_font_size(draw, value, zone, zw, zh, out_h, size_pct)
-    total_h = len(lines) * lh
+    letter_sp_px = int(letter_sp_fr * _fs)
 
     total_sw = stroke_w + (1 if bold else 0)
     sfill    = (stroke_col if (stroke_col and stroke_w > 0)
@@ -1804,48 +1866,100 @@ def _render_text_in_zone(draw, canvas, value, zone, zx, zy, zw, zh, out_h, size_
 
     needs_transform = italic or (abs(skew_angle) > 0.5)
 
-    if needs_transform:
-        slant = math.tan(math.radians(-skew_angle)) + (-0.2 if italic else 0)
-        pad   = max(2, int(abs(slant) * zh))
-        lw_px = zw + pad * 2
-        layer = Image.new('RGBA', (lw_px, zh), (0, 0, 0, 0))
-        ld    = ImageDraw.Draw(layer)
-        y0    = (zh - total_h) // 2
-        for i, line in enumerate(lines):
-            bb = ld.textbbox((0, 0), line, font=font)
-            tw = bb[2] - bb[0]
-            if text_align == 'left':
-                tx = pad
-            elif text_align == 'right':
-                tx = pad + zw - tw
-            else:
-                tx = pad + (zw - tw) // 2
-            ty = y0 + i * lh
+    def _draw_line(drw, tx, ty, line_text):
+        """Draw a single line at (tx, ty) with optional letter spacing."""
+        if letter_sp_px > 0:
+            _draw_text_ls(drw, (tx, ty), line_text, font, color, letter_sp_px,
+                          stroke_fill=sfill if (sfill and total_sw > 0) else None,
+                          stroke_width=total_sw)
+        else:
             kw = {'font': font, 'fill': color}
             if sfill and total_sw > 0:
                 kw['stroke_fill'] = sfill
                 kw['stroke_width'] = total_sw
-            ld.text((tx, ty), line, **kw)
-        affine = (1, -slant, slant * (zh / 2), 0, 1, 0)
-        layer  = layer.transform((lw_px, zh), Image.AFFINE, affine, Image.BICUBIC)
-        canvas.paste(layer, (zx - pad, zy), layer)
+            drw.text((tx, ty), line_text, **kw)
+
+    if is_bullet:
+        # lines is a list of lists (one per \n-item)
+        bullet_char = '• '
+        bullet_w    = _text_width(draw, bullet_char, font, letter_sp_px)
+        gap_extra   = int(lh * 0.5)  # extra gap between items
+        # Compute total height
+        total_line_count = sum(len(item_lines) for item_lines in lines)
+        item_count       = len(lines)
+        total_h          = total_line_count * lh + max(0, item_count - 1) * gap_extra
+
+        if needs_transform:
+            slant = math.tan(math.radians(-skew_angle)) + (-0.2 if italic else 0)
+            pad   = max(2, int(abs(slant) * zh))
+            lw_px = zw + pad * 2
+            layer = Image.new('RGBA', (lw_px, zh), (0, 0, 0, 0))
+            ld    = ImageDraw.Draw(layer)
+            y0    = (zh - total_h) // 2
+            cur_y = y0
+            for item_idx, item_lines in enumerate(lines):
+                for line_idx, line_text in enumerate(item_lines):
+                    if line_idx == 0:
+                        # Draw bullet
+                        _draw_line(ld, pad, cur_y, bullet_char)
+                        _draw_line(ld, pad + bullet_w, cur_y, line_text)
+                    else:
+                        _draw_line(ld, pad + bullet_w, cur_y, line_text)
+                    cur_y += lh
+                if item_idx < item_count - 1:
+                    cur_y += gap_extra
+            affine = (1, -slant, slant * (zh / 2), 0, 1, 0)
+            layer  = layer.transform((lw_px, zh), Image.AFFINE, affine, Image.BICUBIC)
+            canvas.paste(layer, (zx - pad, zy), layer)
+        else:
+            y0    = zy + (zh - total_h) // 2
+            cur_y = y0
+            for item_idx, item_lines in enumerate(lines):
+                for line_idx, line_text in enumerate(item_lines):
+                    if line_idx == 0:
+                        _draw_line(draw, zx, cur_y, bullet_char)
+                        _draw_line(draw, zx + bullet_w, cur_y, line_text)
+                    else:
+                        _draw_line(draw, zx + bullet_w, cur_y, line_text)
+                    cur_y += lh
+                if item_idx < item_count - 1:
+                    cur_y += gap_extra
     else:
-        y0 = zy + (zh - total_h) // 2
-        for i, line in enumerate(lines):
-            bb = draw.textbbox((0, 0), line, font=font)
-            tw = bb[2] - bb[0]
-            if text_align == 'left':
-                tx = zx
-            elif text_align == 'right':
-                tx = zx + zw - tw
-            else:
-                tx = zx + (zw - tw) // 2
-            ty = y0 + i * lh
-            kw = {'font': font, 'fill': color}
-            if sfill and total_sw > 0:
-                kw['stroke_fill'] = sfill
-                kw['stroke_width'] = total_sw
-            draw.text((tx, ty), line, **kw)
+        # lines is a flat list
+        total_h = len(lines) * lh
+
+        if needs_transform:
+            slant = math.tan(math.radians(-skew_angle)) + (-0.2 if italic else 0)
+            pad   = max(2, int(abs(slant) * zh))
+            lw_px = zw + pad * 2
+            layer = Image.new('RGBA', (lw_px, zh), (0, 0, 0, 0))
+            ld    = ImageDraw.Draw(layer)
+            y0    = (zh - total_h) // 2
+            for i, line in enumerate(lines):
+                tw = _text_width(ld, line, font, letter_sp_px)
+                if text_align == 'left':
+                    tx = pad
+                elif text_align == 'right':
+                    tx = pad + zw - tw
+                else:
+                    tx = pad + (zw - tw) // 2
+                ty = y0 + i * lh
+                _draw_line(ld, tx, ty, line)
+            affine = (1, -slant, slant * (zh / 2), 0, 1, 0)
+            layer  = layer.transform((lw_px, zh), Image.AFFINE, affine, Image.BICUBIC)
+            canvas.paste(layer, (zx - pad, zy), layer)
+        else:
+            y0 = zy + (zh - total_h) // 2
+            for i, line in enumerate(lines):
+                tw = _text_width(draw, line, font, letter_sp_px)
+                if text_align == 'left':
+                    tx = zx
+                elif text_align == 'right':
+                    tx = zx + zw - tw
+                else:
+                    tx = zx + (zw - tw) // 2
+                ty = y0 + i * lh
+                _draw_line(draw, tx, ty, line)
 
 
 def _draw_heart_pil(draw, cx, cy, r, color):

@@ -261,6 +261,16 @@ input:focus,select:focus{border-color:var(--accent);}
           <div class="tz-editor">
             <div class="tz-name">{{ zone.label }}{% if zone.required is defined and zone.required %} <span style="color:#f44336;font-weight:700;">*</span>{% endif %}</div>
             {% if zone.description is defined and zone.description %}<div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:2px;margin-bottom:5px;">{{ zone.description }}</div>{% endif %}
+            {% if zone.is_bullet_list %}
+            <textarea id="tz-text-{{ zi }}" rows="4"
+                   style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;resize:vertical;"
+                   placeholder="Her satır ayrı madde"
+                   data-default="{{ zone.default_text or '' }}"
+                   onfocus="if(this.dataset.default&&this.value===this.dataset.default)this.value=''"
+                   onblur="if(!this.value.trim()&&this.dataset.default)this.value=this.dataset.default;refreshMini({{ pg_num }})"
+                   oninput="refreshMini({{ pg_num }})">{{ edit_order.text_values.get(zone.label, zone.default_text or '') if edit_mode else (zone.default_text or '') }}</textarea>
+            <p style="font-size:10px;color:var(--muted);margin-top:4px;">↵ Enter ile yeni madde ekleyin</p>
+            {% else %}
             <input type="text" id="tz-text-{{ zi }}"
                    placeholder="{{ zone.label }} metnini girin"
                    data-default="{{ zone.default_text or '' }}"
@@ -268,6 +278,7 @@ input:focus,select:focus{border-color:var(--accent);}
                    onfocus="if(this.dataset.default&&this.value===this.dataset.default)this.value=''"
                    onblur="if(!this.value.trim()&&this.dataset.default)this.value=this.dataset.default;refreshMini({{ pg_num }})"
                    oninput="refreshMini({{ pg_num }})">
+            {% endif %}
             {% set _sz = edit_order.text_size_values.get(zone.label,'100') if edit_mode else '100' %}
             <div class="tz-row">
               <label>Boyut</label>
@@ -377,6 +388,16 @@ input:focus,select:focus{border-color:var(--accent);}
         <div class="tz-editor">
           <div class="tz-name">{{ zone.label }}{% if zone.required is defined and zone.required %} <span style="color:#f44336;font-weight:700;">*</span>{% endif %}</div>
           {% if zone.description is defined and zone.description %}<div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:2px;margin-bottom:5px;">{{ zone.description }}</div>{% endif %}
+          {% if zone.is_bullet_list %}
+          <textarea id="tz-text-{{ zi }}" rows="4"
+                 style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;resize:vertical;"
+                 placeholder="Her satır ayrı madde"
+                 data-default="{{ zone.default_text or '' }}"
+                 onfocus="if(this.dataset.default&&this.value===this.dataset.default)this.value=''"
+                 onblur="if(!this.value.trim()&&this.dataset.default)this.value=this.dataset.default;refreshMini()"
+                 oninput="refreshMini()">{{ edit_order.text_values.get(zone.label, zone.default_text or '') if edit_mode else (zone.default_text or '') }}</textarea>
+          <p style="font-size:10px;color:var(--muted);margin-top:4px;">↵ Enter ile yeni madde ekleyin</p>
+          {% else %}
           <input type="text" id="tz-text-{{ zi }}"
                  placeholder="{{ zone.label }} metnini girin"
                  data-default="{{ zone.default_text or '' }}"
@@ -384,6 +405,7 @@ input:focus,select:focus{border-color:var(--accent);}
                  onfocus="if(this.dataset.default&&this.value===this.dataset.default)this.value=''"
                  onblur="if(!this.value.trim()&&this.dataset.default)this.value=this.dataset.default;refreshMini()"
                  oninput="refreshMini()">
+          {% endif %}
           {% set _sz = edit_order.text_size_values.get(zone.label,'100') if edit_mode else '100' %}
           <div class="tz-row">
             <label>Boyut</label>
@@ -799,17 +821,35 @@ function _cfFitFontSizePx(ctx, val, zone, zw, zh, ch, sizeMult) {
   // Priority: (1) word-wrap at current font size, (2) check total HEIGHT of all
   // wrapped lines against zone height, (3) only if height overflows → shrink font
   // and repeat. Matches _editorFitFontSize (template_edit.html) and _fit_font_size (app.py).
-  const ff   = zone.font_file || 'Roboto-Regular.ttf';
-  const bold = zone.bold  || false;
-  const ital = zone.italic || false;
+  const ff       = zone.font_file || 'Roboto-Regular.ttf';
+  const bold     = zone.bold  || false;
+  const ital     = zone.italic || false;
+  const lineSp   = zone.line_spacing || 1.2;
+  const letterSp = zone.letter_spacing || 0;
+  const isBullet = zone.is_bullet_list || false;
   let fs = Math.max(_CF_MIN_FS, (zone.font_size / 100) * ch * (sizeMult || 1));
   while (true) {
     ctx.font = _cfFontCss(ff, bold, ital, fs);
-    const lines      = _wrapLines(ctx, val, zw);
-    const lineHeight = fs * 1.2;
-    const totalHeight = lines.length * lineHeight;
+    ctx.letterSpacing = `${fs * letterSp / 100}px`;
+    const lineHeight = fs * lineSp;
+    let totalHeight;
+    if (isBullet) {
+      const bulletChar = '• ';
+      const bulletW = ctx.measureText(bulletChar).width;
+      const items = (val || '').split('\n');
+      let totalLines = 0;
+      for (const item of items) {
+        const itemLines = _wrapLines(ctx, item, Math.max(1, zw - bulletW));
+        totalLines += itemLines.length;
+      }
+      const gapExtra = lineHeight * 0.5;
+      totalHeight = totalLines * lineHeight + Math.max(0, items.length - 1) * gapExtra;
+    } else {
+      const lines = _wrapLines(ctx, val, zw);
+      totalHeight = lines.length * lineHeight;
+    }
     const fits = totalHeight <= zh;
-    console.log(`[cfFit] fs=${fs} lines=${lines.length} lineH=${lineHeight.toFixed(1)} totalH=${totalHeight.toFixed(1)} zh=${zh.toFixed(1)} fits=${fits}`);
+    console.log(`[cfFit] fs=${fs} lineH=${lineHeight.toFixed(1)} totalH=${totalHeight.toFixed(1)} zh=${zh.toFixed(1)} fits=${fits}`);
     if (fits || fs <= _CF_MIN_FS) break;
     fs -= 1;
     if (fs < _CF_MIN_FS) { fs = _CF_MIN_FS; break; }
@@ -819,25 +859,23 @@ function _cfFitFontSizePx(ctx, val, zone, zw, zh, ch, sizeMult) {
 
 function _renderTextCanvas(ctx, val, zone, zx, zy, zw, zh, ch, sizeMult) {
   if (!val) return;
-  const bold  = zone.bold   || false;
-  const ital  = zone.italic || false;
-  const color = zone.color  || '#000000';
-  const sc    = zone.stroke_color || null;
-  const sw    = zone.stroke_width || 0;
-  const skew  = zone.skew_angle   || 0;
-  const align = zone.text_align   || 'center';
-  const ff    = zone.font_file    || 'Roboto-Regular.ttf';
+  const bold     = zone.bold   || false;
+  const ital     = zone.italic || false;
+  const color    = zone.color  || '#000000';
+  const sc       = zone.stroke_color || null;
+  const sw       = zone.stroke_width || 0;
+  const skew     = zone.skew_angle   || 0;
+  const align    = zone.text_align   || 'center';
+  const ff       = zone.font_file    || 'Roboto-Regular.ttf';
+  const lineSp   = zone.line_spacing || 1.2;
+  const letterSp = zone.letter_spacing || 0;
+  const isBullet = zone.is_bullet_list || false;
 
   const fs = _cfFitFontSizePx(ctx, val, zone, zw, zh, ch, sizeMult);
   ctx.font = _cfFontCss(ff, bold, ital, fs);
-  const lines = _wrapLines(ctx, val, zw);
+  ctx.letterSpacing = `${fs * letterSp / 100}px`;
 
-  const lh     = fs * 1.2;
-  const totalH = lines.length * lh;
-  const y0     = zy + (zh - totalH) / 2 + fs * 0.82;
-
-  // x anchor per alignment
-  const tx = align === 'left' ? zx : align === 'right' ? zx + zw : zx + zw / 2;
+  const lh = fs * lineSp;
 
   ctx.save();
   if (skew) {
@@ -846,17 +884,59 @@ function _renderTextCanvas(ctx, val, zone, zx, zy, zw, zh, ch, sizeMult) {
     ctx.translate(-(zx + zw / 2), -(zy + zh / 2));
   }
   ctx.beginPath(); ctx.rect(zx, zy, zw, zh); ctx.clip();
-  ctx.textAlign    = align === 'left' ? 'left' : align === 'right' ? 'right' : 'center';
   ctx.textBaseline = 'alphabetic';
-  lines.forEach((line, i) => {
-    const ty = y0 + i * lh;
+
+  function drawLine(lineText, tx, ty, ctxAlign) {
+    ctx.textAlign = ctxAlign;
     if (sc && sw > 0) {
       ctx.strokeStyle = sc; ctx.lineWidth = sw * 2;
-      ctx.lineJoin = 'round'; ctx.strokeText(line, tx, ty);
+      ctx.lineJoin = 'round'; ctx.strokeText(lineText, tx, ty);
     }
     ctx.fillStyle = color;
-    ctx.fillText(line, tx, ty);
-  });
+    ctx.fillText(lineText, tx, ty);
+  }
+
+  if (isBullet) {
+    const bulletChar = '• ';
+    const bulletW = ctx.measureText(bulletChar).width;
+    const items = (val || '').split('\n');
+    const gapExtra = lh * 0.5;
+    // Compute total height
+    let totalLines = 0;
+    const itemWrapped = [];
+    for (const item of items) {
+      const wrapped = _wrapLines(ctx, item, Math.max(1, zw - bulletW));
+      itemWrapped.push(wrapped);
+      totalLines += wrapped.length;
+    }
+    const totalH = totalLines * lh + Math.max(0, items.length - 1) * gapExtra;
+    let curY = zy + (zh - totalH) / 2 + fs * 0.82;
+    for (let iIdx = 0; iIdx < itemWrapped.length; iIdx++) {
+      const itemLines = itemWrapped[iIdx];
+      for (let lIdx = 0; lIdx < itemLines.length; lIdx++) {
+        if (lIdx === 0) {
+          // Draw bullet at left edge
+          drawLine(bulletChar, zx, curY, 'left');
+          // Draw text after bullet (always left-aligned within remaining width)
+          drawLine(itemLines[lIdx], zx + bulletW, curY, 'left');
+        } else {
+          drawLine(itemLines[lIdx], zx + bulletW, curY, 'left');
+        }
+        curY += lh;
+      }
+      if (iIdx < itemWrapped.length - 1) curY += gapExtra;
+    }
+  } else {
+    const lines = _wrapLines(ctx, val, zw);
+    const totalH = lines.length * lh;
+    const y0 = zy + (zh - totalH) / 2 + fs * 0.82;
+    // x anchor per alignment
+    const tx = align === 'left' ? zx : align === 'right' ? zx + zw : zx + zw / 2;
+    const ctxAlign = align === 'left' ? 'left' : align === 'right' ? 'right' : 'center';
+    lines.forEach((line, i) => {
+      drawLine(line, tx, y0 + i * lh, ctxAlign);
+    });
+  }
   ctx.restore();
 }
 
