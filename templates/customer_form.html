@@ -2142,6 +2142,34 @@ function renderFull(canvas, bg, filterPage) {
 function closePrev(){document.getElementById('prevModal').classList.remove('open');}
 
 // ── Sipariş gönder ────────────────────────────────────────────────────────────
+
+// Orijinal fotoğrafları sunucuya yüklemeden önce max MAX_ORIG_DIM px'e küçültür.
+// Büyük orijinaller (modern akıllı telefon ~10 MB) yükleme süresini 100 saniyenin
+// üzerine çıkararak Cloudflare 524 hatasına yol açıyordu. PIL tarafı zaten
+// zone boyutunun 2 katıyla sınırlı açtığından 2000 px yeterli kalite sağlar.
+const MAX_ORIG_DIM = 2000;
+async function _resizeToMaxDim(file, maxDim) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      if (img.naturalWidth <= maxDim && img.naturalHeight <= maxDim) {
+        resolve(file);
+        return;
+      }
+      const scale = maxDim / Math.max(img.naturalWidth, img.naturalHeight);
+      const c = document.createElement('canvas');
+      c.width  = Math.round(img.naturalWidth  * scale);
+      c.height = Math.round(img.naturalHeight * scale);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob(blob => resolve(blob || file), 'image/jpeg', 0.90);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+    img.src = url;
+  });
+}
+
 async function _buildUnitFormData(u, fd, prefix) {
   // Belirli bir ünitenin verilerini FormData'ya ekler.
   // prefix: 'u0_', 'u1_', ... (tek ürün durumunda boş string)
@@ -2192,7 +2220,10 @@ async function _buildUnitFormData(u, fd, prefix) {
       fd.append(`${prefix}group_${gname}`, blob, `grp_${gname}_${seenGrp[gname]}.jpg`);
       seenGrp[gname]++;
     }
-    if (d.file) fd.append(`${prefix}photo_${zi}_orig`, d.file, d.file.name || `photo_${zi}_orig`);
+    if (d.file) {
+      const origBlob = await _resizeToMaxDim(d.file, MAX_ORIG_DIM);
+      fd.append(`${prefix}photo_${zi}_orig`, origBlob, d.file.name || `photo_${zi}_orig`);
+    }
     fd.append(`${prefix}photo_pos_${zi}`, JSON.stringify({
       offsetX: d.offsetX, offsetY: d.offsetY,
       scale: d.scale, rotation: d.rotation || 0, flipH: d.flipH || false
