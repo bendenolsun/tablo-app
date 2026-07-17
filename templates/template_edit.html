@@ -2386,24 +2386,29 @@ function _editorWrapLines(text, fontCss, maxPx) {
   return result.length ? result : [text || ''];
 }
 
+// Font boyutu hesaplama sonuçlarını önbelleğe alır; her 500 girdide temizlenir.
+const _fitFontCache = new Map();
+
 function _editorFitFontSize(text, fontFile, bold, italic, startFsPx, zoneWPx, zoneHPx, lineSpacing) {
-  // Priority: (1) word-wrap at current font size, (2) check total HEIGHT of all
-  // wrapped lines against zone height, (3) only if height overflows → shrink font
-  // and repeat. Single words wider than zoneWPx are NOT shrunk here — CSS
-  // word-break:break-word handles that visually.
   const lineSp = lineSpacing || 1.2;
-  let fs = Math.max(_TE_MIN_FS, Math.round(startFsPx));
+  const rStart = Math.round(startFsPx);
+  const rW     = Math.round(zoneWPx);
+  const rH     = Math.round(zoneHPx);
+  const key    = `${text}|${fontFile}|${bold}|${italic}|${rStart}|${rW}|${rH}|${lineSp}`;
+  if (_fitFontCache.has(key)) return _fitFontCache.get(key);
+
+  let fs = Math.max(_TE_MIN_FS, rStart);
   while (true) {
-    const fc        = _fontFullCss(fontFile, bold, italic, fs);
-    const lines     = _editorWrapLines(text, fc, zoneWPx);
-    const lineHeight = fs * lineSp;
-    const totalHeight = lines.length * lineHeight;
-    const fits = totalHeight <= zoneHPx;
-    console.log(`[fitFont] fs=${fs} lines=${lines.length} lineH=${lineHeight.toFixed(1)} totalH=${totalHeight.toFixed(1)} zoneH=${zoneHPx.toFixed(1)} fits=${fits}`);
-    if (fits || fs <= _TE_MIN_FS) break;
+    const fc          = _fontFullCss(fontFile, bold, italic, fs);
+    const lines       = _editorWrapLines(text, fc, zoneWPx);
+    const totalHeight = lines.length * fs * lineSp;
+    if (totalHeight <= zoneHPx || fs <= _TE_MIN_FS) break;
     fs -= 1;
     if (fs < _TE_MIN_FS) { fs = _TE_MIN_FS; break; }
   }
+
+  if (_fitFontCache.size >= 500) _fitFontCache.clear();
+  _fitFontCache.set(key, fs);
   return fs;
 }
 
