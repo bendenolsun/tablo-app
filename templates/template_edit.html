@@ -1593,12 +1593,16 @@ async function confirmZone() {
   document.getElementById('add-form').style.display = 'none';
   clearGhostPreview();
   renderZones();
+  // Zone oluşturulduktan sonra aracı sıfırla — seçim moduna dön
+  setTool(currentTool);
 }
 
 function cancelZone() {
   pendingZone = null;
   document.getElementById('add-form').style.display = 'none';
   clearGhostPreview();
+  // İptal edilince de aracı sıfırla
+  if (currentTool) setTool(currentTool);
 }
 
 function clearGhostPreview() {
