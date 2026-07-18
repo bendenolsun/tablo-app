@@ -105,10 +105,11 @@ html, body { height:100%; overflow:hidden; }
 .align-btn.align-active { background:var(--accent); border-color:var(--accent); color:#000; }
 
 /* Koordinat / boyut göstergeleri */
-#coord-display { position:absolute; bottom:6px; left:6px; z-index:20;
+#coord-display { position:absolute; z-index:20;
   background:rgba(0,0,0,.82); color:#4ade80; font-size:11px; font-weight:700;
   padding:4px 10px; border-radius:4px; pointer-events:none;
-  font-family:monospace; display:none; white-space:nowrap; }
+  font-family:monospace; display:none; white-space:nowrap;
+  transform:translate(-50%,-50%); }
 #size-display { position:absolute; top:6px; left:50%; transform:translateX(-50%);
   z-index:20; background:rgba(0,0,0,.82); color:#4ade80; font-size:11px; font-weight:700;
   padding:3px 10px; border-radius:4px; pointer-events:none;
@@ -1053,6 +1054,29 @@ function zoneSizeLabel(z) {
   return `${z.w.toFixed(1)}×${z.h.toFixed(1)}%`;
 }
 
+// Boyut etiketini zone merkezinde gösterir (çizim ve resize sırasında).
+// x, y, w, h: % cinsinden zone boyutları. extra: opsiyonel ek metin (snap ikon vs.)
+function _showCoordAt(x, y, w, h, extra) {
+  const coord = document.getElementById('coord-display');
+  if (!coord) return;
+  const d = getDims();
+  let txt;
+  if (d.w_cm && d.h_cm) {
+    txt = `${(w / 100 * d.w_cm).toFixed(1)} × ${(h / 100 * d.h_cm).toFixed(1)} cm`;
+  } else {
+    txt = `${w.toFixed(1)} × ${h.toFixed(1)} %`;
+  }
+  if (extra) txt += extra;
+  coord.textContent  = txt;
+  coord.style.left   = (x + w / 2).toFixed(2) + '%';
+  coord.style.top    = (y + h / 2).toFixed(2) + '%';
+  coord.style.display = 'block';
+}
+function _hideCoord() {
+  const c = document.getElementById('coord-display');
+  if (c) c.style.display = 'none';
+}
+
 function sizeLabel(wpct, hpct) {
   const d = getDims();
   if (d.w_cm && d.h_cm) {
@@ -1419,10 +1443,6 @@ function onMove(e) {
   const x = Math.min(startX, p.x), y = Math.min(startY, p.y);
   const w = Math.abs(p.x - startX),  h = Math.abs(p.y - startY);
 
-  const coord    = document.getElementById('coord-display');
-  const sizeDisp = document.getElementById('size-display');
-  if (coord) coord.style.display = 'block';
-
   let fx, fy, fw, fh, lineX = null, lineY = null;
   if (e.shiftKey) {
     // Shift: snap devre dışı, serbest çizim
@@ -1434,24 +1454,13 @@ function onMove(e) {
 
   showActiveSnap(lineX, lineY);
   selBox.style.cssText = `display:block;left:${fx.toFixed(2)}%;top:${fy.toFixed(2)}%;width:${fw.toFixed(2)}%;height:${fh.toFixed(2)}%`;
-  if (coord) {
-    const d = getDims();
-    let txt;
-    if (d.w_cm && d.h_cm) {
-      const xc = (fx / 100 * d.w_cm).toFixed(1);
-      const yc = (fy / 100 * d.h_cm).toFixed(1);
-      const wc = (fw / 100 * d.w_cm).toFixed(1);
-      const hc = (fh / 100 * d.h_cm).toFixed(1);
-      txt = `x:${xc} y:${yc} | ${wc} × ${hc} cm`;
-    } else {
-      txt = `x:${fx.toFixed(1)} y:${fy.toFixed(1)} | ${fw.toFixed(1)} × ${fh.toFixed(1)} %`;
-    }
-    if (lineX !== null || lineY !== null) txt += ' 📌';
-    if (e.shiftKey) txt += ' ⇧';
-    coord.textContent = txt;
-    coord.style.display = 'block';
-  }
 
+  let extra = '';
+  if (lineX !== null || lineY !== null) extra += ' 📌';
+  if (e.shiftKey) extra += ' ⇧';
+  _showCoordAt(fx, fy, fw, fh, extra);
+
+  const sizeDisp = document.getElementById('size-display');
   if (sizeDisp) sizeDisp.style.display = 'none';
 }
 
@@ -1459,9 +1468,8 @@ function onEnd(e) {
   if (!drawing) return; drawing = false;
   selBox.style.display = 'none';
   clearActiveSnap();
-  const coord = document.getElementById('coord-display');
+  _hideCoord();
   const sizeDisp = document.getElementById('size-display');
-  if (coord) coord.style.display = 'none';
   if (sizeDisp) sizeDisp.style.display = 'none';
 
   const snap = lastSnap || (() => {
@@ -3205,12 +3213,14 @@ function startSingleResize(e, handleId, idx) {
       selBoxEl.style.width  = nw.toFixed(3) + '%';
       selBoxEl.style.height = nh.toFixed(3) + '%';
     }
+    _showCoordAt(zones[idx].x, zones[idx].y, zones[idx].w, zones[idx].h, '');
   }
 
   function onUp() {
     document.removeEventListener('mousemove', onMove);
     document.removeEventListener('mouseup',   onUp);
     _activeDrag = false;
+    _hideCoord();
     clearActiveSnap();
     if (resized) pushHistory();
     renderZones();
@@ -3288,12 +3298,14 @@ function startBBoxResize(e, handleId, initBBox) {
       selBoxEl.style.width  = nb.w.toFixed(3) + '%';
       selBoxEl.style.height = nb.h.toFixed(3) + '%';
     }
+    if (nb) _showCoordAt(nb.x, nb.y, nb.w, nb.h, '');
   }
 
   function onUp() {
     document.removeEventListener('mousemove', onMove);
     document.removeEventListener('mouseup',   onUp);
     _activeDrag = false;
+    _hideCoord();
     if (resized) pushHistory();
     renderZones();
     updateSelectionBox();
