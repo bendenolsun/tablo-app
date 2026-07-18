@@ -2,6 +2,12 @@
 # Deploy öncesi sunucudaki güncel verileri data_default'a kaydet, sonra deploy et
 set -e
 
+# ── Otomatik testler ──────────────────────────────────────────────────────────
+echo "→ Testler çalıştırılıyor..."
+python3 -m pytest tests/ -q --tb=short
+echo "✓ Tüm testler geçti"
+# ─────────────────────────────────────────────────────────────────────────────
+
 BASE="https://www.thesalefy.com"
 TOKEN="ifep.2024"
 CHANGED=0
